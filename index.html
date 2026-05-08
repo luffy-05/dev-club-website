@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DEV CLUB TRACK ⛏️</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;color:#fff;overflow-x:hidden;background:#060a14}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:#060a14}
+::-webkit-scrollbar-thumb{background:#00e5b3;border-radius:3px}
+
+/* ═══════════ MINECRAFT CURSOR ═══════════ */
+html,body,*{cursor:none!important}
+#mc-cursor{
+  position:fixed;top:0;left:0;
+  pointer-events:none;z-index:99999;
+  font-size:24px;line-height:1;
+  user-select:none;
+  transform:translate(-999px,-999px);
+}
+
+/* ═══════════ PAGE SYSTEM ═══════════ */
+#app{position:relative;min-height:100vh}
+.page{display:none;min-height:100vh;position:relative;opacity:0;transform:translateY(16px) scale(0.99);transition:opacity 0.38s cubic-bezier(0.4,0,0.2,1),transform 0.38s cubic-bezier(0.4,0,0.2,1)}
+.page.active{display:block}
+.page.visible{opacity:1;transform:translateY(0) scale(1)}
+@keyframes pageFlash{0%{background:rgba(0,229,179,0)}50%{background:rgba(0,229,179,0.06)}100%{background:rgba(0,229,179,0)}}
+.page-flash{animation:pageFlash 0.35s ease}
+
+/* ═══════════ BG CANVAS ═══════════ */
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;image-rendering:pixelated;image-rendering:crisp-edges}
+.ov{position:fixed;inset:0;z-index:1;pointer-events:none;transition:background 0.5s}
+.ov-home{background:linear-gradient(to bottom,rgba(4,7,16,0.38) 0%,rgba(4,7,16,0.18) 35%,rgba(4,7,16,0.72) 85%,rgba(4,7,16,1) 100%)}
+.ov-auth{background:rgba(4,7,16,0.82)}
+.ov-dash{background:rgba(4,7,16,0.9)}
+
+/* ═══════════ CLICK RIPPLE ═══════════ */
+.ripple{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;background:rgba(0,229,179,0.35);transform:scale(0);animation:rippleOut 0.55s ease-out forwards}
+@keyframes rippleOut{to{transform:scale(4);opacity:0}}
+
+/* ═══════════ NAVBAR ═══════════ */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:0.82rem 4.5rem;background:rgba(4,7,16,0.88);backdrop-filter:blur(18px);border-bottom:1.5px solid rgba(0,229,179,0.18);transition:border-color 0.3s,background 0.3s}
+@media(max-width:768px){#navbar{padding:0.82rem 1.2rem}#nav-links{display:none!important}}
+.logo-row{display:flex;align-items:center;gap:0.72rem;cursor:pointer;user-select:none}
+.mc-logo{width:34px;height:34px;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);border-radius:3px;overflow:hidden;flex-shrink:0;box-shadow:0 0 0 2px rgba(0,229,179,0.4),0 0 12px rgba(0,229,179,0.2);transition:box-shadow 0.2s}
+.mc-logo:hover{box-shadow:0 0 0 2px rgba(0,229,179,0.7),0 0 20px rgba(0,229,179,0.35)}
+.mc-logo span{display:block}
+.logo-lbl{font-size:0.98rem;font-weight:800;letter-spacing:-0.02em;color:#fff}
+#nav-links{display:flex;align-items:center;gap:0.08rem;margin-left:2.2rem}
+.nb{background:none;border:none;cursor:pointer;padding:0.36rem 0.78rem;border-radius:5px;font-size:0.83rem;font-weight:500;color:rgba(175,200,235,0.82);font-family:'Inter',sans-serif;transition:color 0.18s,background 0.18s,transform 0.12s;position:relative}
+.nb:hover{color:#fff;background:rgba(35,55,95,0.55);transform:translateY(-1px)}
+.nb:active{transform:scale(0.96)}
+.nb-active{color:#00e5b3!important}
+.nb::after{content:'';position:absolute;bottom:-2px;left:50%;right:50%;height:2px;background:#00e5b3;border-radius:2px;transition:left 0.2s,right 0.2s}
+.nb-active::after{left:12%;right:12%}
+.btn-nsi{background:#fff;color:#060a14;border:none;border-radius:7px;padding:0.46rem 1.1rem;font-size:0.83rem;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity 0.2s,transform 0.15s,box-shadow 0.2s;box-shadow:0 0 18px rgba(255,255,255,0.12)}
+.btn-nsi:hover{opacity:0.88;transform:scale(1.04);box-shadow:0 0 28px rgba(255,255,255,0.22)}
+.btn-nsi:active{transform:scale(0.97)}
+
+/* ═══════════ HERO ═══════════ */
+.hero-wrap{position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding-top:7.2rem;padding-bottom:3rem}
+.glass-pill{display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 0.75rem;border-radius:8px;background:rgba(255,255,255,0.03);position:relative;overflow:hidden;margin-bottom:1.35rem;animation:slideUp 0.5s ease both}
+.glass-pill::before{content:'';position:absolute;inset:0;border-radius:8px;padding:1px;background:linear-gradient(180deg,rgba(255,255,255,0.4) 0%,rgba(255,255,255,0) 55%,rgba(255,255,255,0.18) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.pill-new{background:#fff;color:#060a14;border-radius:4px;font-size:0.69rem;font-weight:800;padding:0.11rem 0.44rem}
+.pill-txt{font-size:0.79rem;font-weight:500;color:rgba(178,202,235,0.85)}
+.hero-title{font-size:clamp(2.3rem,7.5vw,5.5rem);font-weight:500;letter-spacing:-0.055em;line-height:1.07;margin-bottom:0.82rem;text-align:center;animation:slideUp 0.6s 0.1s ease both}
+.serif{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+.tl{color:#00e5b3;text-shadow:0 0 40px rgba(0,229,179,0.5)}
+.hero-sub{font-size:1.03rem;line-height:1.67;color:rgba(212,228,255,0.87);max-width:515px;margin-bottom:1.9rem;text-align:center;animation:slideUp 0.6s 0.2s ease both}
+.btn-cta{background:#fff;color:#060a14;border:none;border-radius:9999px;padding:0.88rem 2.05rem;font-size:0.96rem;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 0 35px rgba(255,255,255,0.2),0 4px 22px rgba(0,0,0,0.38);animation:slideUp 0.6s 0.3s ease both;position:relative;overflow:hidden}
+.btn-cta::after{content:'';position:absolute;inset:0;border-radius:9999px;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(0,229,179,0.18) 0%,transparent 65%);opacity:0;transition:opacity 0.3s}
+.btn-cta:hover{transform:scale(1.04);box-shadow:0 0 55px rgba(255,255,255,0.28),0 6px 30px rgba(0,0,0,0.45)}
+.btn-cta:hover::after{opacity:1}
+.btn-cta:active{transform:scale(0.97)}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══════════ STATS RIBBON ═══════════ */
+.stats-ribbon{width:100%;max-width:980px;margin:2rem auto 0;display:grid;grid-template-columns:repeat(5,1fr);gap:0.75rem;position:relative;z-index:10;padding:0 4%;animation:slideUp 0.8s 0.55s ease both}
+@media(max-width:760px){.stats-ribbon{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:480px){.stats-ribbon{grid-template-columns:repeat(2,1fr)}}
+.ribbon-stat{background:rgba(8,14,30,0.82);border:1px solid rgba(38,58,98,0.7);border-radius:10px;padding:0.9rem 1rem;backdrop-filter:blur(8px);text-align:center;transition:border-color 0.2s,transform 0.2s}
+.ribbon-stat:hover{border-color:rgba(0,229,179,0.45);transform:translateY(-2px)}
+.ribbon-num{font-size:1.6rem;font-weight:800;color:#00e5b3;line-height:1}
+.ribbon-lbl{font-size:0.7rem;color:rgba(150,178,220,0.78);margin-top:0.28rem;font-weight:500}
+
+/* ═══════════ PREVIEW CARD (kept for dp-wrap spacing) ═══════════ */
+.dp-wrap{width:92%;max-width:910px;margin:2.4rem auto 0;animation:slideUp 0.8s 0.4s ease both;position:relative;z-index:10}
+
+/* ═══════════ FEATURES ═══════════ */
+.sec-wrap{max-width:1070px;margin:0 auto;padding:5rem 2rem;position:relative;z-index:10}
+.sec-tag{font-size:0.72rem;font-weight:800;color:#00e5b3;text-transform:uppercase;letter-spacing:0.11em;margin-bottom:0.68rem;display:block}
+.sec-h{font-size:clamp(1.75rem,4vw,2.85rem);font-weight:600;letter-spacing:-0.035em;line-height:1.14;margin-bottom:0.82rem}
+.sec-p{color:rgba(178,200,232,0.8);font-size:0.92rem;line-height:1.67;max-width:488px;margin-bottom:2.75rem}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(282px,1fr));gap:1.05rem}
+.feat-c{background:rgba(8,14,32,0.84);border:1px solid rgba(38,58,98,0.72);border-radius:12px;padding:1.38rem;backdrop-filter:blur(8px);transition:border-color 0.22s,transform 0.22s,box-shadow 0.22s;cursor:default}
+.feat-c:hover{border-color:rgba(0,229,179,0.48);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.35),0 0 20px rgba(0,229,179,0.06)}
+.feat-ico{width:2.28rem;height:2.28rem;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.08rem;margin-bottom:0.88rem}
+.feat-c h3{font-size:0.92rem;font-weight:700;margin-bottom:0.33rem}
+.feat-c p{font-size:0.8rem;color:rgba(178,200,232,0.75);line-height:1.56}
+.mc-grass{height:32px;width:100%;position:relative;z-index:10;background:repeating-linear-gradient(90deg,#4a7c1e 0,#4a7c1e 8px,#3d6618 8px,#3d6618 16px,#55902a 16px,#55902a 24px,#3d6618 24px,#3d6618 32px);image-rendering:pixelated;border-top:3px solid #2a4a10;border-bottom:3px solid #2a1a0a}
+
+/* ═══════════ MISSION ═══════════ */
+.mission-wrap{min-height:72vh;display:flex;align-items:center;justify-content:center;padding:5rem 2rem;position:relative;z-index:10}
+.mission-in{max-width:755px;margin:0 auto}
+.mission-txt{font-size:clamp(1.42rem,3.5vw,2.2rem);font-weight:500;line-height:1.33;margin-bottom:2rem}
+.ws{display:inline;margin-right:0.27em;opacity:0.18;transition:opacity 0.38s,color 0.38s}
+.ws.lit{opacity:1;color:#fff}
+.a-row{display:flex;align-items:center;gap:1rem}
+.a-av{width:3.35rem;height:3.35rem;border-radius:50%;border:3px solid rgba(0,229,179,0.62);background:linear-gradient(135deg,#7c4dff,#00e5b3);display:flex;align-items:center;justify-content:center;font-size:1.25rem;font-weight:700;flex-shrink:0;overflow:hidden}
+.a-name{font-size:0.92rem;font-weight:700;line-height:1.8}
+.a-role{font-size:0.79rem;color:rgba(178,200,232,0.76)}
+footer{position:relative;z-index:10;padding:1.75rem 2rem;border-top:1px solid rgba(38,58,98,0.55);color:rgba(148,172,212,0.7);font-size:0.79rem}
+.ft-in{max-width:1070px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.ft-lnk{display:flex;gap:1.35rem}
+.ft-lnk span{cursor:pointer;transition:color 0.18s}.ft-lnk span:hover{color:#fff}
+
+/* ═══════════ AUTH ═══════════ */
+.auth-wrap{position:relative;z-index:10;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem 1rem}
+.auth-card{width:100%;max-width:412px;background:rgba(8,12,28,0.97);border:2px solid rgba(0,229,179,0.28);border-radius:14px;padding:2.25rem 2rem;position:relative;box-shadow:0 30px 80px rgba(0,0,0,0.65),0 0 0 1px rgba(0,229,179,0.07),0 0 60px rgba(0,229,179,0.04);backdrop-filter:blur(14px);animation:cardIn 0.42s cubic-bezier(0.34,1.4,0.64,1) both}
+@keyframes cardIn{from{opacity:0;transform:scale(0.93) translateY(18px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.auth-logo-row{display:flex;align-items:center;gap:0.58rem;margin-bottom:1.52rem}
+.auth-card h2{font-size:1.48rem;font-weight:800;margin-bottom:0.26rem}
+.auth-card>p{color:rgba(158,185,222,0.84);font-size:0.872rem;margin-bottom:1.68rem}
+.close-x{position:absolute;top:0.95rem;right:0.95rem;background:none;border:none;color:rgba(158,185,222,0.65);cursor:pointer;font-size:1.15rem;transition:color 0.18s,transform 0.18s;line-height:1}
+.close-x:hover{color:#fff;transform:rotate(90deg)}
+.rtabs{display:flex;gap:3px;margin-bottom:1.42rem;background:rgba(4,7,16,0.82);border-radius:8px;padding:3px}
+.rt{flex:1;padding:0.5rem;border-radius:6px;border:none;font-size:0.82rem;font-weight:700;cursor:pointer;color:rgba(148,175,218,0.85);font-family:'Inter',sans-serif;background:transparent;transition:all 0.22s}
+.rt.on{background:rgba(12,20,44,0.97);color:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.45)}
+.fg{margin-bottom:1.02rem;position:relative}
+.fl{display:block;font-size:0.76rem;font-weight:600;color:rgba(148,175,218,0.85);margin-bottom:0.34rem;letter-spacing:0.02em}
+.fi{width:100%;padding:0.66rem 0.86rem;background:rgba(4,7,16,0.92);border:1.5px solid rgba(38,58,98,0.88);border-radius:8px;color:#fff;font-size:0.88rem;font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s,box-shadow 0.2s,background 0.2s}
+.fi:focus{border-color:#00e5b3;box-shadow:0 0 0 3px rgba(0,229,179,0.13);background:rgba(4,7,16,0.98)}
+.fi::placeholder{color:rgba(98,128,178,0.5)}
+select.fi{cursor:pointer}
+textarea.fi{resize:vertical;min-height:108px}
+.err-box{color:#e25555;font-size:0.77rem;display:none;padding:0.46rem 0.68rem;background:rgba(220,60,60,0.1);border-radius:6px;border:1px solid rgba(220,60,60,0.28);margin-top:0.42rem;animation:shake 0.35s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.btn-main{width:100%;padding:0.76rem;background:#fff;color:#060a14;border:none;border-radius:8px;font-size:0.91rem;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;margin-top:0.42rem;transition:opacity 0.2s,transform 0.16s;box-shadow:0 4px 18px rgba(0,0,0,0.28);position:relative;overflow:hidden}
+.btn-main:hover{opacity:0.9;transform:translateY(-1px)}
+.btn-main:active{transform:scale(0.98)}
+.auth-sw{text-align:center;margin-top:1.12rem;font-size:0.84rem;color:rgba(148,175,218,0.8)}
+.auth-sw a{color:#00e5b3;cursor:pointer;text-decoration:underline;transition:color 0.18s}
+.auth-sw a:hover{color:#00ffca}
+
+/* ═══════════ DASHBOARD ═══════════ */
+.dash-layout{display:flex;min-height:100vh}
+.sidebar{width:225px;min-height:100vh;background:rgba(5,8,20,0.98);border-right:2px solid rgba(0,229,179,0.16);padding:1.15rem 0.82rem;display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:400;overflow-y:auto;backdrop-filter:blur(16px);transition:transform 0.3s}
+@media(max-width:768px){.sidebar{transform:translateX(-100%)}.dm{margin-left:0!important;padding:1rem!important}}
+.sb-logo{display:flex;align-items:center;gap:0.52rem;padding:0.38rem 0.48rem 1.3rem}
+.sb-logo span{font-weight:800;font-size:0.88rem}
+.sb-lbl{font-size:0.64rem;font-weight:700;color:rgba(98,128,178,0.6);text-transform:uppercase;letter-spacing:0.11em;padding:0.33rem 0.58rem;margin-top:0.52rem}
+.sbi{display:flex;align-items:center;gap:0.6rem;padding:0.54rem 0.68rem;border-radius:8px;font-size:0.825rem;font-weight:500;cursor:pointer;color:rgba(148,175,218,0.85);background:none;border:none;font-family:'Inter',sans-serif;text-align:left;width:100%;transition:all 0.18s;position:relative}
+.sbi:hover{color:#fff;background:rgba(28,44,82,0.58);transform:translateX(2px)}
+.sbi.on{color:#00e5b3;background:rgba(0,229,179,0.1);font-weight:700}
+.sbi.on::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;background:#00e5b3;border-radius:2px}
+.sb-bot{margin-top:auto;border-top:1px solid rgba(38,58,98,0.52);padding-top:0.82rem}
+.sb-user{display:flex;align-items:center;gap:0.56rem;padding:0.46rem 0.62rem;margin-bottom:0.32rem}
+.sb-av{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:800}
+.sb-un{font-size:0.77rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-ur{font-size:0.67rem;color:rgba(118,148,198,0.82)}
+.dm{margin-left:225px;flex:1;padding:1.75rem 2rem;position:relative;z-index:10}
+.dh{margin-bottom:1.45rem}
+.dh h1{font-size:1.48rem;font-weight:800}
+.dh p{color:rgba(148,175,218,0.8);font-size:0.86rem;margin-top:0.26rem}
+.dsec{display:none;opacity:0;transform:translateX(10px)}
+.dsec.on{display:block;animation:secIn 0.3s cubic-bezier(0.4,0,0.2,1) forwards}
+@keyframes secIn{to{opacity:1;transform:translateX(0)}}
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(162px,1fr));gap:0.95rem;margin-bottom:1.4rem}
+.sc{background:rgba(8,14,32,0.92);border:1px solid rgba(38,58,98,0.72);border-radius:11px;padding:1.08rem;position:relative;overflow:hidden;backdrop-filter:blur(6px);transition:transform 0.2s,border-color 0.2s;cursor:default}
+.sc:hover{transform:translateY(-2px);border-color:rgba(0,229,179,0.3)}
+.sc::after{content:'';position:absolute;top:0;right:0;width:36px;height:36px;border-radius:0 11px 0 36px;background:var(--cc,rgba(0,229,179,0.22));opacity:0.45}
+.sl{font-size:0.68rem;font-weight:700;color:rgba(138,165,212,0.9);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.4rem}
+.sv{font-size:1.85rem;font-weight:800;line-height:1}
+.ss{font-size:0.69rem;color:rgba(128,155,202,0.8);margin-top:0.26rem}
+.tw{background:rgba(8,14,32,0.92);border:1px solid rgba(38,58,98,0.72);border-radius:12px;overflow:hidden;backdrop-filter:blur(6px)}
+.th{display:flex;align-items:center;justify-content:space-between;padding:0.88rem 1.12rem;border-bottom:1px solid rgba(38,58,98,0.6)}
+.th h3{font-size:0.92rem;font-weight:700}
+table.dt{width:100%;border-collapse:collapse;font-size:0.83rem}
+table.dt th{padding:0.6rem 1.12rem;text-align:left;background:rgba(4,7,16,0.72);color:rgba(128,160,205,0.9);font-size:0.67rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em}
+table.dt td{padding:0.73rem 1.12rem;border-top:1px solid rgba(38,58,98,0.42)}
+table.dt tbody tr{transition:background 0.15s}
+table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
+.empty{text-align:center;padding:3rem 1rem;color:rgba(128,155,202,0.72)}
+.empty .ei{font-size:2.65rem;margin-bottom:0.72rem;display:block}
+.empty p{font-size:0.875rem}
+.bdg{display:inline-flex;align-items:center;padding:0.16rem 0.52rem;border-radius:9999px;font-size:0.68rem;font-weight:700;letter-spacing:0.02em}
+.bt{background:rgba(0,229,179,0.15);color:#00e5b3}
+.br{background:rgba(220,65,65,0.15);color:#e06060}
+.bp{background:rgba(118,78,232,0.15);color:#a880f5}
+.bb{background:rgba(68,128,242,0.15);color:#5599ef}
+.bg{background:rgba(255,198,0,0.15);color:#f0c040}
+.bm{background:rgba(58,78,122,0.5);color:rgba(148,175,218,0.9)}
+.btn{padding:0.43rem 0.9rem;border-radius:7px;border:none;cursor:pointer;font-size:0.78rem;font-weight:700;font-family:'Inter',sans-serif;transition:all 0.18s;position:relative;overflow:hidden}
+.btn:active{transform:scale(0.96)}
+.bt2{background:#00e5b3;color:#060a14}.bt2:hover{opacity:0.84;transform:translateY(-1px)}
+.bp2{background:#7c4dff;color:#fff}.bp2:hover{opacity:0.84;transform:translateY(-1px)}
+.bg2{background:rgba(38,58,102,0.72);color:#fff}.bg2:hover{background:rgba(48,72,122,0.88)}
+.br2{background:#dc4040;color:#fff}.br2:hover{opacity:0.84}
+.bo{background:transparent;border:1.5px solid rgba(38,58,98,0.88);color:rgba(148,175,218,0.85);border-radius:7px;padding:0.41rem 0.87rem;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.18s}
+.bo:hover{border-color:#00e5b3;color:#fff}
+.fc{background:rgba(8,14,32,0.94);border:1px solid rgba(38,58,98,0.72);border-radius:12px;padding:1.72rem;max-width:596px;backdrop-filter:blur(6px)}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:0.95rem}
+@media(max-width:480px){.fg2{grid-template-columns:1fr}}
+.info-mc{padding:0.6rem 0.86rem;border-radius:7px;font-size:0.78rem;line-height:1.52;margin-bottom:1.08rem;border-left:3px solid}
+.it{background:rgba(0,229,179,0.08);border-color:#00e5b3;color:rgba(0,229,179,0.92)}
+.ip{background:rgba(118,78,232,0.08);border-color:#a880f5;color:rgba(168,128,245,0.92)}
+.ig{background:rgba(255,198,0,0.08);border-color:#f0c040;color:rgba(240,192,64,0.92)}
+.sc2{background:rgba(8,14,32,0.92);border:1px solid rgba(38,58,98,0.72);border-radius:12px;overflow:hidden;margin-bottom:1.12rem;backdrop-filter:blur(6px);transition:border-color 0.2s}
+.sc2:hover{border-color:rgba(0,229,179,0.28)}
+.sc2-h{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1.22rem;background:linear-gradient(90deg,rgba(98,58,200,0.32),rgba(0,148,108,0.18));border-bottom:1px solid rgba(38,58,98,0.5)}
+.sc2-h h2{font-size:0.96rem;font-weight:700}
+.sc2-b{padding:1.12rem;display:grid;grid-template-columns:1fr 1fr;gap:0.92rem}
+@media(max-width:545px){.sc2-b{grid-template-columns:1fr}}
+.di label{font-size:0.65rem;font-weight:700;color:#00e5b3;text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:0.25rem}
+.di p{font-size:0.83rem;color:rgba(208,225,252,0.82);line-height:1.52}
+.sum-area{padding:0 1.22rem 1.22rem}
+.sum-lbl{font-size:0.65rem;font-weight:700;color:#00e5b3;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.4rem;display:block}
+.sum-box{background:rgba(4,7,16,0.72);border:1px solid rgba(38,58,98,0.52);border-radius:8px;padding:0.8rem;font-size:0.83rem;line-height:1.62;color:rgba(208,225,252,0.82)}
+.sum-empty{color:rgba(118,148,198,0.62);font-style:italic}
+.ar{display:flex;align-items:center;justify-content:space-between;padding:0.58rem 0;border-bottom:1px solid rgba(38,58,98,0.35)}
+.ar:last-child{border-bottom:none}
+.an{font-size:0.86rem;font-weight:600;display:flex;align-items:center;gap:0.5rem}
+.mini-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.67rem;font-weight:800;flex-shrink:0}
+.atb{display:flex;gap:0.36rem}
+.tg{padding:0.27rem 0.6rem;border-radius:5px;font-size:0.72rem;font-weight:700;cursor:pointer;border:1.5px solid transparent;transition:all 0.14s;font-family:'Inter',sans-serif;background:transparent}
+.tg:active{transform:scale(0.93)}
+.tgp{border-color:rgba(0,229,179,0.38);color:rgba(128,158,205,0.8)}
+.tgp.on{background:rgba(0,229,179,0.16);color:#00e5b3;border-color:#00e5b3}
+.tga{border-color:rgba(220,65,65,0.38);color:rgba(128,158,205,0.8)}
+.tga.on{background:rgba(220,65,65,0.16);color:#e06060;border-color:#e06060}
+.pcard{background:rgba(8,14,32,0.94);border:1px solid rgba(38,58,98,0.72);border-radius:14px;padding:2rem;max-width:488px;backdrop-filter:blur(6px)}
+.pav{width:68px;height:68px;border-radius:50%;border:3px solid rgba(0,229,179,0.58);display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;margin-bottom:0.92rem}
+.mow{position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:800;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity 0.22s;backdrop-filter:blur(4px)}
+.mow.open{opacity:1;pointer-events:all}
+.modal{background:rgba(8,13,28,0.99);border:1.5px solid rgba(0,229,179,0.22);border-radius:14px;padding:2rem;width:100%;max-width:552px;max-height:90vh;overflow-y:auto;transform:scale(0.92) translateY(12px);transition:transform 0.25s cubic-bezier(0.34,1.4,0.64,1);box-shadow:0 32px 80px rgba(0,0,0,0.65);backdrop-filter:blur(18px)}
+.mow.open .modal{transform:scale(1) translateY(0)}
+.modal h3{font-size:1.16rem;font-weight:800;margin-bottom:1.32rem}
+.modal-ft{display:flex;justify-content:flex-end;gap:0.7rem;margin-top:1.42rem}
+#toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;background:rgba(8,14,32,0.98);border:1.5px solid rgba(0,229,179,0.38);border-radius:10px;padding:0.8rem 1.12rem;font-size:0.875rem;font-weight:500;box-shadow:0 14px 42px rgba(0,0,0,0.55);transform:translateY(120px) scale(0.95);opacity:0;transition:all 0.34s cubic-bezier(0.34,1.56,0.64,1);max-width:308px;backdrop-filter:blur(14px)}
+#toast.show{transform:translateY(0) scale(1);opacity:1}
+#toast.err{border-color:rgba(220,65,65,0.52);background:rgba(12,6,16,0.98)}
+#loader{position:fixed;inset:0;z-index:9000;background:#060a14;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s}
+#loader.done{opacity:0;pointer-events:none}
+.loader-logo{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);width:64px;height:64px;border-radius:5px;overflow:hidden;margin-bottom:1.2rem;animation:logoPulse 1s ease-in-out infinite}
+@keyframes logoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.loader-logo span{display:block}
+.loader-txt{font-size:0.88rem;font-weight:700;color:rgba(0,229,179,0.9);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1.2rem}
+.loader-bar{width:200px;height:8px;background:rgba(38,58,98,0.5);border-radius:4px;overflow:hidden}
+.loader-fill{height:100%;width:0%;background:repeating-linear-gradient(90deg,#00e5b3 0,#00e5b3 8px,#00b38a 8px,#00b38a 16px);animation:loadFill 1.2s ease forwards;border-radius:4px}
+@keyframes loadFill{to{width:100%}}
+.del-mode-banner{display:none;align-items:center;gap:0.72rem;padding:0.62rem 1.08rem;margin-bottom:1.1rem;background:rgba(220,65,65,0.1);border:1.5px solid rgba(220,65,65,0.38);border-radius:10px;font-size:0.82rem;color:#e06060;animation:secIn 0.28s ease both}
+.del-mode-banner.active{display:flex}
+.del-chk{appearance:none;-webkit-appearance:none;width:17px;height:17px;border-radius:4px;border:2px solid rgba(220,65,65,0.55);background:transparent;cursor:pointer;transition:all 0.15s;flex-shrink:0;position:relative;vertical-align:middle;margin-right:0.28rem}
+.del-chk:checked{background:#dc4040;border-color:#dc4040}
+.del-chk:checked::after{content:'✓';position:absolute;color:#fff;font-size:10px;font-weight:900;top:50%;left:50%;transform:translate(-50%,-50%)}
+.del-row-sel td{background:rgba(220,65,65,0.07)!important}
+@keyframes rowFadeOut{0%{opacity:1;transform:translateX(0) scaleY(1)}40%{opacity:0.3;transform:translateX(18px) scaleY(0.85);background:rgba(220,65,65,0.18)}100%{opacity:0;transform:translateX(40px) scaleY(0);max-height:0;padding-top:0;padding-bottom:0;border-width:0}}
+.row-deleting td{animation:rowFadeOut 0.42s cubic-bezier(0.4,0,0.8,1) forwards;overflow:hidden}
+.btn.btn-del-mode{background:rgba(220,65,65,0.14);color:#e06060;border:1.5px solid rgba(220,65,65,0.38)!important;outline:none}
+.btn.btn-del-mode:hover{background:rgba(220,65,65,0.26)!important;border-color:#e06060!important;transform:translateY(-1px)}
+.btn.btn-del-mode.active-del{background:rgba(220,65,65,0.28)!important;border-color:#e06060!important;color:#fff!important;box-shadow:0 0 10px rgba(220,65,65,0.3)}
+</style>
+</head>
+<body>
+
+<!-- MINECRAFT CURSOR -->
+<div id="mc-cursor">⛏️</div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo" id="loader-logo"></div>
+  <div class="loader-txt">Loading DEV CLUB TRACK...</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<canvas id="bg-canvas"></canvas>
+
+<nav id="navbar" style="display:none">
+  <div style="display:flex;align-items:center">
+    <div class="logo-row" onclick="goNav('home');window.scrollTo({top:0,behavior:'smooth'})">
+      <div class="mc-logo" id="logo-nav"></div>
+      <span class="logo-lbl">DEV CLUB TRACK</span>
+    </div>
+    <div id="nav-links">
+      <button class="nb" id="nb-home" onclick="goNav('home')">🏠 Home</button>
+      <button class="nb" onclick="scrollTo2('sec-features')">⛏️ Features ▾</button>
+      <button class="nb" onclick="goNav('signin')">📋 Attendance</button>
+      <button class="nb" onclick="goNav('signin')">🧟 Volunteers</button>
+    </div>
+  </div>
+  <button class="btn-nsi" onclick="goNav('signin')">Sign In</button>
+</nav>
+
+<div id="app">
+
+<!-- HOME -->
+<div id="page-home" class="page">
+  <div class="ov ov-home"></div>
+  <div class="hero-wrap">
+    <div class="glass-pill">
+      <span class="pill-new">New</span>
+      <span class="pill-txt">⚡ Your club's sessions, attendance &amp; squad — all in one place</span>
+    </div>
+    <h1 class="hero-title">Build Your Club.<br>Track Every Session <span class="serif tl">Like a Legend.</span></h1>
+    <p class="hero-sub">DEV CLUB TRACK is your club's command center — log sessions, track who showed up, assign summaries, and keep your dev community running like a well-oiled machine.</p>
+    <button class="btn-cta" onmousemove="ctaGlow(event,this)" onclick="goNav('signin')">⛏️ Start Tracking Attendance →</button>
+
+    <!-- Stats ribbon: 5 boxes -->
+    <div class="stats-ribbon">
+      <div class="ribbon-stat"><div class="ribbon-num" id="rs-sessions">0</div><div class="ribbon-lbl">Sessions Held</div></div>
+      <div class="ribbon-stat"><div class="ribbon-num" id="rs-members">0</div><div class="ribbon-lbl">Members</div></div>
+      <div class="ribbon-stat"><div class="ribbon-num" id="rs-volunteers">0</div><div class="ribbon-lbl">Volunteers</div></div>
+      <div class="ribbon-stat"><div class="ribbon-num" id="rs-present">0</div><div class="ribbon-lbl">Attendances Logged</div></div>
+      <div class="ribbon-stat"><div class="ribbon-num" id="rs-summaries">0</div><div class="ribbon-lbl">Summaries Written</div></div>
+    </div>
+
+    <!-- dp-card removed — space reserved for future content -->
+    <div class="dp-wrap"></div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="sec-wrap" id="sec-features">
+    <span class="sec-tag">⛏️ Features</span>
+    <h2 class="sec-h">Everything your club needs,<br><span class="serif" style="color:#00e5b3">nothing it doesn't.</span></h2>
+    <p class="sec-p">From session creation to attendance tracking, DEV CLUB TRACK covers every step of your community workflow.</p>
+    <div class="feat-grid">
+      <div class="feat-c" onclick="goNav('signin')"><div class="feat-ico" style="background:rgba(118,78,232,0.15)">📋</div><h3>Session Management</h3><p>Create sessions with resource persons, host details, volunteers, and structured summaries — all in one place.</p></div>
+      <div class="feat-c" onclick="goNav('signin')"><div class="feat-ico" style="background:rgba(0,229,179,0.12)">✅</div><h3>Attendance Tracking</h3><p>Mark members present or absent with one click. View the complete attendance history at a glance.</p></div>
+      <div class="feat-c" onclick="goNav('signin')"><div class="feat-ico" style="background:rgba(68,128,242,0.12)">🤝</div><h3>Volunteer Roles</h3><p>Give volunteers their own dashboard to create sessions and manage all details independently.</p></div>
+      <div class="feat-c" onclick="goNav('signin')"><div class="feat-ico" style="background:rgba(255,198,0,0.12)">📝</div><h3>Summary Assignment</h3><p>Assign one attendee to write the session summary — clear ownership and accountability every time.</p></div>
+      <div class="feat-c" onclick="goNav('signup')"><div class="feat-ico" style="background:rgba(0,229,179,0.1)">📊</div><h3>Insights &amp; Reports</h3><p>Track attendance rates, session frequency, and member engagement over time with live stats.</p></div>
+      <div class="feat-c" onclick="goNav('signup')"><div class="feat-ico" style="background:rgba(118,78,232,0.1)">🔐</div><h3>Role-Based Access</h3><p>Separate dashboards for volunteers and attendees. Everyone sees exactly what they need.</p></div>
+    </div>
+  </div>
+
+  <div class="mc-grass"></div>
+
+  <!-- MISSION -->
+  <div id="sec-mission" class="mission-wrap">
+    <div class="mission-in">
+      <p class="mission-txt" id="mission-txt"></p>
+      <div class="a-row" style="margin-top:2rem">
+        <!-- Change 2: Minecraft grass block SVG + BEC DEV CLUB -->
+        <div class="a-av" style="padding:0;background:none;border-color:rgba(0,229,179,0.62)">
+          <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;display:block">
+            <rect x="0" y="0" width="44" height="13" fill="#5ba832"/>
+            <rect x="0" y="0" width="44" height="5" fill="#7bc950"/>
+            <rect x="0" y="3" width="44" height="2" fill="#6aaa40"/>
+            <rect x="0" y="13" width="44" height="31" fill="#8b5e3c"/>
+            <rect x="6" y="17" width="7" height="7" fill="#6b3e1c" opacity="0.7"/>
+            <rect x="18" y="22" width="6" height="5" fill="#6b3e1c" opacity="0.6"/>
+            <rect x="30" y="15" width="8" height="6" fill="#7a4e2c" opacity="0.5"/>
+            <rect x="8" y="28" width="5" height="5" fill="#7a4e2c" opacity="0.6"/>
+            <rect x="26" y="30" width="7" height="5" fill="#6b3e1c" opacity="0.5"/>
+            <!-- diamond pickaxe -->
+            <rect x="27" y="5" width="4" height="4" fill="#c8faff"/>
+            <rect x="31" y="3" width="4" height="4" fill="#53edff"/>
+            <rect x="35" y="1" width="4" height="4" fill="#2ad4f0"/>
+            <rect x="24" y="8" width="4" height="4" fill="#53edff"/>
+            <rect x="26" y="11" width="4" height="4" fill="#8b5e3c"/>
+            <rect x="22" y="14" width="4" height="4" fill="#7a4e2c"/>
+            <rect x="18" y="17" width="4" height="4" fill="#6b3e1c"/>
+          </svg>
+        </div>
+        <div>
+          <div class="a-name">BEC DEV CLUB</div>
+          <div class="a-role">Student Developers</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="ft-in">
+      <span style="font-weight:800;color:#fff;display:flex;align-items:center;gap:0.48rem">
+        <div class="mc-logo" id="logo-ft" style="width:20px;height:20px;border-radius:2px"></div>
+        DEV CLUB TRACK
+      </span>
+      <span>© 2025 BEC DEV CLUB. Built by developers, for developers.</span>
+      <div class="ft-lnk">
+        <span>Privacy</span><span>Terms</span>
+        <span onclick="goNav('signin')">Sign In</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- SIGN IN -->
+<div id="page-signin" class="page">
+  <div class="ov ov-auth"></div>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <button class="close-x" onclick="goNav('home')">✕</button>
+      <div class="auth-logo-row">
+        <div class="mc-logo" id="logo-si" style="width:29px;height:29px"></div>
+        <span style="font-weight:800;font-size:0.9rem">DEV CLUB TRACK</span>
+      </div>
+      <h2>Welcome back ⛏️</h2>
+      <p>Sign in to your account to continue</p>
+      <div class="rtabs">
+        <button class="rt on" id="si-ta" onclick="siRole('attendee')">👤 Attendee</button>
+        <button class="rt" id="si-tv" onclick="siRole('volunteer')">🤝 Volunteer</button>
+      </div>
+      <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="si-em" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doSI()"/></div>
+      <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="si-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doSI()"/></div>
+      <div class="err-box" id="si-err"></div>
+      <button class="btn-main" onclick="doSI()">⛏️ Sign In</button>
+      <div class="auth-sw">No account? <a onclick="goNav('signup')">Create one →</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- SIGN UP -->
+<div id="page-signup" class="page">
+  <div class="ov ov-auth"></div>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <button class="close-x" onclick="goNav('home')">✕</button>
+      <div class="auth-logo-row">
+        <div class="mc-logo" id="logo-su" style="width:29px;height:29px"></div>
+        <span style="font-weight:800;font-size:0.9rem">DEV CLUB TRACK</span>
+      </div>
+      <h2>Create Account 🚀</h2>
+      <p>Join DEV CLUB TRACK today</p>
+      <div class="rtabs">
+        <button class="rt on" id="su-ta" onclick="suRole('attendee')">👤 Attendee</button>
+        <button class="rt" id="su-tv" onclick="suRole('volunteer')">🤝 Volunteer</button>
+      </div>
+      <div class="fg"><label class="fl">Full Name</label><input class="fi" type="text" id="su-nm" placeholder="Your full name"/></div>
+      <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="su-em" placeholder="you@example.com"/></div>
+      <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="su-pw" placeholder="Minimum 6 characters"/></div>
+      <div class="err-box" id="su-err"></div>
+      <button class="btn-main" onclick="doSU()">🚀 Create Account</button>
+      <div class="auth-sw">Already have an account? <a onclick="goNav('signin')">Sign in →</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- VOLUNTEER DASHBOARD -->
+<div id="page-vol" class="page">
+  <div class="ov ov-dash"></div>
+  <div class="dash-layout">
+    <aside class="sidebar">
+      <div class="sb-logo"><div class="mc-logo" id="logo-vol" style="width:25px;height:25px;border-radius:2px"></div><span>DEV CLUB TRACK</span></div>
+      <div class="sb-lbl">Main</div>
+      <button class="sbi on" id="vb-sessions"   onclick="vSec('sessions')">📋 Sessions</button>
+      <button class="sbi"    id="vb-create"     onclick="vSec('create')">➕ Create Session</button>
+      <button class="sbi"    id="vb-attendance" onclick="vSec('attendance')">✅ Mark Attendance</button>
+      <div class="sb-lbl">Manage</div>
+      <button class="sbi"    id="vb-members"    onclick="vSec('members')">👥 Members</button>
+      <button class="sbi"    id="vb-summaries"  onclick="vSec('summaries')">📝 Summaries</button>
+      <div class="sb-bot">
+        <div class="sb-user">
+          <div class="sb-av" id="vol-av" style="background:linear-gradient(135deg,#7c4dff,#00e5b3)">V</div>
+          <div><div class="sb-un" id="vol-nm">Volunteer</div><div class="sb-ur">🤝 Volunteer</div></div>
+        </div>
+        <button class="sbi" style="color:#e06060" onclick="doSO()">🚪 Sign Out</button>
+      </div>
+    </aside>
+    <main class="dm">
+      <div id="vs-sessions" class="dsec on">
+        <div class="dh"><h1>📋 Sessions</h1><p>Manage all club sessions — create, track attendance, assign summaries</p></div>
+        <div class="sg" id="vol-sg"></div>
+        <div id="del-mode-banner" class="del-mode-banner">
+          <span>🗑️ Delete Mode — select sessions below then confirm</span>
+          <span id="del-count-lbl" style="font-weight:800;margin-left:auto">0 selected</span>
+          <button class="btn br2" style="padding:0.28rem 0.72rem;font-size:0.76rem" onclick="confirmDeleteSessions()">🗑️ Delete Selected</button>
+          <button class="btn bg2" style="padding:0.28rem 0.72rem;font-size:0.76rem" onclick="toggleDeleteMode()">✕ Cancel</button>
+        </div>
+        <div class="tw"><div class="th"><h3>All Sessions</h3><div style="display:flex;gap:0.5rem"><button class="btn btn-del-mode" id="btn-del-toggle" onclick="toggleDeleteMode()">🗑️ Delete</button><button class="btn bt2" onclick="vSec('create')">➕ New Session</button></div></div><div id="vol-tbl"></div></div>
+      </div>
+      <div id="vs-create" class="dsec">
+        <div class="dh"><h1>➕ Create Session</h1><p>Fill in session details — starred fields are required</p></div>
+        <div class="fc">
+          <div class="fg2">
+            <div class="fg"><label class="fl">Session Title *</label><input class="fi" id="cs-ttl" placeholder="e.g. Web Dev Workshop #5"/></div>
+            <div class="fg"><label class="fl">Date *</label><input class="fi" type="date" id="cs-dt"/></div>
+          </div>
+          <div class="fg"><label class="fl">📚 Resource Persons *</label><input class="fi" id="cs-res" placeholder="e.g. Prof. Sharma, Guest Speaker"/></div>
+          <div class="fg2">
+            <div class="fg"><label class="fl">🎙️ Session Host *</label><input class="fi" id="cs-host" placeholder="e.g. Session Host Name"/></div>
+            <div class="fg"><label class="fl">🤝 Volunteers</label><input class="fi" id="cs-vols" placeholder="e.g. Volunteer 1, Volunteer 2"/></div>
+          </div>
+          <div class="fg"><label class="fl">📌 Topic / Agenda</label><input class="fi" id="cs-topic" placeholder="e.g. Introduction to JavaScript &amp; DOM"/></div>
+          <div class="info-mc it">💡 After creating, go to <strong>Mark Attendance</strong> to mark members and assign a summary writer.</div>
+          <button class="btn-main" onclick="createSession()">⛏️ Create Session</button>
+        </div>
+      </div>
+      <div id="vs-attendance" class="dsec">
+        <div class="dh"><h1>✅ Mark Attendance</h1><p>Select a session then toggle each member's presence</p></div>
+        <div id="att-pick-wrap" style="margin-bottom:1.4rem"></div>
+        <div id="att-body"></div>
+      </div>
+      <div id="vs-members" class="dsec">
+        <div class="dh"><h1>👥 Members</h1><p>All registered attendees in the system</p></div>
+        <div id="mem-del-banner" class="del-mode-banner">
+          <span>🗑️ Remove Mode — select members below then confirm</span>
+          <span id="mem-del-count-lbl" style="font-weight:800;margin-left:auto">0 selected</span>
+          <button class="btn br2" style="padding:0.28rem 0.72rem;font-size:0.76rem" onclick="confirmDeleteMembers()">🗑️ Remove Selected</button>
+          <button class="btn bg2" style="padding:0.28rem 0.72rem;font-size:0.76rem" onclick="toggleMemberDeleteMode()">✕ Cancel</button>
+        </div>
+        <!-- Change 3: "Remove Members" button -->
+        <div class="tw"><div class="th"><h3>Registered Members</h3><div style="display:flex;gap:0.5rem"><button class="btn btn-del-mode" id="btn-mem-del-toggle" onclick="toggleMemberDeleteMode()">🗑️ Remove Members</button><button class="btn bt2" onclick="openM('m-addmem')">➕ Add Member</button></div></div><div id="mem-tbl"></div></div>
+      </div>
+      <div id="vs-summaries" class="dsec">
+        <div class="dh"><h1>📝 Session Summaries</h1><p>Assign writers and review submitted summaries</p></div>
+        <div id="vol-sum-list"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ATTENDEE DASHBOARD -->
+<div id="page-att" class="page">
+  <div class="ov ov-dash"></div>
+  <div class="dash-layout">
+    <aside class="sidebar">
+      <div class="sb-logo"><div class="mc-logo" id="logo-att" style="width:25px;height:25px;border-radius:2px"></div><span>DEV CLUB TRACK</span></div>
+      <div class="sb-lbl">Main</div>
+      <button class="sbi on" id="ab-overview"  onclick="aSec('overview')">🏠 Overview</button>
+      <button class="sbi"    id="ab-sessions"  onclick="aSec('sessions')">📋 Sessions</button>
+      <button class="sbi"    id="ab-mysummary" onclick="aSec('mysummary')">📝 My Summary</button>
+      <button class="sbi"    id="ab-profile"   onclick="aSec('profile')">👤 Profile</button>
+      <div class="sb-bot">
+        <div class="sb-user">
+          <div class="sb-av" id="att-av" style="background:linear-gradient(135deg,#3a82f0,#7c4dff)">A</div>
+          <div><div class="sb-un" id="att-nm">Attendee</div><div class="sb-ur">👤 Member</div></div>
+        </div>
+        <button class="sbi" style="color:#e06060" onclick="doSO()">🚪 Sign Out</button>
+      </div>
+    </aside>
+    <main class="dm">
+      <div id="as-overview" class="dsec on">
+        <div class="dh"><h1>🏠 Overview</h1><p id="att-welcome">Welcome back!</p></div>
+        <div class="sg" id="att-sg"></div>
+        <div class="tw" style="margin-top:1.38rem"><div class="th"><h3>Recent Sessions</h3><button class="bo" onclick="aSec('sessions')">View All →</button></div><div id="att-recent"></div></div>
+      </div>
+      <div id="as-sessions" class="dsec">
+        <div class="dh"><h1>📋 All Sessions</h1><p>Your complete session and attendance record</p></div>
+        <div id="att-all"></div>
+      </div>
+      <div id="as-mysummary" class="dsec">
+        <div class="dh"><h1>📝 My Summary</h1><p>Sessions where you have been assigned to write the summary</p></div>
+        <div id="my-sum-list"></div>
+      </div>
+      <div id="as-profile" class="dsec">
+        <div class="dh"><h1>👤 Profile</h1></div>
+        <div class="pcard" id="att-prof"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+</div>
+
+<!-- MODALS -->
+<div class="mow" id="m-addmem" onclick="if(event.target===this)closeM('m-addmem')">
+  <div class="modal">
+    <h3>➕ Add Member</h3>
+    <div class="fg"><label class="fl">Full Name</label><input class="fi" id="nm-n" placeholder="Member's full name"/></div>
+    <div class="fg"><label class="fl">Email</label><input class="fi" id="nm-e" placeholder="member@example.com"/></div>
+    <div class="fg"><label class="fl">Temp Password</label><input class="fi" id="nm-p" value="pass123"/></div>
+    <div class="modal-ft"><button class="btn bg2" onclick="closeM('m-addmem')">Cancel</button><button class="btn bt2" onclick="addMember()">Add Member ✓</button></div>
+  </div>
+</div>
+<div class="mow" id="m-assign" onclick="if(event.target===this)closeM('m-assign')">
+  <div class="modal">
+    <h3>📝 Assign Summary Writer</h3>
+    <div class="info-mc ip" style="margin-bottom:1.15rem">Choose one attendee to write this session's summary.</div>
+    <div class="fg"><label class="fl">Select Attendee</label><select class="fi" id="assign-sel"></select></div>
+    <div class="modal-ft"><button class="btn bg2" onclick="closeM('m-assign')">Cancel</button><button class="btn bp2" onclick="doAssign()">Assign ✓</button></div>
+  </div>
+</div>
+<div class="mow" id="m-writesum" onclick="if(event.target===this)closeM('m-writesum')">
+  <div class="modal">
+    <h3>✍️ Write Session Summary</h3>
+    <div class="info-mc it" style="margin-bottom:0.95rem">Session: <strong id="ws-ttl"></strong></div>
+    <div class="fg"><label class="fl">Summary</label><textarea class="fi" id="ws-txt" placeholder="Write a detailed summary..." rows="8"></textarea></div>
+    <div class="modal-ft"><button class="btn bg2" onclick="closeM('m-writesum')">Cancel</button><button class="btn bt2" onclick="submitSum()">Submit Summary ✓</button></div>
+  </div>
+</div>
+<div class="mow" id="m-viewsess" onclick="if(event.target===this)closeM('m-viewsess')">
+  <div class="modal" style="max-width:636px">
+    <h3 id="vs-ttl">Session Details</h3>
+    <div id="vs-body"></div>
+    <div class="modal-ft"><button class="btn bg2" onclick="closeM('m-viewsess')">Close</button></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+'use strict';
+
+/* ══ SUPABASE ══ */
+const SUPA_URL='https://tpweggemkorbcpbfpklm.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwd2VnZ2Vta29yYmNwYmZwa2xtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNDA5MzksImV4cCI6MjA5MzcxNjkzOX0.gJ3SALXISJQ3u5Jx_LZ1cnI7wes9JFCmDReZENg8Jwc';
+const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
+
+let USERS=[],SESSIONS=[],ME=null;
+
+function lsGet(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null}catch{return null}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+function saveMe(u){ME=u;window.ME=u;lsSet('dct_me',u)}
+function clearMe(){ME=null;window.ME=null;localStorage.removeItem('dct_me')}
+
+function applyAttendance(sessions,attRows){
+  sessions.forEach(s=>{s.att={};});
+  attRows.forEach(r=>{const s=sessions.find(x=>x.id===r.session_id);if(s)s.att[r.user_id]=r.present;});
+}
+
+async function loadAll(){
+  const[uRes,sRes,aRes]=await Promise.all([
+    sb.from('users').select('*'),
+    sb.from('sessions').select('*').order('date',{ascending:true}),
+    sb.from('attendance').select('*')
+  ]);
+  USERS=uRes.data||[];
+  SESSIONS=sRes.data||[];
+  SESSIONS.forEach(s=>{s.res=s.res||'';s.vols=s.vols||'';s.topic=s.topic||'';s.by=s.by_user;s.sumBy=s.sum_by;});
+  applyAttendance(SESSIONS,aRes.data||[]);
+}
+
+async function dbUpsertUser(u){await sb.from('users').upsert({id:u.id,name:u.name,email:u.email,pass:u.pass,role:u.role});}
+async function dbDeleteUser(id){await sb.from('users').delete().eq('id',id);}
+async function dbUpsertSession(s){await sb.from('sessions').upsert({id:s.id,title:s.title,date:s.date,res:s.res,host:s.host,vols:s.vols||'',topic:s.topic||'',by_user:s.by||null,summary:s.summary||null,sum_by:s.sumBy||null});}
+async function dbDeleteSession(id){await sb.from('sessions').delete().eq('id',id);}
+async function dbSetAttendance(sid,uid,present){await sb.from('attendance').upsert({session_id:sid,user_id:uid,present});}
+async function dbUpdateSummary(sid,summary){await sb.from('sessions').update({summary}).eq('id',sid);}
+async function dbAssignSumBy(sid,uid){await sb.from('sessions').update({sum_by:uid}).eq('id',sid);}
+function saveAll(){}
+
+/* ══ ROLE STATE ══ */
+let siRoleV='attendee',suRoleV='attendee',assignTgt=null;
+
+/* ══ LOGO ══ */
+const LC=['#7c4dff','#00e5b3','#7c4dff','#00e5b3','#4a2fa0','#7c4dff','#00e5b3','#4a2fa0','#00e5b3','#4a2fa0','#7c4dff','#00e5b3','#7c4dff','#00e5b3','#4a2fa0','#7c4dff'];
+function buildLogo(id){const el=document.getElementById(id);if(!el)return;el.innerHTML='';LC.forEach(c=>{const s=document.createElement('span');s.style.background=c;el.appendChild(s)});}
+const LOGO_IDS=['logo-nav','logo-ft','logo-si','logo-su','logo-vol','logo-att','loader-logo'];
+function buildAllLogos(){LOGO_IDS.forEach(buildLogo);}
+buildAllLogos();
+
+/* ══ MINECRAFT BG CANVAS ══ */
+(function(){
+  const cv=document.getElementById('bg-canvas');
+  const ctx=cv.getContext('2d');
+  let W,H,frame=0;
+  const BS=20;
+  function resize(){W=window.innerWidth;H=window.innerHeight;cv.width=W;cv.height=H;}
+  resize();window.addEventListener('resize',resize);
+  const P={s0:'#040710',s1:'#0c1a42',sun:'#FFD700',sunr:'#FF8C00',cl:'rgba(175,208,255,0.52)',gt:'#4a7c1e',gs:'#3a6015',gd:'#2e4d10',d1:'#8b6340',d2:'#7a5330',d3:'#6b4328',r1:'#7a7a7a',r2:'#676767',r3:'#565656',w1:'#8b5e3c',w2:'#7a4e2c',l1:'#3a7a1a',l2:'#2d6010',l3:'#4a8020',bed:'#140e06'};
+  const TC=100;const terrain=[];
+  (function(){let h=6;for(let i=0;i<TC;i++){const r=Math.random();if(r<0.14)h=Math.min(11,h+1);else if(r<0.29)h=Math.max(3,h-1);terrain.push(h);}})();
+  const TREES=[2,7,12,18,24,31,38,46,53,60,68,75,83,91];
+  const clouds=[{x:80,y:42,w:102,sp:0.22},{x:390,y:62,w:138,sp:0.14},{x:690,y:30,w:118,sp:0.26},{x:1060,y:50,w:88,sp:0.18},{x:1390,y:40,w:132,sp:0.12},{x:1720,y:26,w:78,sp:0.2}];
+  const ENT=[{t:'steve',x:-50,sp:1.15,dir:1,fr:0},{t:'creeper',x:260,sp:0.62,dir:1,fr:0},{t:'cow',x:490,sp:0.82,dir:1,fr:0},{t:'pig',x:695,sp:0.95,dir:-1,fr:0},{t:'sheep',x:125,sp:0.73,dir:1,fr:0},{t:'zombie',x:840,sp:0.5,dir:-1,fr:0},{t:'chicken',x:358,sp:1.25,dir:1,fr:0},{t:'spider',x:912,sp:0.88,dir:-1,fr:0},{t:'cow',x:1120,sp:0.7,dir:1,fr:0},{t:'sheep',x:1360,sp:0.84,dir:-1,fr:0},{t:'steve',x:1500,sp:0.95,dir:-1,fr:0}];
+  let sunX=110;
+  function R(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(~~x,~~y,w,h);}
+  function blk(x,y,w,top,mid,shd){R(x,y,w,w,mid);R(x,y,w,2,top);R(x,y,2,w,top);R(x+w-2,y,2,w,shd);R(x,y+w-2,w,2,shd);}
+  function drawSky(){const g=ctx.createLinearGradient(0,0,0,H*0.64);g.addColorStop(0,P.s0);g.addColorStop(1,P.s1);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
+  function drawStars(){for(let i=0;i<82;i++){const blink=(Math.sin(frame*0.028+i*2.1)*0.4+0.6);ctx.globalAlpha=blink*0.42;ctx.fillStyle='#fff';ctx.fillRect(~~((Math.sin(i*137.5)*0.5+0.5)*W),~~((Math.sin(i*97.3)*0.5+0.5)*H*0.54),1,1);}ctx.globalAlpha=1;}
+  function drawSun(x,y){for(let a=0;a<8;a++){const ang=a/8*Math.PI*2+frame*0.007;ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.fillStyle='rgba(255,212,0,0.12)';ctx.fillRect(-3,-31,6,14);ctx.restore();}const sz=23;blk(x-sz/2,y-sz/2,sz,P.sun,P.sun,P.sunr);R(x-sz/2+3,y-sz/2+3,sz-6,sz-6,P.sun);}
+  function drawCloud(x,y,w){const bh=13,bw=~~(w/4);ctx.fillStyle=P.cl;R(x,y,w,bh,P.cl);R(x+bw,y-bh,w-bw*2,bh,P.cl);R(x+bw/2,y-bh/2,bw,bh,P.cl);}
+  function drawTerrain(){const gY=H*0.64;const cw=W/TC+1;ctx.fillStyle=P.bed;ctx.fillRect(0,gY+Math.max(...terrain)*BS,W,H);for(let i=0;i<TC;i++){const th=terrain[i],bx=i*cw;blk(bx,gY,cw,P.gt,P.gs,P.gd);for(let j=1;j<th;j++){const dy=gY+j*BS;j<3?blk(bx,dy,cw,P.d1,P.d2,P.d3):blk(bx,dy,cw,P.r1,P.r2,P.r3);}}}
+  function drawTrees(){const gY=H*0.64;const cw=W/TC+1;TREES.forEach(ti=>{if(ti>96)return;const tx=ti*cw,trH=4+((ti%3===0)?1:0);for(let j=0;j<trH;j++)blk(tx,gY-(j+1)*BS,cw,P.w1,P.w1,P.w2);for(let lx=-1;lx<=2;lx++)for(let ly=0;ly<=2;ly++){if(lx===0&&ly===2)continue;blk(tx+lx*cw,gY-(trH+1+ly)*BS,cw,P.l1,P.l2,P.l3);}});}
+  function steve(x,dir){const gY=H*0.64;const leg=Math.sin(frame*0.14)*4;ctx.save();ctx.translate(x,gY);ctx.scale(dir,1);R(-6,-20,12,14,'#4466cc');R(-9,-20,3,10,'#4466cc');R(6,-20,3,10,'#4466cc');R(-5,-32,10,12,'#f5c9a0');R(-5,-32,10,3,'#5a3b1e');R(0,-29,3,2,'#222');R(-5,-6,5,8+leg,'#2244aa');R(1,-6,5,8-leg,'#2244aa');ctx.restore();}
+  function creeper(x){const gY=H*0.64;R(x-6,gY-28,12,28,'#4caf50');R(x-5,gY-26,4,3,'#1b5e20');R(x+1,gY-26,4,3,'#1b5e20');R(x-3,gY-21,6,2,'#1b5e20');R(x-6,gY-19,3,4,'#1b5e20');R(x+3,gY-19,3,4,'#1b5e20');R(x-3,gY-19,6,6,'#1b5e20');R(x-6,gY-4,5,4,'#388e3c');R(x+1,gY-4,5,4,'#388e3c');}
+  function cow(x){const gY=H*0.64;R(x-10,gY-18,20,12,'#e8e8e8');R(x-7,gY-19,14,5,'#444');R(x-8,gY-8,6,8,'#444');R(x+2,gY-8,6,8,'#444');R(x-12,gY-20,8,8,'#e8e8e8');R(x-12,gY-22,8,3,'#444');R(x+4,gY-20,8,8,'#e8e8e8');R(x+4,gY-22,8,3,'#444');}
+  function pig(x){const gY=H*0.64;R(x-10,gY-15,20,12,'#f4a8a8');R(x-7,gY-5,6,6,'#f4a8a8');R(x+1,gY-5,6,6,'#f4a8a8');R(x-8,gY-19,6,6,'#f4a8a8');R(x-7,gY-18,4,3,'#e08888');R(x+2,gY-21,4,4,'#e09898');R(x-7,gY-21,4,4,'#e09898');}
+  function sheep(x){const gY=H*0.64;for(let bx=-2;bx<=2;bx++)for(let by=0;by<=1;by++)R(x-6+bx*4,gY-20+by*4,5,5,'#dde8dd');R(x-5,gY-28,10,10,'#dde8dd');R(x-4,gY-24,3,2,'#333');R(x-6,gY-5,4,5,'#aaa');R(x+2,gY-5,4,5,'#aaa');}
+  function zombie(x,dir){const gY=H*0.64;const leg=Math.sin(frame*0.1)*4;ctx.save();ctx.translate(x,gY);ctx.scale(dir,1);R(-6,-20,12,14,'#2d7a2d');R(-9,-14,3,10,'#2d7a2d');R(6,-14,3,10,'#2d7a2d');R(-5,-32,10,12,'#7aaa6a');R(-5,-32,10,3,'#5a7a4a');R(-3,-29,2,2,'#f00');R(1,-29,2,2,'#f00');R(-5,-6,5,8+leg,'#1a5a1a');R(1,-6,5,8-leg,'#1a5a1a');ctx.restore();}
+  function chicken(x){const gY=H*0.64;R(x-4,gY-16,8,10,'#f0f0f0');R(x-3,gY-22,6,7,'#f0f0f0');R(x-5,gY-19,3,3,'#f4a020');R(x-4,gY-19,2,2,'#333');R(x-4,gY-7,3,5,'#f4a020');R(x+1,gY-7,3,5,'#f4a020');}
+  function spider(x){const gY=H*0.64;R(x-6,gY-12,12,8,'#333');R(x-4,gY-16,8,6,'#333');R(x-3,gY-14,2,2,'#f00');R(x+1,gY-14,2,2,'#f00');for(let l=0;l<4;l++){R(x-10+l*2,gY-10-l,2,6,'#555');R(x+7-l*2,gY-10-l,2,6,'#555');}}
+  function drawEntity(e){switch(e.t){case'steve':steve(e.x,e.dir);break;case'creeper':creeper(e.x);break;case'cow':cow(e.x);break;case'pig':pig(e.x);break;case'sheep':sheep(e.x);break;case'zombie':zombie(e.x,e.dir);break;case'chicken':chicken(e.x);break;case'spider':spider(e.x);break;}}
+  function drawGrid(){ctx.strokeStyle='rgba(0,0,0,0.05)';ctx.lineWidth=0.5;for(let x=0;x<W;x+=BS){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}for(let y=0;y<H;y+=BS){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}}
+  function tick(){requestAnimationFrame(tick);frame++;if(cv.width!==window.innerWidth||cv.height!==window.innerHeight)resize();ctx.clearRect(0,0,W,H);drawSky();drawStars();sunX+=0.1;if(sunX>W+82)sunX=-82;drawSun(sunX,H*0.1);clouds.forEach(c=>{c.x+=c.sp;if(c.x>W+215)c.x=-215;drawCloud(c.x,c.y,c.w);});drawTerrain();drawTrees();ENT.forEach(e=>{e.x+=e.sp*e.dir;e.fr++;if(e.x>W+92&&e.dir>0)e.x=-92;if(e.x<-92&&e.dir<0)e.x=W+92;drawEntity(e);});drawGrid();}
+  tick();
+})();
+
+/* ══ PAGE TRANSITIONS ══ */
+let currentPage='home';
+function goNav(p,opts={}){
+  if(p===currentPage&&!opts.force)return;
+  const old=document.getElementById('page-'+currentPage);
+  const nw=document.getElementById('page-'+p);
+  if(!nw)return;
+  if(old){old.classList.remove('visible');setTimeout(()=>{old.classList.remove('active');old.classList.remove('visible');},60);}
+  nw.classList.add('active');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{nw.classList.add('visible');}));
+  currentPage=p;
+  window.scrollTo(0,0);
+  const nb=document.getElementById('navbar');
+  nb.style.display=(p==='vol'||p==='att')?'none':'flex';
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('nb-active'));
+  if(p==='home')document.getElementById('nb-home')?.classList.add('nb-active');
+  buildAllLogos();
+  if(p==='vol')initVol();
+  if(p==='att')initAtt();
+  if(p==='home')updateRibbon();
+  // Change 4: clear auth fields on every visit
+  if(p==='signin'){
+    ['si-em','si-pw'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    const e=document.getElementById('si-err');if(e){e.style.display='none';e.textContent='';}
+    siRoleV='attendee';
+    document.getElementById('si-ta')?.classList.add('on');
+    document.getElementById('si-tv')?.classList.remove('on');
+  }
+  if(p==='signup'){
+    ['su-nm','su-em','su-pw'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    const e=document.getElementById('su-err');if(e){e.style.display='none';e.textContent='';}
+    suRoleV='attendee';
+    document.getElementById('su-ta')?.classList.add('on');
+    document.getElementById('su-tv')?.classList.remove('on');
+  }
+  // update cursor
+  if(window._cursorUpdate)window._cursorUpdate();
+}
+
+function scrollTo2(id){
+  if(currentPage!=='home'){goNav('home');setTimeout(()=>document.getElementById(id)?.scrollIntoView({behavior:'smooth'}),420);return;}
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+}
+
+/* ══ CLICK RIPPLE ══ */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('button,a,.feat-c,.ribbon-stat');if(!el)return;
+  const r=document.createElement('div');r.className='ripple';
+  const sz=Math.max(el.offsetWidth,el.offsetHeight);
+  const rect=el.getBoundingClientRect();
+  r.style.cssText=`width:${sz}px;height:${sz}px;left:${rect.left+(rect.width-sz)/2}px;top:${rect.top+(rect.height-sz)/2}px`;
+  document.body.appendChild(r);setTimeout(()=>r.remove(),600);
+});
+
+function ctaGlow(e,btn){const r=btn.getBoundingClientRect();btn.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');btn.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');}
+window.addEventListener('scroll',()=>{const nb=document.getElementById('navbar');if(nb)nb.style.borderBottomColor=window.scrollY>20?'rgba(0,229,179,0.3)':'rgba(0,229,179,0.16)';});
+
+/* ══ MISSION TEXT REVEAL ══ */
+(function(){
+  const txt="We believe every session matters. DEV CLUB TRACK was built so no contribution goes unnoticed — every host, every volunteer, every attendee is part of the record. Because great communities are built one session at a time.";
+  const el=document.getElementById('mission-txt');if(!el)return;
+  el.innerHTML=txt.split(' ').map(w=>`<span class="ws">${w}</span>`).join(' ');
+  const spans=el.querySelectorAll('.ws');
+  new IntersectionObserver(entries=>{if(entries[0].isIntersecting){spans.forEach((s,i)=>setTimeout(()=>s.classList.add('lit'),i*42));}},{threshold:0.25}).observe(el);
+})();
+
+/* ══ RIBBON ══ */
+async function updateRibbon(){
+  await loadAll();
+  const members=USERS.filter(u=>u.role==='attendee').length;
+  const volunteers=USERS.filter(u=>u.role==='volunteer').length;
+  const totalPres=SESSIONS.reduce((a,s)=>a+Object.values(s.att||{}).filter(v=>v===true).length,0);
+  const sumDone=SESSIONS.filter(s=>s.summary).length;
+  animNum('rs-sessions',SESSIONS.length);
+  animNum('rs-members',members);
+  animNum('rs-volunteers',volunteers);
+  animNum('rs-present',totalPres);
+  animNum('rs-summaries',sumDone);
+}
+function animNum(id,target){const el=document.getElementById(id);if(!el)return;let cur=0;const step=Math.max(1,Math.round(target/20));const iv=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=cur;if(cur>=target)clearInterval(iv);},40);}
+
+/* ══ AUTH ══ */
+function siRole(r){siRoleV=r;document.getElementById('si-ta').classList.toggle('on',r==='attendee');document.getElementById('si-tv').classList.toggle('on',r==='volunteer');}
+function suRole(r){suRoleV=r;document.getElementById('su-ta').classList.toggle('on',r==='attendee');document.getElementById('su-tv').classList.toggle('on',r==='volunteer');}
+function isValidEmail(e){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+
+async function doSI(){
+  const em=document.getElementById('si-em').value.trim();
+  const pw=document.getElementById('si-pw').value;
+  const err=document.getElementById('si-err');
+  err.style.display='none';
+  if(!em){err.textContent='❌ Please enter your email address.';err.style.display='block';return;}
+  if(!isValidEmail(em)){err.textContent='❌ Please enter a valid email (e.g. you@example.com).';err.style.display='block';return;}
+  if(!pw){err.textContent='❌ Please enter your password.';err.style.display='block';return;}
+  const u=USERS.find(x=>x.email===em&&x.pass===pw);
+  if(!u){err.textContent='❌ Invalid email or password.';err.style.display='block';return;}
+  if(u.role!==siRoleV){err.textContent=`❌ This account is a ${u.role}. Switch the role tab.`;err.style.display='block';return;}
+  saveMe(u);if(window._cursorUpdate)window._cursorUpdate();
+  goNav(u.role==='volunteer'?'vol':'att');
+  toast(`Welcome back, ${u.name}! ⛏️`);
+}
+
+async function doSU(){
+  const nm=document.getElementById('su-nm').value.trim();
+  const em=document.getElementById('su-em').value.trim();
+  const pw=document.getElementById('su-pw').value;
+  const err=document.getElementById('su-err');
+  err.style.display='none';
+  if(!nm||!em||pw.length<6){err.textContent='❌ Fill all fields (password ≥ 6 chars).';err.style.display='block';return;}
+  if(!isValidEmail(em)){err.textContent='❌ Please enter a valid email (e.g. you@example.com).';err.style.display='block';return;}
+  if(USERS.find(u=>u.email===em)){err.textContent='❌ Email already exists. Sign in instead.';err.style.display='block';return;}
+  const u={id:'u'+Date.now(),name:nm,email:em,pass:pw,role:suRoleV};
+  await dbUpsertUser(u);USERS.push(u);
+  saveMe(u);if(window._cursorUpdate)window._cursorUpdate();
+  goNav(suRoleV==='volunteer'?'vol':'att');
+  toast(`Account created! Welcome, ${nm} 🚀`);
+}
+
+function doSO(){clearMe();if(window._cursorUpdate)window._cursorUpdate();goNav('home',{force:true});toast('Signed out. See you next session! 👋');}
+
+/* ══ VOLUNTEER DASHBOARD ══ */
+const VSECS=['sessions','create','attendance','members','summaries'];
+let deleteMode=false,selectedForDelete=new Set();
+
+function toggleDeleteMode(){
+  deleteMode=!deleteMode;selectedForDelete.clear();
+  const banner=document.getElementById('del-mode-banner'),btn=document.getElementById('btn-del-toggle');
+  banner.classList.toggle('active',deleteMode);btn.classList.toggle('active-del',deleteMode);
+  btn.textContent=deleteMode?'✕ Exit Delete':'🗑️ Delete';
+  updateDelCount();renderVolSessions();
+}
+function toggleRowSelect(sid){
+  if(!deleteMode)return;
+  if(selectedForDelete.has(sid))selectedForDelete.delete(sid);else selectedForDelete.add(sid);
+  const row=document.getElementById('row-'+sid),chk=document.getElementById('chk-'+sid);
+  if(row)row.classList.toggle('del-row-sel',selectedForDelete.has(sid));
+  if(chk)chk.checked=selectedForDelete.has(sid);
+  updateDelCount();
+}
+function updateDelCount(){const lbl=document.getElementById('del-count-lbl');if(lbl)lbl.textContent=selectedForDelete.size+' selected';}
+
+async function confirmDeleteSessions(){
+  if(!selectedForDelete.size){toast('⚠️ Select at least one session','err');return;}
+  const ids=[...selectedForDelete];
+  ids.map(id=>document.getElementById('row-'+id)).filter(Boolean).forEach(r=>r.classList.add('row-deleting'));
+  setTimeout(async()=>{
+    for(const id of ids){await dbDeleteSession(id);const i=SESSIONS.findIndex(s=>s.id===id);if(i!==-1)SESSIONS.splice(i,1);}
+    selectedForDelete.clear();deleteMode=false;
+    document.getElementById('del-mode-banner').classList.remove('active');
+    document.getElementById('btn-del-toggle').classList.remove('active-del');
+    document.getElementById('btn-del-toggle').textContent='🗑️ Delete';
+    renderVolSessions();updateRibbon();
+    toast(`🗑️ ${ids.length} session${ids.length>1?'s':''} deleted`,'ok');
+  },450);
+}
+
+async function initVol(){
+  if(!ME)return;await loadAll();
+  document.getElementById('vol-nm').textContent=ME.name;
+  document.getElementById('vol-av').textContent=ME.name[0].toUpperCase();
+  buildAllLogos();vSec('sessions');
+}
+
+function vSec(id){
+  if(id!=='sessions'&&deleteMode){deleteMode=false;selectedForDelete.clear();const ban=document.getElementById('del-mode-banner'),btn=document.getElementById('btn-del-toggle');if(ban)ban.classList.remove('active');if(btn){btn.classList.remove('active-del');btn.textContent='🗑️ Delete';}}
+  if(id!=='members'&&memberDeleteMode){memberDeleteMode=false;selectedMembersForDelete.clear();const ban=document.getElementById('mem-del-banner'),btn=document.getElementById('btn-mem-del-toggle');if(ban)ban.classList.remove('active');if(btn){btn.classList.remove('active-del');btn.textContent='🗑️ Remove Members';}}
+  VSECS.forEach(s=>{document.getElementById('vs-'+s).classList.toggle('on',s===id);document.getElementById('vb-'+s).classList.toggle('on',s===id);});
+  ({sessions:renderVolSessions,create:initCreate,attendance:renderAttPicker,members:renderMembers,summaries:renderSummaries})[id]?.();
+}
+function initCreate(){const d=document.getElementById('cs-dt');if(d&&!d.value)d.value=new Date().toISOString().split('T')[0];}
+
+function renderVolSessions(){
+  const members=USERS.filter(u=>u.role==='attendee');
+  const totalPres=SESSIONS.reduce((a,s)=>a+Object.values(s.att||{}).filter(Boolean).length,0);
+  const sumDone=SESSIONS.filter(s=>s.summary).length;
+  document.getElementById('vol-sg').innerHTML=`
+    <div class="sc" style="--cc:rgba(0,229,179,0.22)"><div class="sl">Total Sessions</div><div class="sv" style="color:#00e5b3">${SESSIONS.length}</div><div class="ss">All time</div></div>
+    <div class="sc" style="--cc:rgba(118,78,232,0.22)"><div class="sl">Members</div><div class="sv" style="color:#a880f5">${members.length}</div><div class="ss">Registered</div></div>
+    <div class="sc" style="--cc:rgba(68,128,242,0.22)"><div class="sl">Attendances</div><div class="sv" style="color:#5599ef">${totalPres}</div><div class="ss">Present records</div></div>
+    <div class="sc" style="--cc:rgba(255,198,0,0.22)"><div class="sl">Summaries</div><div class="sv" style="color:#f0c040">${sumDone}/${SESSIONS.length}</div><div class="ss">Written</div></div>`;
+  if(!SESSIONS.length){document.getElementById('vol-tbl').innerHTML='<div class="empty"><span class="ei">📋</span><p>No sessions yet. Create your first one!</p></div>';return;}
+  document.getElementById('vol-tbl').innerHTML=`<table class="dt"><thead><tr>${deleteMode?'<th style="width:38px"></th>':''}<th>Title</th><th>Date</th><th>Host</th><th>Attendance</th><th>Summary</th><th>Actions</th></tr></thead><tbody>${SESSIONS.map(s=>{
+    const tot=Object.keys(s.att||{}).length,pres=Object.values(s.att||{}).filter(Boolean).length;
+    const sb=s.summary?'<span class="bdg bt">✓ Written</span>':s.sumBy?'<span class="bdg bb">Assigned</span>':'<span class="bdg bm">Pending</span>';
+    const isSel=selectedForDelete.has(s.id);
+    return`<tr id="row-${s.id}" class="${isSel?'del-row-sel':''}" ${deleteMode?`onclick="toggleRowSelect('${s.id}')" style="cursor:pointer"`:''}>${deleteMode?`<td style="text-align:center"><input type="checkbox" class="del-chk" id="chk-${s.id}" ${isSel?'checked':''} onclick="event.stopPropagation();toggleRowSelect('${s.id}')"/></td>`:''}<td style="font-weight:700">${s.title}</td><td style="color:rgba(148,175,218,0.8)">${fd(s.date)}</td><td>${s.host}</td><td><span class="bdg bt">${pres}/${tot} Present</span></td><td>${sb}</td><td><div style="display:flex;gap:0.36rem;flex-wrap:wrap"><button class="btn bg2" onclick="event.stopPropagation();viewSess('${s.id}')">👁 View</button><button class="btn bp2" onclick="event.stopPropagation();openAssign('${s.id}')">📝 Assign</button></div></td></tr>`;
+  }).join('')}</tbody></table>`;
+}
+
+async function createSession(){
+  const title=document.getElementById('cs-ttl').value.trim();
+  const date=document.getElementById('cs-dt').value;
+  const res=document.getElementById('cs-res').value.trim();
+  const host=document.getElementById('cs-host').value.trim();
+  const vols=document.getElementById('cs-vols').value.trim();
+  const topic=document.getElementById('cs-topic').value.trim();
+  if(!title||!date||!res||!host){toast('⚠️ Fill all required (*) fields','err');return;}
+  const newSess={id:'s'+Date.now(),title,date,res,host,vols,topic,by:ME?.id,summary:null,sumBy:null,att:{}};
+  USERS.filter(u=>u.role==='attendee').forEach(u=>{newSess.att[u.id]=null;});
+  await dbUpsertSession(newSess);SESSIONS.push(newSess);
+  toast(`Session "${title}" created! 🚀`);
+  ['cs-ttl','cs-res','cs-host','cs-vols','cs-topic'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  vSec('sessions');
+}
+
+function renderAttPicker(){
+  document.getElementById('att-pick-wrap').innerHTML=`<div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap"><label class="fl" style="margin:0;white-space:nowrap">Select Session:</label><select class="fi" id="att-pick" style="max-width:308px" onchange="renderAttForm()"><option value="">-- Choose a session --</option>${SESSIONS.map(s=>`<option value="${s.id}">${s.title} — ${fd(s.date)}</option>`).join('')}</select></div>`;
+  document.getElementById('att-body').innerHTML='<div class="empty"><span class="ei">📋</span><p>Select a session above to mark attendance</p></div>';
+}
+
+function renderAttForm(){
+  const sid=document.getElementById('att-pick').value;
+  if(!sid){document.getElementById('att-body').innerHTML='<div class="empty"><span class="ei">📋</span><p>Select a session above</p></div>';return;}
+  const sess=SESSIONS.find(s=>s.id===sid);
+  const members=USERS.filter(u=>u.role==='attendee');
+  document.getElementById('att-body').innerHTML=`<div style="background:rgba(8,14,32,0.94);border:1px solid rgba(38,58,98,0.72);border-radius:12px;overflow:hidden;max-width:536px;backdrop-filter:blur(6px)"><div style="padding:0.82rem 1.18rem;border-bottom:1px solid rgba(38,58,98,0.5);background:linear-gradient(90deg,rgba(98,58,200,0.3),rgba(0,148,108,0.18))"><h3 style="font-size:0.94rem;font-weight:700">✅ ${sess.title}</h3><p style="font-size:0.76rem;color:rgba(148,175,218,0.8);margin-top:0.17rem">${fd(sess.date)} &nbsp;•&nbsp; ${sess.host}</p></div><div style="padding:0.72rem 1.12rem">${members.map(m=>{const st=sess.att[m.id];return`<div class="ar"><div class="an"><div class="mini-av" style="background:linear-gradient(135deg,#7c4dff,#00e5b3)">${m.name[0]}</div>${m.name}</div><div class="atb"><button class="tg tgp ${st===true?'on':''}" id="tp-${sid}-${m.id}" onclick="setAtt('${sid}','${m.id}',true)">✅ Present</button><button class="tg tga ${st===false?'on':''}" id="ta-${sid}-${m.id}" onclick="setAtt('${sid}','${m.id}',false)">❌ Absent</button></div></div>`;}).join('')}</div><div style="padding:0.72rem 1.12rem;border-top:1px solid rgba(38,58,98,0.5);display:flex;gap:0.7rem;flex-wrap:wrap"><button class="btn bt2" onclick="saveAtt('${sid}')">💾 Save Attendance</button><button class="btn bp2" onclick="openAssign('${sid}')">📝 Assign Summary Writer</button></div></div>`;
+}
+
+async function setAtt(sid,uid,present){
+  const sess=SESSIONS.find(s=>s.id===sid);if(!sess.att)sess.att={};
+  sess.att[uid]=present;
+  document.getElementById(`tp-${sid}-${uid}`)?.classList.toggle('on',present);
+  document.getElementById(`ta-${sid}-${uid}`)?.classList.toggle('on',!present);
+  await dbSetAttendance(sid,uid,present);
+}
+async function saveAtt(sid){await loadAll();toast('Attendance saved! ✅');renderVolSessions();}
+
+let memberDeleteMode=false,selectedMembersForDelete=new Set();
+
+function toggleMemberDeleteMode(){
+  if(ME?.role!=='volunteer'){toast('⚠️ Only volunteers can remove members.','err');return;}
+  memberDeleteMode=!memberDeleteMode;selectedMembersForDelete.clear();
+  const banner=document.getElementById('mem-del-banner'),btn=document.getElementById('btn-mem-del-toggle');
+  banner.classList.toggle('active',memberDeleteMode);btn.classList.toggle('active-del',memberDeleteMode);
+  btn.textContent=memberDeleteMode?'✕ Exit Remove':'🗑️ Remove Members';
+  updateMemDelCount();renderMembers();
+}
+function toggleMemberSelect(uid){
+  if(!memberDeleteMode)return;
+  if(selectedMembersForDelete.has(uid))selectedMembersForDelete.delete(uid);else selectedMembersForDelete.add(uid);
+  const row=document.getElementById('mrow-'+uid),chk=document.getElementById('mchk-'+uid);
+  if(row)row.classList.toggle('del-row-sel',selectedMembersForDelete.has(uid));
+  if(chk)chk.checked=selectedMembersForDelete.has(uid);
+  updateMemDelCount();
+}
+function updateMemDelCount(){const lbl=document.getElementById('mem-del-count-lbl');if(lbl)lbl.textContent=selectedMembersForDelete.size+' selected';}
+
+async function confirmDeleteMembers(){
+  if(ME?.role!=='volunteer'){toast('⚠️ Only volunteers can remove members.','err');return;}
+  if(!selectedMembersForDelete.size){toast('⚠️ Select at least one member','err');return;}
+  const ids=[...selectedMembersForDelete];
+  ids.map(id=>document.getElementById('mrow-'+id)).filter(Boolean).forEach(r=>r.classList.add('row-deleting'));
+  setTimeout(async()=>{
+    for(const id of ids){await dbDeleteUser(id);const i=USERS.findIndex(u=>u.id===id);if(i!==-1)USERS.splice(i,1);SESSIONS.forEach(s=>{if(s.att&&id in s.att)delete s.att[id];if(s.sumBy===id)s.sumBy=null;});}
+    selectedMembersForDelete.clear();memberDeleteMode=false;
+    document.getElementById('mem-del-banner').classList.remove('active');
+    const btn=document.getElementById('btn-mem-del-toggle');
+    btn.classList.remove('active-del');btn.textContent='🗑️ Remove Members';
+    renderMembers();updateRibbon();
+    toast(`🗑️ ${ids.length} member${ids.length>1?'s':''} removed`,'ok');
+  },450);
+}
+
+function renderMembers(){
+  if(ME?.role!=='volunteer'){document.getElementById('mem-tbl').innerHTML='<div class="empty"><span class="ei">🔒</span><p>Only volunteers can manage members.</p></div>';return;}
+  const members=USERS.filter(u=>u.role==='attendee');
+  if(!members.length){document.getElementById('mem-tbl').innerHTML='<div class="empty"><span class="ei">👥</span><p>No members yet.</p></div>';return;}
+  document.getElementById('mem-tbl').innerHTML=`<table class="dt"><thead><tr>${memberDeleteMode?'<th style="width:38px"></th>':''}<th>Name</th><th>Email</th><th>Sessions</th><th>Att. Rate</th></tr></thead><tbody>${members.map(m=>{
+    const ms=SESSIONS.filter(s=>m.id in (s.att||{}));
+    const pres=ms.filter(s=>s.att[m.id]===true).length;
+    const rate=ms.length?Math.round(pres/ms.length*100):0;
+    const isSel=selectedMembersForDelete.has(m.id);
+    return`<tr id="mrow-${m.id}" class="${isSel?'del-row-sel':''}" ${memberDeleteMode?`onclick="toggleMemberSelect('${m.id}')" style="cursor:pointer"`:''}>${memberDeleteMode?`<td style="text-align:center"><input type="checkbox" class="del-chk" id="mchk-${m.id}" ${isSel?'checked':''} onclick="event.stopPropagation();toggleMemberSelect('${m.id}')"/></td>`:''}<td><div style="display:flex;align-items:center;gap:0.56rem"><div class="mini-av" style="width:27px;height:27px;background:linear-gradient(135deg,#7c4dff,#00e5b3)">${m.name[0]}</div><span style="font-weight:700">${m.name}</span></div></td><td style="color:rgba(148,175,218,0.8)">${m.email}</td><td>${ms.length}</td><td><span class="bdg ${rate>=70?'bt':'br'}">${rate}%</span></td></tr>`;
+  }).join('')}</tbody></table>`;
+}
+
+async function addMember(){
+  const name=document.getElementById('nm-n').value.trim();
+  const email=document.getElementById('nm-e').value.trim();
+  const pass=document.getElementById('nm-p').value||'pass123';
+  if(!name||!email){toast('⚠️ Fill all fields','err');return;}
+  if(USERS.find(u=>u.email===email)){toast('⚠️ Email already exists','err');return;}
+  const u={id:'u'+Date.now(),name,email,pass,role:'attendee'};
+  await dbUpsertUser(u);USERS.push(u);
+  toast(`${name} added as member ✓`);closeM('m-addmem');
+  document.getElementById('nm-n').value='';document.getElementById('nm-e').value='';
+  renderMembers();
+}
+
+function renderSummaries(){
+  document.getElementById('vol-sum-list').innerHTML=SESSIONS.map(s=>{
+    const an=s.sumBy?USERS.find(u=>u.id===s.sumBy)?.name:'Not assigned';
+    return`<div class="sc2"><div class="sc2-h"><h2>${s.title}</h2><div style="display:flex;gap:0.43rem;align-items:center"><span class="bdg bm">${fd(s.date)}</span>${s.summary?'<span class="bdg bt">✓ Written</span>':s.sumBy?'<span class="bdg bb">Assigned</span>':'<span class="bdg bg">Pending</span>'}</div></div><div style="padding:1rem 1.22rem"><div class="info-mc ip" style="margin-bottom:0.68rem">📝 Summary Writer: <strong>${an}</strong></div>${s.summary?`<div class="sum-box">${s.summary}</div>`:`<div style="display:flex;gap:0.7rem;align-items:flex-start"><div class="sum-box sum-empty" style="flex:1">No summary submitted yet.</div><button class="btn bp2" onclick="openAssign('${s.id}')">📝 Re-assign</button></div>`}</div></div>`;
+  }).join('');
+}
+
+function viewSess(sid){
+  const s=SESSIONS.find(x=>x.id===sid);if(!s)return;
+  const members=USERS.filter(u=>u.role==='attendee');
+  const an=s.sumBy?USERS.find(u=>u.id===s.sumBy)?.name:'Not assigned';
+  document.getElementById('vs-ttl').textContent=s.title;
+  document.getElementById('vs-body').innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.82rem;margin-bottom:1.08rem"><div class="di"><label>📅 Date</label><p>${fd(s.date)}</p></div><div class="di"><label>🎙️ Host</label><p>${s.host}</p></div><div class="di"><label>📚 Resource Persons</label><p>${s.res}</p></div><div class="di"><label>🤝 Volunteers</label><p>${s.vols||'—'}</p></div><div class="di"><label>📌 Topic</label><p>${s.topic||'—'}</p></div><div class="di"><label>📝 Summary Writer</label><p>${an}</p></div></div><div style="margin-bottom:0.82rem"><span class="sum-lbl">📝 Session Summary</span><div class="sum-box ${s.summary?'':'sum-empty'}">${s.summary||'No summary written yet.'}</div></div><div><span class="sum-lbl">👥 Attendance</span><div style="display:flex;flex-wrap:wrap;gap:0.36rem;margin-top:0.28rem">${members.map(m=>{const st=s.att?.[m.id];return`<span class="bdg ${st===true?'bt':st===false?'br':'bm'}">${st===true?'✅':st===false?'❌':'?'} ${m.name}</span>`;}).join('')}</div></div>`;
+  openM('m-viewsess');
+}
+
+function openAssign(sid){
+  assignTgt=sid;const sess=SESSIONS.find(s=>s.id===sid);
+  const members=USERS.filter(u=>u.role==='attendee');
+  const sel=document.getElementById('assign-sel');
+  sel.innerHTML=members.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
+  if(sess.sumBy)sel.value=sess.sumBy;openM('m-assign');
+}
+async function doAssign(){
+  const uid=document.getElementById('assign-sel').value;if(!uid){toast('⚠️ Select a member','err');return;}
+  const sess=SESSIONS.find(s=>s.id===assignTgt);
+  if(sess){sess.sumBy=uid;await dbAssignSumBy(sess.id,uid);}
+  toast(`Summary assigned to ${USERS.find(u=>u.id===uid)?.name} ✓`);
+  closeM('m-assign');renderVolSessions();renderSummaries();
+}
+
+/* ══ ATTENDEE DASHBOARD ══ */
+const ASECS=['overview','sessions','mysummary','profile'];
+async function initAtt(){
+  if(!ME)return;await loadAll();
+  document.getElementById('att-nm').textContent=ME.name;
+  document.getElementById('att-av').textContent=ME.name[0].toUpperCase();
+  document.getElementById('att-welcome').textContent=`Welcome back, ${ME.name}! ⛏️`;
+  buildAllLogos();aSec('overview');
+}
+function aSec(id){
+  ASECS.forEach(s=>{document.getElementById('as-'+s).classList.toggle('on',s===id);document.getElementById('ab-'+s).classList.toggle('on',s===id);});
+  ({overview:renderAttOverview,sessions:renderAttSessions,mysummary:renderMySummary,profile:renderAttProfile})[id]?.();
+}
+function renderAttOverview(){
+  if(!ME)return;const uid=ME.id;
+  const myS=SESSIONS.filter(s=>uid in (s.att||{}));
+  const pres=myS.filter(s=>s.att[uid]===true).length;
+  const abs=myS.filter(s=>s.att[uid]===false).length;
+  const rate=myS.length?Math.round(pres/myS.length*100):0;
+  const pendSum=SESSIONS.filter(s=>s.sumBy===uid&&!s.summary).length;
+  document.getElementById('att-sg').innerHTML=`<div class="sc" style="--cc:rgba(0,229,179,0.22)"><div class="sl">Sessions Present</div><div class="sv" style="color:#00e5b3">${pres}</div><div class="ss">✅ Attended</div></div><div class="sc" style="--cc:rgba(220,65,65,0.22)"><div class="sl">Sessions Absent</div><div class="sv" style="color:#e06060">${abs}</div><div class="ss">❌ Missed</div></div><div class="sc" style="--cc:rgba(118,78,232,0.22)"><div class="sl">Attendance Rate</div><div class="sv" style="color:#a880f5">${rate}%</div><div class="ss">Overall</div></div>${pendSum?`<div class="sc" style="--cc:rgba(255,198,0,0.22);border-color:rgba(255,198,0,0.4)"><div class="sl">📝 Summary Pending</div><div class="sv" style="color:#f0c040;cursor:pointer" onclick="aSec('mysummary')">${pendSum}</div><div class="ss" style="color:#f0c040;cursor:pointer" onclick="aSec('mysummary')">Write now →</div></div>`:''}`;
+  const recent=SESSIONS.slice(-4).reverse();
+  document.getElementById('att-recent').innerHTML=recent.length?`<table class="dt"><thead><tr><th>Session</th><th>Date</th><th>Your Status</th><th>Summary</th></tr></thead><tbody>${recent.map(s=>{const st=s.att?.[uid];const isMine=s.sumBy===uid;return`<tr><td style="font-weight:700">${s.title}</td><td style="color:rgba(148,175,218,0.8)">${fd(s.date)}</td><td>${st===true?'<span class="bdg bt">✅ Present</span>':st===false?'<span class="bdg br">❌ Absent</span>':'<span class="bdg bm">Not marked</span>'}</td><td>${s.summary?'<span class="bdg bt">✓ Done</span>':isMine?`<span class="bdg bg" style="cursor:pointer" onclick="openWriteSum('${s.id}')">✍️ Write</span>`:'<span class="bdg bm">Pending</span>'}</td></tr>`;}).join('')}</tbody></table>`:'<div class="empty"><span class="ei">📋</span><p>No sessions yet.</p></div>';
+}
+function renderAttSessions(){
+  if(!ME)return;const uid=ME.id;const area=document.getElementById('att-all');
+  if(!SESSIONS.length){area.innerHTML='<div class="empty"><span class="ei">📋</span><p>No sessions yet.</p></div>';return;}
+  area.innerHTML=SESSIONS.map(s=>{const st=s.att?.[uid];const isMine=s.sumBy===uid;return`<div class="sc2"><div class="sc2-h"><h2>${s.title}</h2><div style="display:flex;gap:0.43rem;align-items:center"><span class="bdg bm">${fd(s.date)}</span>${st===true?'<span class="bdg bt">✅ Present</span>':st===false?'<span class="bdg br">❌ Absent</span>':''}</div></div><div class="sc2-b"><div class="di"><label>📚 Resource Persons</label><p>${s.res}</p></div><div class="di"><label>🎙️ Host</label><p>${s.host}</p></div><div class="di"><label>🤝 Volunteers</label><p>${s.vols||'—'}</p></div><div class="di"><label>📌 Topic</label><p>${s.topic||'—'}</p></div></div><div class="sum-area"><span class="sum-lbl">📝 Session Summary</span>${s.summary?`<div class="sum-box">${s.summary}</div>`:isMine?`<div style="display:flex;align-items:center;gap:0.7rem"><div class="sum-box sum-empty" style="flex:1">You've been assigned to write this summary.</div><button class="btn bp2" onclick="openWriteSum('${s.id}')">✍️ Write</button></div>`:`<div class="sum-box sum-empty">No summary submitted yet.</div>`}</div></div>`;}).join('');
+}
+function renderMySummary(){
+  if(!ME)return;const uid=ME.id;
+  const assigned=SESSIONS.filter(s=>s.sumBy===uid);const area=document.getElementById('my-sum-list');
+  if(!assigned.length){area.innerHTML='<div class="empty"><span class="ei">📝</span><p>No sessions assigned to you yet.</p></div>';return;}
+  area.innerHTML=assigned.map(s=>`<div class="sc2"><div class="sc2-h"><h2>${s.title} <span style="font-size:0.76rem;font-weight:400;color:rgba(148,175,218,0.75)">${fd(s.date)}</span></h2>${s.summary?'<span class="bdg bt">✓ Submitted</span>':'<span class="bdg bg">Pending</span>'}</div><div style="padding:1.12rem 1.22rem"><div class="info-mc it" style="margin-bottom:0.82rem">🎙️ Host: ${s.host} &nbsp;|&nbsp; 📌 Topic: ${s.topic||'—'}</div>${s.summary?`<div class="sum-box">${s.summary}</div><div style="margin-top:0.7rem"><button class="btn bg2" onclick="openWriteSum('${s.id}')">✏️ Edit Summary</button></div>`:`<p style="color:rgba(148,175,218,0.78);font-size:0.875rem;margin-bottom:0.82rem">You've been chosen to write the summary for this session.</p><button class="btn bp2" onclick="openWriteSum('${s.id}')">✍️ Write Summary Now</button>`}</div></div>`).join('');
+}
+function openWriteSum(sid){const sess=SESSIONS.find(s=>s.id===sid);if(!sess)return;assignTgt=sid;document.getElementById('ws-ttl').textContent=sess.title;document.getElementById('ws-txt').value=sess.summary||'';openM('m-writesum');}
+async function submitSum(){
+  const text=document.getElementById('ws-txt').value.trim();if(!text){toast('⚠️ Please write a summary first.','err');return;}
+  const sess=SESSIONS.find(s=>s.id===assignTgt);
+  if(sess){sess.summary=text;await dbUpdateSummary(sess.id,text);}
+  toast('Summary submitted! ✅');closeM('m-writesum');renderMySummary();renderAttOverview();
+}
+function renderAttProfile(){
+  if(!ME)return;const uid=ME.id;
+  const myS=SESSIONS.filter(s=>uid in (s.att||{}));
+  const pres=myS.filter(s=>s.att[uid]===true).length;
+  const rate=myS.length?Math.round(pres/myS.length*100):0;
+  const sums=SESSIONS.filter(s=>s.sumBy===uid&&s.summary).length;
+  document.getElementById('att-prof').innerHTML=`<div class="pav" style="background:linear-gradient(135deg,#3a82f0,#7c4dff)">${ME.name[0].toUpperCase()}</div><h2 style="font-size:1.36rem;font-weight:800;margin-bottom:0.2rem">${ME.name}</h2><p style="color:rgba(148,175,218,0.8);margin-bottom:1.48rem;font-size:0.875rem">${ME.email}</p><div class="sg"><div class="sc" style="--cc:rgba(68,128,242,0.22)"><div class="sl">Role</div><div style="font-size:0.9rem;font-weight:700;color:#5599ef">👤 Attendee</div></div><div class="sc" style="--cc:rgba(0,229,179,0.22)"><div class="sl">Att. Rate</div><div class="sv" style="color:#00e5b3;font-size:1.6rem">${rate}%</div></div><div class="sc" style="--cc:rgba(118,78,232,0.22)"><div class="sl">Present</div><div class="sv" style="color:#a880f5;font-size:1.6rem">${pres}</div></div><div class="sc" style="--cc:rgba(255,198,0,0.22)"><div class="sl">Summaries</div><div class="sv" style="color:#f0c040;font-size:1.6rem">${sums}</div></div></div>`;
+}
+
+/* ══ MODALS / TOAST / UTILS ══ */
+function openM(id){document.getElementById(id).classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+function toast(msg,type='ok'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show'+(type==='err'?' err':'');clearTimeout(t._tid);t._tid=setTimeout(()=>t.classList.remove('show'),3500);}
+function fd(d){if(!d)return'—';return new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+
+/* ══ BOOT ══ */
+window.addEventListener('DOMContentLoaded',async()=>{
+  buildAllLogos();
+  const startPage=document.getElementById('page-home');
+  startPage.classList.add('active');
+  setTimeout(()=>startPage.classList.add('visible'),80);
+  document.getElementById('navbar').style.display='flex';
+  await loadAll();
+  updateRibbon();
+  setTimeout(()=>{document.getElementById('loader').classList.add('done');setTimeout(()=>document.getElementById('loader').style.display='none',520);},1400);
+  ME=lsGet('dct_me');window.ME=ME;
+  if(ME){
+    const found=USERS.find(u=>u.id===ME.id&&u.email===ME.email);
+    if(!found){clearMe();}
+    else{ME=found;window.ME=found;const target=ME.role==='volunteer'?'vol':'att';setTimeout(()=>goNav(target,{force:true}),1500);}
+  }
+});
+</script>
+
+<!-- ══ MINECRAFT CURSOR ══ -->
+<script>
+(function(){
+  var cur=document.getElementById('mc-cursor');
+  function getEmoji(){
+    if(!window.ME)return'⛏️';
+    return window.ME.role==='volunteer'?'🗡️':'⛏️';
+  }
+  function update(){cur.textContent=getEmoji();}
+  window._cursorUpdate=update;
+  document.addEventListener('mousemove',function(e){
+    cur.style.transform='translate('+e.clientX+'px,'+e.clientY+'px)';
+    update();
+  });
+  update();
+})();
+</script>
+</body>
+</html>
