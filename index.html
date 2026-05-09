@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>DEV CLUB TRACK ⛏️</title>
+<title>BEC Craft Coders ⛏️</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -13,15 +13,8 @@ body{font-family:'Inter',sans-serif;color:#fff;overflow-x:hidden;background:#060
 ::-webkit-scrollbar-track{background:#060a14}
 ::-webkit-scrollbar-thumb{background:#00e5b3;border-radius:3px}
 
-/* ═══════════ MINECRAFT CURSOR ═══════════ */
-html,body,*{cursor:none!important}
-#mc-cursor{
-  position:fixed;top:0;left:0;
-  pointer-events:none;z-index:99999;
-  font-size:24px;line-height:1;
-  user-select:none;
-  transform:translate(-999px,-999px);
-}
+/* ═══════════ CURSOR (normal) ═══════════ */
+#mc-cursor{display:none}
 
 /* ═══════════ PAGE SYSTEM ═══════════ */
 #app{position:relative;min-height:100vh}
@@ -260,7 +253,11 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
 .del-row-sel td{background:rgba(220,65,65,0.07)!important}
 @keyframes rowFadeOut{0%{opacity:1;transform:translateX(0) scaleY(1)}40%{opacity:0.3;transform:translateX(18px) scaleY(0.85);background:rgba(220,65,65,0.18)}100%{opacity:0;transform:translateX(40px) scaleY(0);max-height:0;padding-top:0;padding-bottom:0;border-width:0}}
 .row-deleting td{animation:rowFadeOut 0.42s cubic-bezier(0.4,0,0.8,1) forwards;overflow:hidden}
-.btn.btn-del-mode{background:rgba(220,65,65,0.14);color:#e06060;border:1.5px solid rgba(220,65,65,0.38)!important;outline:none}
+.av-opt{width:100%;aspect-ratio:1;border-radius:8px;border:2.5px solid transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;background:rgba(8,14,32,0.8);transition:all 0.18s;user-select:none;overflow:hidden;padding:2px}
+.av-opt svg{width:100%;height:100%;display:block}
+.av-opt:hover{border-color:rgba(0,229,179,0.5);transform:scale(1.1);background:rgba(20,35,65,0.9)}
+.av-opt.sel{border-color:#00e5b3;box-shadow:0 0 0 3px rgba(0,229,179,0.22);transform:scale(1.12);background:rgba(0,229,179,0.1)}
+
 .btn.btn-del-mode:hover{background:rgba(220,65,65,0.26)!important;border-color:#e06060!important;transform:translateY(-1px)}
 .btn.btn-del-mode.active-del{background:rgba(220,65,65,0.28)!important;border-color:#e06060!important;color:#fff!important;box-shadow:0 0 10px rgba(220,65,65,0.3)}
 </style>
@@ -268,12 +265,56 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
 <body>
 
 <!-- MINECRAFT CURSOR -->
-<div id="mc-cursor">⛏️</div>
+<div id="mc-cursor">
+  <!-- pickaxe cursor for attendee/default -->
+  <svg id="cursor-pick" width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="pickGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#7dd4fc"/>
+        <stop offset="50%" style="stop-color:#38bdf8"/>
+        <stop offset="100%" style="stop-color:#0ea5e9"/>
+      </linearGradient>
+      <linearGradient id="handleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#d97706"/>
+        <stop offset="100%" style="stop-color:#92400e"/>
+      </linearGradient>
+    </defs>
+    <!-- handle -->
+    <rect x="18" y="14" width="4" height="14" rx="1.5" fill="url(#handleGrad)" transform="rotate(-45 20 21)"/>
+    <!-- head body -->
+    <rect x="2" y="4" width="14" height="7" rx="2" fill="url(#pickGrad)"/>
+    <!-- top spike -->
+    <rect x="13" y="1" width="5" height="6" rx="1.5" fill="url(#pickGrad)"/>
+    <!-- bottom spike -->
+    <rect x="13" y="8" width="4" height="5" rx="1.5" fill="#60a5fa"/>
+    <!-- shine -->
+    <rect x="3" y="5" width="5" height="2" rx="1" fill="rgba(255,255,255,0.45)"/>
+  </svg>
+  <!-- sword cursor for volunteer -->
+  <svg id="cursor-sword" width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <defs>
+      <linearGradient id="bladeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#e2e8f0"/>
+        <stop offset="100%" style="stop-color:#94a3b8"/>
+      </linearGradient>
+    </defs>
+    <!-- blade -->
+    <rect x="14" y="2" width="4" height="20" rx="1.5" fill="url(#bladeGrad)"/>
+    <!-- blade tip -->
+    <polygon points="14,2 18,2 16,0" fill="#e2e8f0"/>
+    <!-- guard -->
+    <rect x="8" y="21" width="16" height="3" rx="1.5" fill="#f59e0b"/>
+    <!-- grip -->
+    <rect x="13" y="24" width="6" height="7" rx="1.5" fill="#92400e"/>
+    <!-- shine on blade -->
+    <rect x="15" y="4" width="1.5" height="12" rx="0.75" fill="rgba(255,255,255,0.6)"/>
+  </svg>
+</div>
 
 <!-- LOADER -->
 <div id="loader">
   <div class="loader-logo" id="loader-logo"></div>
-  <div class="loader-txt">Loading DEV CLUB TRACK...</div>
+  <div class="loader-txt">Loading BEC Craft Coders...</div>
   <div class="loader-bar"><div class="loader-fill"></div></div>
 </div>
 
@@ -283,7 +324,7 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
   <div style="display:flex;align-items:center">
     <div class="logo-row" onclick="goNav('home');window.scrollTo({top:0,behavior:'smooth'})">
       <div class="mc-logo" id="logo-nav"></div>
-      <span class="logo-lbl">DEV CLUB TRACK</span>
+      <span class="logo-lbl" style="line-height:1.1">BEC Craft Coders<br><span style="font-size:0.62rem;font-weight:500;color:rgba(0,229,179,0.75);letter-spacing:0.01em">Mine ideas, Build projects</span></span>
     </div>
     <div id="nav-links">
       <button class="nb" id="nb-home" onclick="goNav('home')">🏠 Home</button>
@@ -306,7 +347,7 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
       <span class="pill-txt">⚡ Your club's sessions, attendance &amp; squad — all in one place</span>
     </div>
     <h1 class="hero-title">Build Your Club.<br>Track Every Session <span class="serif tl">Like a Legend.</span></h1>
-    <p class="hero-sub">DEV CLUB TRACK is your club's command center — log sessions, track who showed up, assign summaries, and keep your dev community running like a well-oiled machine.</p>
+    <p class="hero-sub">BEC Craft Coders is your club's command center — log sessions, track who showed up, assign summaries, and keep your dev community running like a well-oiled machine.</p>
     <button class="btn-cta" onmousemove="ctaGlow(event,this)" onclick="goNav('signin')">⛏️ Start Tracking Attendance →</button>
 
     <!-- Stats ribbon: 5 boxes -->
@@ -326,7 +367,7 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
   <div class="sec-wrap" id="sec-features">
     <span class="sec-tag">⛏️ Features</span>
     <h2 class="sec-h">Everything your club needs,<br><span class="serif" style="color:#00e5b3">nothing it doesn't.</span></h2>
-    <p class="sec-p">From session creation to attendance tracking, DEV CLUB TRACK covers every step of your community workflow.</p>
+    <p class="sec-p">From session creation to attendance tracking, BEC Craft Coders covers every step of your community workflow.</p>
     <div class="feat-grid">
       <div class="feat-c" onclick="goNav('signin')"><div class="feat-ico" style="background:rgba(118,78,232,0.15)">📋</div><h3>Session Management</h3><p>Create sessions with resource persons, host details, volunteers, and structured summaries — all in one place.</p></div>
       <div class="feat-c" onclick="goNav('signin')"><div class="feat-ico" style="background:rgba(0,229,179,0.12)">✅</div><h3>Attendance Tracking</h3><p>Mark members present or absent with one click. View the complete attendance history at a glance.</p></div>
@@ -367,7 +408,7 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
           </svg>
         </div>
         <div>
-          <div class="a-name">BEC DEV CLUB</div>
+          <div class="a-name">BEC Craft Coders</div>
           <div class="a-role">Student Developers</div>
         </div>
       </div>
@@ -376,11 +417,11 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
 
   <footer>
     <div class="ft-in">
-      <span style="font-weight:800;color:#fff;display:flex;align-items:center;gap:0.48rem">
-        <div class="mc-logo" id="logo-ft" style="width:20px;height:20px;border-radius:2px"></div>
-        DEV CLUB TRACK
-      </span>
-      <span>© 2025 BEC DEV CLUB. Built by developers, for developers.</span>
+        <span style="font-weight:800;color:#fff;display:flex;align-items:center;gap:0.48rem">
+          <div class="mc-logo" id="logo-ft" style="width:20px;height:20px;border-radius:2px"></div>
+          <span style="line-height:1.1">BEC Craft Coders<br><span style="font-size:0.58rem;font-weight:400;color:rgba(0,229,179,0.7)">Mine ideas, Build projects</span></span>
+        </span>
+      <span>© 2026 BEC Craft Coders. Mine ideas, Build projects.</span>
       <div class="ft-lnk">
         <span>Privacy</span><span>Terms</span>
         <span onclick="goNav('signin')">Sign In</span>
@@ -397,7 +438,7 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
       <button class="close-x" onclick="goNav('home')">✕</button>
       <div class="auth-logo-row">
         <div class="mc-logo" id="logo-si" style="width:29px;height:29px"></div>
-        <span style="font-weight:800;font-size:0.9rem">DEV CLUB TRACK</span>
+        <span style="font-weight:800;font-size:0.9rem;line-height:1.1">BEC Craft Coders<br><span style="font-size:0.6rem;font-weight:500;color:rgba(0,229,179,0.75)">Mine ideas, Build projects</span></span>
       </div>
       <h2>Welcome back ⛏️</h2>
       <p>Sign in to your account to continue</p>
@@ -422,10 +463,10 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
       <button class="close-x" onclick="goNav('home')">✕</button>
       <div class="auth-logo-row">
         <div class="mc-logo" id="logo-su" style="width:29px;height:29px"></div>
-        <span style="font-weight:800;font-size:0.9rem">DEV CLUB TRACK</span>
+        <span style="font-weight:800;font-size:0.9rem;line-height:1.1">BEC Craft Coders<br><span style="font-size:0.6rem;font-weight:500;color:rgba(0,229,179,0.75)">Mine ideas, Build projects</span></span>
       </div>
       <h2>Create Account 🚀</h2>
-      <p>Join DEV CLUB TRACK today</p>
+      <p>Join BEC Craft Coders today</p>
       <div class="rtabs">
         <button class="rt on" id="su-ta" onclick="suRole('attendee')">👤 Attendee</button>
         <button class="rt" id="su-tv" onclick="suRole('volunteer')">🤝 Volunteer</button>
@@ -433,6 +474,11 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
       <div class="fg"><label class="fl">Full Name</label><input class="fi" type="text" id="su-nm" placeholder="Your full name"/></div>
       <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="su-em" placeholder="you@example.com"/></div>
       <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="su-pw" placeholder="Minimum 6 characters"/></div>
+      <div class="fg">
+        <label class="fl">Choose Profile Picture</label>
+        <div id="avatar-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:0.48rem;margin-top:0.22rem"></div>
+        <input type="hidden" id="su-avatar" value="0"/>
+      </div>
       <div class="err-box" id="su-err"></div>
       <button class="btn-main" onclick="doSU()">🚀 Create Account</button>
       <div class="auth-sw">Already have an account? <a onclick="goNav('signin')">Sign in →</a></div>
@@ -445,7 +491,7 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
   <div class="ov ov-dash"></div>
   <div class="dash-layout">
     <aside class="sidebar">
-      <div class="sb-logo"><div class="mc-logo" id="logo-vol" style="width:25px;height:25px;border-radius:2px"></div><span>DEV CLUB TRACK</span></div>
+      <div class="sb-logo"><div class="mc-logo" id="logo-vol" style="width:25px;height:25px;border-radius:2px"></div><span style="line-height:1.15">BEC Craft Coders<br><span style="font-size:0.6rem;font-weight:400;color:rgba(0,229,179,0.65)">Mine ideas, Build projects</span></span></div>
       <div class="sb-lbl">Main</div>
       <button class="sbi on" id="vb-sessions"   onclick="vSec('sessions')">📋 Sessions</button>
       <button class="sbi"    id="vb-create"     onclick="vSec('create')">➕ Create Session</button>
@@ -519,11 +565,11 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
   <div class="ov ov-dash"></div>
   <div class="dash-layout">
     <aside class="sidebar">
-      <div class="sb-logo"><div class="mc-logo" id="logo-att" style="width:25px;height:25px;border-radius:2px"></div><span>DEV CLUB TRACK</span></div>
+      <div class="sb-logo"><div class="mc-logo" id="logo-att" style="width:25px;height:25px;border-radius:2px"></div><span style="line-height:1.15">BEC Craft Coders<br><span style="font-size:0.6rem;font-weight:400;color:rgba(0,229,179,0.65)">Mine ideas, Build projects</span></span></div>
       <div class="sb-lbl">Main</div>
       <button class="sbi on" id="ab-overview"  onclick="aSec('overview')">🏠 Overview</button>
       <button class="sbi"    id="ab-sessions"  onclick="aSec('sessions')">📋 Sessions</button>
-      <button class="sbi"    id="ab-mysummary" onclick="aSec('mysummary')">📝 My Summary</button>
+      <button class="sbi"    id="ab-mysummary" onclick="aSec('mysummary')">📝 All Summaries</button>
       <button class="sbi"    id="ab-profile"   onclick="aSec('profile')">👤 Profile</button>
       <div class="sb-bot">
         <div class="sb-user">
@@ -544,7 +590,7 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
         <div id="att-all"></div>
       </div>
       <div id="as-mysummary" class="dsec">
-        <div class="dh"><h1>📝 My Summary</h1><p>Sessions where you have been assigned to write the summary</p></div>
+        <div class="dh"><h1>📝 All Summaries</h1><p>All session summaries — your assigned ones and all published summaries</p></div>
         <div id="my-sum-list"></div>
       </div>
       <div id="as-profile" class="dsec">
@@ -626,7 +672,7 @@ async function loadAll(){
   applyAttendance(SESSIONS,aRes.data||[]);
 }
 
-async function dbUpsertUser(u){await sb.from('users').upsert({id:u.id,name:u.name,email:u.email,pass:u.pass,role:u.role});}
+async function dbUpsertUser(u){await sb.from('users').upsert({id:u.id,name:u.name,email:u.email,pass:u.pass,role:u.role,avatar:u.avatar??null});}
 async function dbDeleteUser(id){await sb.from('users').delete().eq('id',id);}
 async function dbUpsertSession(s){await sb.from('sessions').upsert({id:s.id,title:s.title,date:s.date,res:s.res,host:s.host,vols:s.vols||'',topic:s.topic||'',by_user:s.by||null,summary:s.summary||null,sum_by:s.sumBy||null});}
 async function dbDeleteSession(id){await sb.from('sessions').delete().eq('id',id);}
@@ -716,6 +762,7 @@ function goNav(p,opts={}){
     suRoleV='attendee';
     document.getElementById('su-ta')?.classList.add('on');
     document.getElementById('su-tv')?.classList.remove('on');
+    initAvatarPicker();
   }
   // update cursor
   if(window._cursorUpdate)window._cursorUpdate();
@@ -763,7 +810,62 @@ async function updateRibbon(){
 }
 function animNum(id,target){const el=document.getElementById(id);if(!el)return;let cur=0;const step=Math.max(1,Math.round(target/20));const iv=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=cur;if(cur>=target)clearInterval(iv);},40);}
 
-/* ══ AUTH ══ */
+/* ══ AVATARS ══ */
+// Each avatar is a Minecraft-style pixel SVG face (Steve, Alex, Creeper, Zombie, Enderman, Skeleton, Witch, Villager, Herobrine, Piglin, Blaze, Ghost, Warden, Phantom, Iron Golem, Snow Golem, Fox, Wolf)
+const MC_AVATARS=[
+  // 0 Steve
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#c8a882"/><rect x="1" y="1" width="14" height="14" fill="#c8a882"/><rect x="4" y="3" width="3" height="2" fill="#3d2b1e"/><rect x="9" y="3" width="3" height="2" fill="#3d2b1e"/><rect x="4" y="3" width="3" height="2" fill="#4a6fa5" opacity="0.7"/><rect x="9" y="3" width="3" height="2" fill="#4a6fa5" opacity="0.7"/><rect x="5" y="4" width="1" height="1" fill="#fff" opacity="0.6"/><rect x="10" y="4" width="1" height="1" fill="#fff" opacity="0.6"/><rect x="6" y="7" width="4" height="1" fill="#a0734a"/><rect x="5" y="8" width="6" height="2" fill="#a0734a"/><rect x="6" y="10" width="4" height="1" fill="#7a4f2d"/><rect x="3" y="1" width="10" height="2" fill="#5a3a1e"/><rect x="1" y="1" width="2" height="8" fill="#b89060" opacity="0.5"/><rect x="13" y="1" width="2" height="8" fill="#9a7040" opacity="0.5"/></svg>`,
+  // 1 Alex
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#d4a574"/><rect x="3" y="1" width="10" height="3" fill="#c8601a"/><rect x="2" y="4" width="12" height="1" fill="#c8601a"/><rect x="4" y="3" width="3" height="2" fill="#3d2b1e"/><rect x="9" y="3" width="3" height="2" fill="#3d2b1e"/><rect x="4" y="3" width="3" height="2" fill="#5a8c3c" opacity="0.75"/><rect x="9" y="3" width="3" height="2" fill="#5a8c3c" opacity="0.75"/><rect x="5" y="4" width="1" height="1" fill="#fff" opacity="0.6"/><rect x="10" y="4" width="1" height="1" fill="#fff" opacity="0.6"/><rect x="6" y="7" width="4" height="1" fill="#b07040"/><rect x="5" y="8" width="6" height="2" fill="#b07040"/><rect x="6" y="10" width="4" height="1" fill="#8a5030"/><rect x="1" y="1" width="14" height="1" fill="#a04010" opacity="0.6"/></svg>`,
+  // 2 Creeper
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#4caf50"/><rect x="3" y="2" width="3" height="3" fill="#1b3a1b"/><rect x="10" y="2" width="3" height="3" fill="#1b3a1b"/><rect x="5" y="7" width="6" height="2" fill="#1b3a1b"/><rect x="6" y="6" width="1" height="1" fill="#1b3a1b"/><rect x="9" y="6" width="1" height="1" fill="#1b3a1b"/><rect x="6" y="9" width="4" height="1" fill="#1b3a1b"/><rect x="5" y="10" width="2" height="2" fill="#1b3a1b"/><rect x="9" y="10" width="2" height="2" fill="#1b3a1b"/><rect x="0" y="0" width="16" height="1" fill="#2d7a2d"/><rect x="0" y="15" width="16" height="1" fill="#2d7a2d"/><rect x="0" y="0" width="1" height="16" fill="#2d7a2d"/><rect x="15" y="0" width="1" height="16" fill="#2d7a2d"/></svg>`,
+  // 3 Zombie
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#7aaa6a"/><rect x="4" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="9" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="4" y="3" width="3" height="2" fill="#cc0000" opacity="0.6"/><rect x="9" y="3" width="3" height="2" fill="#cc0000" opacity="0.6"/><rect x="5" y="4" width="1" height="1" fill="#ff4444" opacity="0.8"/><rect x="10" y="4" width="1" height="1" fill="#ff4444" opacity="0.8"/><rect x="3" y="1" width="10" height="2" fill="#5a7a4a"/><rect x="6" y="8" width="4" height="1" fill="#4a6a3a"/><rect x="5" y="9" width="6" height="2" fill="#5a7a4a"/><rect x="6" y="11" width="4" height="1" fill="#4a6a3a"/><rect x="1" y="1" width="2" height="6" fill="#6a9a5a" opacity="0.5"/><rect x="13" y="1" width="2" height="6" fill="#6a9a5a" opacity="0.5"/></svg>`,
+  // 4 Enderman
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#1a0a1a"/><rect x="4" y="3" width="3" height="2" fill="#1a0a1a"/><rect x="9" y="3" width="3" height="2" fill="#1a0a1a"/><rect x="4" y="3" width="3" height="2" fill="#cc00cc" opacity="0.9"/><rect x="9" y="3" width="3" height="2" fill="#cc00cc" opacity="0.9"/><rect x="5" y="3" width="1" height="1" fill="#ff44ff" opacity="0.9"/><rect x="10" y="3" width="1" height="1" fill="#ff44ff" opacity="0.9"/><rect x="6" y="8" width="4" height="3" fill="#2a0a2a"/><rect x="5" y="8" width="1" height="3" fill="#2a0a2a"/><rect x="10" y="8" width="1" height="3" fill="#2a0a2a"/><rect x="3" y="1" width="10" height="2" fill="#220a22"/><rect x="0" y="0" width="16" height="16" fill="#9900cc" opacity="0.05"/></svg>`,
+  // 5 Skeleton
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#c8c8c8"/><rect x="4" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="9" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="4" y="3" width="3" height="2" fill="#222" opacity="0.85"/><rect x="9" y="3" width="3" height="2" fill="#222" opacity="0.85"/><rect x="5" y="7" width="2" height="1" fill="#1a1a1a"/><rect x="9" y="7" width="2" height="1" fill="#1a1a1a"/><rect x="6" y="8" width="4" height="1" fill="#c8c8c8"/><rect x="5" y="9" width="1" height="2" fill="#1a1a1a"/><rect x="7" y="9" width="2" height="2" fill="#1a1a1a"/><rect x="10" y="9" width="1" height="2" fill="#1a1a1a"/><rect x="3" y="1" width="10" height="2" fill="#aaa"/></svg>`,
+  // 6 Witch
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#b07070"/><rect x="3" y="0" width="10" height="4" fill="#1a0a1a"/><rect x="5" y="4" width="6" height="2" fill="#2a0a2a"/><rect x="4" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="9" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="4" y="3" width="3" height="2" fill="#7700aa" opacity="0.8"/><rect x="9" y="3" width="3" height="2" fill="#7700aa" opacity="0.8"/><rect x="7" y="8" width="2" height="1" fill="#8b3a3a"/><rect x="6" y="9" width="4" height="1" fill="#7a2a2a"/><rect x="5" y="10" width="6" height="1" fill="#8b3a3a"/><rect x="9" y="6" width="2" height="2" fill="#e0a060" opacity="0.5"/></svg>`,
+  // 7 Villager
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#c8a882"/><rect x="3" y="1" width="10" height="2" fill="#4a2a0a"/><rect x="4" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="9" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="4" y="3" width="3" height="2" fill="#3d5a1e" opacity="0.8"/><rect x="9" y="3" width="3" height="2" fill="#3d5a1e" opacity="0.8"/><rect x="5" y="4" width="1" height="1" fill="#fff" opacity="0.5"/><rect x="10" y="4" width="1" height="1" fill="#fff" opacity="0.5"/><rect x="6" y="7" width="4" height="2" fill="#b07a3a"/><rect x="5" y="9" width="6" height="2" fill="#c8a060"/><rect x="7" y="11" width="2" height="1" fill="#a06030"/><rect x="2" y="7" width="2" height="5" fill="#6a4a2a" opacity="0.6"/><rect x="12" y="7" width="2" height="5" fill="#6a4a2a" opacity="0.6"/></svg>`,
+  // 8 Herobrine
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#c8a882"/><rect x="3" y="1" width="10" height="2" fill="#5a3a1e"/><rect x="4" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="9" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="4" y="3" width="3" height="2" fill="#ffffff" opacity="1"/><rect x="9" y="3" width="3" height="2" fill="#ffffff" opacity="1"/><rect x="5" y="3" width="1" height="2" fill="#dddddd"/><rect x="10" y="3" width="1" height="2" fill="#dddddd"/><rect x="6" y="7" width="4" height="1" fill="#a0734a"/><rect x="5" y="8" width="6" height="2" fill="#a0734a"/><rect x="6" y="10" width="4" height="1" fill="#7a4f2d"/><rect x="0" y="0" width="16" height="16" fill="#ffffff" opacity="0.04"/></svg>`,
+  // 9 Piglin
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#f4a8a8"/><rect x="3" y="1" width="10" height="2" fill="#d07070"/><rect x="4" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="9" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="4" y="3" width="3" height="2" fill="#cc4444" opacity="0.7"/><rect x="9" y="3" width="3" height="2" fill="#2244cc" opacity="0.7"/><rect x="5" y="4" width="1" height="1" fill="#ff8888" opacity="0.8"/><rect x="10" y="4" width="1" height="1" fill="#8888ff" opacity="0.8"/><rect x="6" y="7" width="4" height="1" fill="#c07070"/><rect x="7" y="8" width="2" height="1" fill="#e08080"/><rect x="5" y="9" width="6" height="2" fill="#d08080"/><rect x="2" y="4" width="2" height="3" fill="#f4a8a8"/><rect x="12" y="4" width="2" height="3" fill="#f4a8a8"/></svg>`,
+  // 10 Blaze
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#f0c040"/><rect x="4" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="9" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="4" y="3" width="3" height="2" fill="#ff6600" opacity="0.9"/><rect x="9" y="3" width="3" height="2" fill="#ff6600" opacity="0.9"/><rect x="5" y="4" width="1" height="1" fill="#ffcc00"/><rect x="10" y="4" width="1" height="1" fill="#ffcc00"/><rect x="1" y="1" width="3" height="2" fill="#ff4400" opacity="0.7"/><rect x="12" y="1" width="3" height="2" fill="#ff4400" opacity="0.7"/><rect x="1" y="13" width="3" height="2" fill="#ff6600" opacity="0.7"/><rect x="12" y="13" width="3" height="2" fill="#ff6600" opacity="0.7"/><rect x="6" y="8" width="4" height="4" fill="#c8a000" opacity="0.6"/></svg>`,
+  // 11 Ghost (Ghast)
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#f0f0f0"/><rect x="4" y="3" width="2" height="2" fill="#1a1a1a"/><rect x="10" y="3" width="2" height="2" fill="#1a1a1a"/><rect x="5" y="7" width="6" height="2" fill="#cc3333"/><rect x="6" y="6" width="1" height="1" fill="#cc3333"/><rect x="9" y="6" width="1" height="1" fill="#cc3333"/><rect x="6" y="9" width="1" height="3" fill="#d8d8d8"/><rect x="8" y="9" width="1" height="4" fill="#d8d8d8"/><rect x="10" y="9" width="1" height="3" fill="#d8d8d8"/><rect x="5" y="9" width="1" height="2" fill="#d8d8d8"/><rect x="11" y="9" width="1" height="2" fill="#d8d8d8"/><rect x="0" y="0" width="16" height="16" fill="#aaaaff" opacity="0.06"/></svg>`,
+  // 12 Warden
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#1a2a2a"/><rect x="4" y="3" width="3" height="2" fill="#0a1a1a"/><rect x="9" y="3" width="3" height="2" fill="#0a1a1a"/><rect x="4" y="3" width="3" height="2" fill="#00aaaa" opacity="0.8"/><rect x="9" y="3" width="3" height="2" fill="#00aaaa" opacity="0.8"/><rect x="5" y="4" width="1" height="1" fill="#00ffff" opacity="0.9"/><rect x="10" y="4" width="1" height="1" fill="#00ffff" opacity="0.9"/><rect x="3" y="1" width="10" height="2" fill="#0a2020"/><rect x="1" y="5" width="2" height="4" fill="#00cccc" opacity="0.4"/><rect x="13" y="5" width="2" height="4" fill="#00cccc" opacity="0.4"/><rect x="6" y="8" width="4" height="4" fill="#162222"/></svg>`,
+  // 13 Fox
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#e07030"/><rect x="3" y="1" width="4" height="3" fill="#e07030"/><rect x="9" y="1" width="4" height="3" fill="#e07030"/><rect x="4" y="0" width="3" height="2" fill="#e07030"/><rect x="9" y="0" width="3" height="2" fill="#e07030"/><rect x="4" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="9" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="4" y="3" width="3" height="2" fill="#2244aa" opacity="0.7"/><rect x="9" y="3" width="3" height="2" fill="#2244aa" opacity="0.7"/><rect x="5" y="7" width="2" height="1" fill="#1a1a1a"/><rect x="9" y="7" width="2" height="1" fill="#1a1a1a"/><rect x="4" y="8" width="8" height="1" fill="#f0f0f0"/><rect x="5" y="9" width="6" height="2" fill="#f0f0f0"/></svg>`,
+  // 14 Wolf
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#909090"/><rect x="3" y="1" width="4" height="3" fill="#808080"/><rect x="9" y="1" width="4" height="3" fill="#808080"/><rect x="4" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="9" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="4" y="3" width="3" height="2" fill="#cc8800" opacity="0.7"/><rect x="9" y="3" width="3" height="2" fill="#cc8800" opacity="0.7"/><rect x="5" y="4" width="1" height="1" fill="#ffcc44" opacity="0.8"/><rect x="10" y="4" width="1" height="1" fill="#ffcc44" opacity="0.8"/><rect x="5" y="7" width="6" height="1" fill="#707070"/><rect x="6" y="8" width="4" height="3" fill="#c0c0c0"/><rect x="6" y="8" width="4" height="1" fill="#707070"/></svg>`,
+  // 15 Snow Golem
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#f0f8ff"/><rect x="3" y="0" width="10" height="4" fill="#e07020"/><rect x="4" y="4" width="3" height="2" fill="#1a1a1a"/><rect x="9" y="4" width="3" height="2" fill="#1a1a1a"/><rect x="5" y="5" width="1" height="1" fill="#ff6600" opacity="0.7"/><rect x="10" y="5" width="1" height="1" fill="#ff6600" opacity="0.7"/><rect x="5" y="8" width="2" height="1" fill="#ff6600"/><rect x="8" y="8" width="1" height="1" fill="#ff6600"/><rect x="10" y="8" width="1" height="1" fill="#ff6600"/><rect x="6" y="10" width="4" height="4" fill="#ddeeff"/><rect x="5" y="11" width="6" height="3" fill="#e8f4ff"/></svg>`,
+  // 16 Iron Golem
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#c0b8a8"/><rect x="4" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="9" y="3" width="3" height="2" fill="#1a1a1a"/><rect x="4" y="3" width="3" height="2" fill="#2244aa" opacity="0.5"/><rect x="9" y="3" width="3" height="2" fill="#2244aa" opacity="0.5"/><rect x="3" y="1" width="10" height="2" fill="#a0988a"/><rect x="6" y="7" width="4" height="1" fill="#907060"/><rect x="5" y="8" width="6" height="3" fill="#b0a898"/><rect x="1" y="5" width="3" height="7" fill="#c0b8a8"/><rect x="12" y="5" width="3" height="7" fill="#c0b8a8"/><rect x="7" y="7" width="2" height="1" fill="#cc3333"/></svg>`,
+  // 17 Phantom
+  `<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="16" height="16" fill="#2a1a4a"/><rect x="4" y="4" width="3" height="2" fill="#1a1a1a"/><rect x="9" y="4" width="3" height="2" fill="#1a1a1a"/><rect x="4" y="4" width="3" height="2" fill="#00cc44" opacity="0.9"/><rect x="9" y="4" width="3" height="2" fill="#00cc44" opacity="0.9"/><rect x="5" y="4" width="1" height="1" fill="#44ff88"/><rect x="10" y="4" width="1" height="1" fill="#44ff88"/><rect x="1" y="8" width="4" height="2" fill="#1a1a3a"/><rect x="11" y="8" width="4" height="2" fill="#1a1a3a"/><rect x="3" y="10" width="2" height="4" fill="#1a1a3a"/><rect x="11" y="10" width="2" height="4" fill="#1a1a3a"/><rect x="6" y="8" width="4" height="6" fill="#2a1a4a"/></svg>`
+];
+
+function initAvatarPicker(){
+  const grid=document.getElementById('avatar-grid');if(!grid)return;
+  const sel=parseInt(document.getElementById('su-avatar')?.value||'0');
+  grid.innerHTML=MC_AVATARS.map((svg,i)=>`<div class="av-opt ${i===sel?'sel':''}" onclick="pickAvatar(${i})" title="${['Steve','Alex','Creeper','Zombie','Enderman','Skeleton','Witch','Villager','Herobrine','Piglin','Blaze','Ghast','Warden','Fox','Wolf','Snow Golem','Iron Golem','Phantom'][i]}">${svg}</div>`).join('');
+}
+function pickAvatar(i){
+  document.getElementById('su-avatar').value=i;
+  document.querySelectorAll('.av-opt').forEach((el,j)=>el.classList.toggle('sel',j===i));
+}
+function getAvatarEmoji(u){
+  if(u&&u.avatar!==undefined&&u.avatar!==null)return MC_AVATARS[u.avatar]||MC_AVATARS[0];
+  return '<span>'+( u&&u.name?u.name[0].toUpperCase():'?')+'</span>';
+}
+function isAvatarEmoji(u){return u&&u.avatar!==undefined&&u.avatar!==null;}
+
 function siRole(r){siRoleV=r;document.getElementById('si-ta').classList.toggle('on',r==='attendee');document.getElementById('si-tv').classList.toggle('on',r==='volunteer');}
 function suRole(r){suRoleV=r;document.getElementById('su-ta').classList.toggle('on',r==='attendee');document.getElementById('su-tv').classList.toggle('on',r==='volunteer');}
 function isValidEmail(e){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
@@ -788,12 +890,13 @@ async function doSU(){
   const nm=document.getElementById('su-nm').value.trim();
   const em=document.getElementById('su-em').value.trim();
   const pw=document.getElementById('su-pw').value;
+  const avatar=parseInt(document.getElementById('su-avatar')?.value||'0');
   const err=document.getElementById('su-err');
   err.style.display='none';
   if(!nm||!em||pw.length<6){err.textContent='❌ Fill all fields (password ≥ 6 chars).';err.style.display='block';return;}
   if(!isValidEmail(em)){err.textContent='❌ Please enter a valid email (e.g. you@example.com).';err.style.display='block';return;}
   if(USERS.find(u=>u.email===em)){err.textContent='❌ Email already exists. Sign in instead.';err.style.display='block';return;}
-  const u={id:'u'+Date.now(),name:nm,email:em,pass:pw,role:suRoleV};
+  const u={id:'u'+Date.now(),name:nm,email:em,pass:pw,role:suRoleV,avatar};
   await dbUpsertUser(u);USERS.push(u);
   saveMe(u);if(window._cursorUpdate)window._cursorUpdate();
   goNav(suRoleV==='volunteer'?'vol':'att');
@@ -841,7 +944,9 @@ async function confirmDeleteSessions(){
 async function initVol(){
   if(!ME)return;await loadAll();
   document.getElementById('vol-nm').textContent=ME.name;
-  document.getElementById('vol-av').textContent=ME.name[0].toUpperCase();
+  const volAv=document.getElementById('vol-av');
+  if(isAvatarEmoji(ME)){volAv.innerHTML=getAvatarEmoji(ME);volAv.style.fontSize='1rem';volAv.style.padding='3px';}
+  else{volAv.textContent=ME.name[0].toUpperCase();}
   buildAllLogos();vSec('sessions');
 }
 
@@ -888,7 +993,9 @@ async function createSession(){
 }
 
 function renderAttPicker(){
-  document.getElementById('att-pick-wrap').innerHTML=`<div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap"><label class="fl" style="margin:0;white-space:nowrap">Select Session:</label><select class="fi" id="att-pick" style="max-width:308px" onchange="renderAttForm()"><option value="">-- Choose a session --</option>${SESSIONS.map(s=>`<option value="${s.id}">${s.title} — ${fd(s.date)}</option>`).join('')}</select></div>`;
+  const today=new Date().toISOString().split('T')[0];
+  const opts=SESSIONS.map(s=>'<option value="'+s.id+'" '+(s.date!==today?'style="color:rgba(148,175,218,0.45)"':'')+'>'+( s.date===today?'⚡ ':'')+s.title+' — '+fd(s.date)+'</option>').join('');
+  document.getElementById('att-pick-wrap').innerHTML='<div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap"><label class="fl" style="margin:0;white-space:nowrap">Select Session:</label><select class="fi" id="att-pick" style="max-width:308px" onchange="renderAttForm()"><option value="">-- Choose a session --</option>'+opts+'</select></div><div class="info-mc it" style="margin-top:0.82rem;max-width:536px">⚡ Attendance can only be marked on the session\'s scheduled date. Sessions not scheduled for today will be view-only.</div>';
   document.getElementById('att-body').innerHTML='<div class="empty"><span class="ei">📋</span><p>Select a session above to mark attendance</p></div>';
 }
 
@@ -897,17 +1004,32 @@ function renderAttForm(){
   if(!sid){document.getElementById('att-body').innerHTML='<div class="empty"><span class="ei">📋</span><p>Select a session above</p></div>';return;}
   const sess=SESSIONS.find(s=>s.id===sid);
   const members=USERS.filter(u=>u.role==='attendee');
-  document.getElementById('att-body').innerHTML=`<div style="background:rgba(8,14,32,0.94);border:1px solid rgba(38,58,98,0.72);border-radius:12px;overflow:hidden;max-width:536px;backdrop-filter:blur(6px)"><div style="padding:0.82rem 1.18rem;border-bottom:1px solid rgba(38,58,98,0.5);background:linear-gradient(90deg,rgba(98,58,200,0.3),rgba(0,148,108,0.18))"><h3 style="font-size:0.94rem;font-weight:700">✅ ${sess.title}</h3><p style="font-size:0.76rem;color:rgba(148,175,218,0.8);margin-top:0.17rem">${fd(sess.date)} &nbsp;•&nbsp; ${sess.host}</p></div><div style="padding:0.72rem 1.12rem">${members.map(m=>{const st=sess.att[m.id];return`<div class="ar"><div class="an"><div class="mini-av" style="background:linear-gradient(135deg,#7c4dff,#00e5b3)">${m.name[0]}</div>${m.name}</div><div class="atb"><button class="tg tgp ${st===true?'on':''}" id="tp-${sid}-${m.id}" onclick="setAtt('${sid}','${m.id}',true)">✅ Present</button><button class="tg tga ${st===false?'on':''}" id="ta-${sid}-${m.id}" onclick="setAtt('${sid}','${m.id}',false)">❌ Absent</button></div></div>`;}).join('')}</div><div style="padding:0.72rem 1.12rem;border-top:1px solid rgba(38,58,98,0.5);display:flex;gap:0.7rem;flex-wrap:wrap"><button class="btn bt2" onclick="saveAtt('${sid}')">💾 Save Attendance</button><button class="btn bp2" onclick="openAssign('${sid}')">📝 Assign Summary Writer</button></div></div>`;
+  const today=new Date().toISOString().split('T')[0];
+  const isToday=sess.date===today;
+  const dateLabel=isToday?'<span class="bdg bt">⚡ Today\'s Session</span>':'<span class="bdg br">📅 Not scheduled for today — view only</span>';
+  document.getElementById('att-body').innerHTML=`<div style="background:rgba(8,14,32,0.94);border:1px solid rgba(38,58,98,0.72);border-radius:12px;overflow:hidden;max-width:536px;backdrop-filter:blur(6px)"><div style="padding:0.82rem 1.18rem;border-bottom:1px solid rgba(38,58,98,0.5);background:linear-gradient(90deg,rgba(98,58,200,0.3),rgba(0,148,108,0.18))"><h3 style="font-size:0.94rem;font-weight:700">✅ ${sess.title}</h3><p style="font-size:0.76rem;color:rgba(148,175,218,0.8);margin-top:0.17rem">${fd(sess.date)} &nbsp;•&nbsp; ${sess.host} &nbsp;•&nbsp; ${dateLabel}</p></div><div style="padding:0.72rem 1.12rem">${members.map(m=>{const st=sess.att[m.id];return`<div class="ar"><div class="an"><div class="mini-av" style="background:linear-gradient(135deg,#7c4dff,#00e5b3)">${m.name[0]}</div>${m.name}</div><div class="atb">${isToday?`<button class="tg tgp ${st===true?'on':''}" id="tp-${sid}-${m.id}" onclick="setAttLocal('${sid}','${m.id}',true)">✅ Present</button><button class="tg tga ${st===false?'on':''}" id="ta-${sid}-${m.id}" onclick="setAttLocal('${sid}','${m.id}',false)">❌ Absent</button>`:`<span class="bdg ${st===true?'bt':st===false?'br':'bm'}">${st===true?'✅ Present':st===false?'❌ Absent':'Not marked'}</span>`}</div></div>`;}).join('')}</div>${isToday?`<div style="padding:0.72rem 1.12rem;border-top:1px solid rgba(38,58,98,0.5);display:flex;gap:0.7rem;flex-wrap:wrap"><button class="btn bt2" onclick="saveAttNow('${sid}')">💾 Save Attendance</button><button class="btn bp2" onclick="openAssign('${sid}')">📝 Assign Summary Writer</button></div>`:''}</div>`;
 }
 
-async function setAtt(sid,uid,present){
+// pending attendance changes (not yet saved)
+let pendingAtt={};
+function setAttLocal(sid,uid,present){
   const sess=SESSIONS.find(s=>s.id===sid);if(!sess.att)sess.att={};
   sess.att[uid]=present;
+  if(!pendingAtt[sid])pendingAtt[sid]={};
+  pendingAtt[sid][uid]=present;
   document.getElementById(`tp-${sid}-${uid}`)?.classList.toggle('on',present);
   document.getElementById(`ta-${sid}-${uid}`)?.classList.toggle('on',!present);
-  await dbSetAttendance(sid,uid,present);
 }
-async function saveAtt(sid){await loadAll();toast('Attendance saved! ✅');renderVolSessions();}
+async function saveAttNow(sid){
+  const changes=pendingAtt[sid];
+  if(!changes||!Object.keys(changes).length){toast('⚠️ No changes to save.','err');return;}
+  const promises=Object.entries(changes).map(([uid,present])=>dbSetAttendance(sid,uid,present));
+  await Promise.all(promises);
+  delete pendingAtt[sid];
+  await loadAll();
+  toast('Attendance saved! ✅');
+  renderVolSessions();
+}
 
 let memberDeleteMode=false,selectedMembersForDelete=new Set();
 
@@ -954,7 +1076,7 @@ function renderMembers(){
     const pres=ms.filter(s=>s.att[m.id]===true).length;
     const rate=ms.length?Math.round(pres/ms.length*100):0;
     const isSel=selectedMembersForDelete.has(m.id);
-    return`<tr id="mrow-${m.id}" class="${isSel?'del-row-sel':''}" ${memberDeleteMode?`onclick="toggleMemberSelect('${m.id}')" style="cursor:pointer"`:''}>${memberDeleteMode?`<td style="text-align:center"><input type="checkbox" class="del-chk" id="mchk-${m.id}" ${isSel?'checked':''} onclick="event.stopPropagation();toggleMemberSelect('${m.id}')"/></td>`:''}<td><div style="display:flex;align-items:center;gap:0.56rem"><div class="mini-av" style="width:27px;height:27px;background:linear-gradient(135deg,#7c4dff,#00e5b3)">${m.name[0]}</div><span style="font-weight:700">${m.name}</span></div></td><td style="color:rgba(148,175,218,0.8)">${m.email}</td><td>${ms.length}</td><td><span class="bdg ${rate>=70?'bt':'br'}">${rate}%</span></td></tr>`;
+    return`<tr id="mrow-${m.id}" class="${isSel?'del-row-sel':''}" ${memberDeleteMode?`onclick="toggleMemberSelect('${m.id}')" style="cursor:pointer"`:''}>${memberDeleteMode?`<td style="text-align:center"><input type="checkbox" class="del-chk" id="mchk-${m.id}" ${isSel?'checked':''} onclick="event.stopPropagation();toggleMemberSelect('${m.id}')"/></td>`:''}<td><div style="display:flex;align-items:center;gap:0.56rem"><div class="mini-av" style="width:27px;height:27px;background:linear-gradient(135deg,#7c4dff,#00e5b3);${isAvatarEmoji(m)?'padding:2px;overflow:hidden':''}">${isAvatarEmoji(m)?getAvatarEmoji(m):m.name[0]}</div><span style="font-weight:700">${m.name}</span></div></td><td style="color:rgba(148,175,218,0.8)">${m.email}</td><td>${ms.length}</td><td><span class="bdg ${rate>=70?'bt':'br'}">${rate}%</span></td></tr>`;
   }).join('')}</tbody></table>`;
 }
 
@@ -1007,7 +1129,9 @@ const ASECS=['overview','sessions','mysummary','profile'];
 async function initAtt(){
   if(!ME)return;await loadAll();
   document.getElementById('att-nm').textContent=ME.name;
-  document.getElementById('att-av').textContent=ME.name[0].toUpperCase();
+  const attAv=document.getElementById('att-av');
+  if(isAvatarEmoji(ME)){attAv.innerHTML=getAvatarEmoji(ME);attAv.style.fontSize='1rem';attAv.style.padding='3px';}
+  else{attAv.textContent=ME.name[0].toUpperCase();}
   document.getElementById('att-welcome').textContent=`Welcome back, ${ME.name}! ⛏️`;
   buildAllLogos();aSec('overview');
 }
@@ -1033,9 +1157,30 @@ function renderAttSessions(){
 }
 function renderMySummary(){
   if(!ME)return;const uid=ME.id;
-  const assigned=SESSIONS.filter(s=>s.sumBy===uid);const area=document.getElementById('my-sum-list');
-  if(!assigned.length){area.innerHTML='<div class="empty"><span class="ei">📝</span><p>No sessions assigned to you yet.</p></div>';return;}
-  area.innerHTML=assigned.map(s=>`<div class="sc2"><div class="sc2-h"><h2>${s.title} <span style="font-size:0.76rem;font-weight:400;color:rgba(148,175,218,0.75)">${fd(s.date)}</span></h2>${s.summary?'<span class="bdg bt">✓ Submitted</span>':'<span class="bdg bg">Pending</span>'}</div><div style="padding:1.12rem 1.22rem"><div class="info-mc it" style="margin-bottom:0.82rem">🎙️ Host: ${s.host} &nbsp;|&nbsp; 📌 Topic: ${s.topic||'—'}</div>${s.summary?`<div class="sum-box">${s.summary}</div><div style="margin-top:0.7rem"><button class="btn bg2" onclick="openWriteSum('${s.id}')">✏️ Edit Summary</button></div>`:`<p style="color:rgba(148,175,218,0.78);font-size:0.875rem;margin-bottom:0.82rem">You've been chosen to write the summary for this session.</p><button class="btn bp2" onclick="openWriteSum('${s.id}')">✍️ Write Summary Now</button>`}</div></div>`).join('');
+  const area=document.getElementById('my-sum-list');
+  if(!SESSIONS.length){area.innerHTML='<div class="empty"><span class="ei">📝</span><p>No sessions yet.</p></div>';return;}
+  // split: assigned to me | other sessions with summaries | sessions where absent
+  const assignedToMe=SESSIONS.filter(s=>s.sumBy===uid);
+  const otherWithSummary=SESSIONS.filter(s=>s.sumBy!==uid&&s.summary);
+  const absentSessions=SESSIONS.filter(s=>{const st=s.att?.[uid];return st===false;});
+  let html='';
+  if(assignedToMe.length){
+    html+=`<div class="sum-lbl" style="font-size:0.78rem;margin-bottom:0.6rem;display:block">✍️ ASSIGNED TO YOU</div>`;
+    html+=assignedToMe.map(s=>`<div class="sc2"><div class="sc2-h"><h2>${s.title} <span style="font-size:0.76rem;font-weight:400;color:rgba(148,175,218,0.75)">${fd(s.date)}</span></h2>${s.summary?'<span class="bdg bt">✓ Submitted</span>':'<span class="bdg bg">Pending</span>'}</div><div style="padding:1.12rem 1.22rem"><div class="info-mc it" style="margin-bottom:0.82rem">🎙️ Host: ${s.host} &nbsp;|&nbsp; 📌 Topic: ${s.topic||'—'}</div>${s.summary?`<div class="sum-box">${s.summary}</div><div style="margin-top:0.7rem"><button class="btn bg2" onclick="openWriteSum('${s.id}')">✏️ Edit Summary</button></div>`:`<p style="color:rgba(148,175,218,0.78);font-size:0.875rem;margin-bottom:0.82rem">You've been chosen to write the summary for this session.</p><button class="btn bp2" onclick="openWriteSum('${s.id}')">✍️ Write Summary Now</button>`}</div></div>`).join('');
+  }
+  if(otherWithSummary.length){
+    html+=`<div class="sum-lbl" style="font-size:0.78rem;margin:1.2rem 0 0.6rem;display:block">📚 ALL SESSION SUMMARIES</div>`;
+    html+=otherWithSummary.map(s=>{
+      const writer=USERS.find(u=>u.id===s.sumBy);
+      return`<div class="sc2"><div class="sc2-h"><h2>${s.title} <span style="font-size:0.76rem;font-weight:400;color:rgba(148,175,218,0.75)">${fd(s.date)}</span></h2><span class="bdg bt">✓ Published</span></div><div style="padding:1.12rem 1.22rem"><div class="info-mc ip" style="margin-bottom:0.82rem">✍️ Written by: <strong>${writer?writer.name:'Unknown'}</strong> &nbsp;|&nbsp; 🎙️ Host: ${s.host}</div><div class="sum-box">${s.summary}</div></div></div>`;
+    }).join('');
+  }
+  if(absentSessions.length){
+    html+=`<div class="sum-lbl" style="font-size:0.78rem;margin:1.2rem 0 0.6rem;display:block;color:#e06060">❌ SESSIONS YOU MISSED</div>`;
+    html+=absentSessions.map(s=>`<div class="sc2" style="border-color:rgba(220,65,65,0.28)"><div class="sc2-h" style="background:linear-gradient(90deg,rgba(180,40,40,0.22),rgba(40,10,10,0.18))"><h2>${s.title} <span style="font-size:0.76rem;font-weight:400;color:rgba(148,175,218,0.75)">${fd(s.date)}</span></h2><span class="bdg br">❌ Absent</span></div><div style="padding:1.12rem 1.22rem"><div class="info-mc" style="background:rgba(220,65,65,0.08);border-color:#e06060;border-left:3px solid #e06060;color:rgba(224,96,96,0.92)">You were absent on this day and did not attend this session.</div>${s.summary?`<div style="margin-top:0.82rem"><div class="sum-lbl">Session summary (for reference)</div><div class="sum-box">${s.summary}</div></div>`:''}</div></div>`).join('');
+  }
+  if(!html)html='<div class="empty"><span class="ei">📝</span><p>No summaries or attendance records yet.</p></div>';
+  area.innerHTML=html;
 }
 function openWriteSum(sid){const sess=SESSIONS.find(s=>s.id===sid);if(!sess)return;assignTgt=sid;document.getElementById('ws-ttl').textContent=sess.title;document.getElementById('ws-txt').value=sess.summary||'';openM('m-writesum');}
 async function submitSum(){
@@ -1050,7 +1195,8 @@ function renderAttProfile(){
   const pres=myS.filter(s=>s.att[uid]===true).length;
   const rate=myS.length?Math.round(pres/myS.length*100):0;
   const sums=SESSIONS.filter(s=>s.sumBy===uid&&s.summary).length;
-  document.getElementById('att-prof').innerHTML=`<div class="pav" style="background:linear-gradient(135deg,#3a82f0,#7c4dff)">${ME.name[0].toUpperCase()}</div><h2 style="font-size:1.36rem;font-weight:800;margin-bottom:0.2rem">${ME.name}</h2><p style="color:rgba(148,175,218,0.8);margin-bottom:1.48rem;font-size:0.875rem">${ME.email}</p><div class="sg"><div class="sc" style="--cc:rgba(68,128,242,0.22)"><div class="sl">Role</div><div style="font-size:0.9rem;font-weight:700;color:#5599ef">👤 Attendee</div></div><div class="sc" style="--cc:rgba(0,229,179,0.22)"><div class="sl">Att. Rate</div><div class="sv" style="color:#00e5b3;font-size:1.6rem">${rate}%</div></div><div class="sc" style="--cc:rgba(118,78,232,0.22)"><div class="sl">Present</div><div class="sv" style="color:#a880f5;font-size:1.6rem">${pres}</div></div><div class="sc" style="--cc:rgba(255,198,0,0.22)"><div class="sl">Summaries</div><div class="sv" style="color:#f0c040;font-size:1.6rem">${sums}</div></div></div>`;
+  const avDisplay=isAvatarEmoji(ME)?`<div class="pav" style="background:linear-gradient(135deg,#3a82f0,#7c4dff);padding:6px;overflow:hidden">${getAvatarEmoji(ME)}</div>`:`<div class="pav" style="background:linear-gradient(135deg,#3a82f0,#7c4dff)">${ME.name[0].toUpperCase()}</div>`;
+  document.getElementById('att-prof').innerHTML=`${avDisplay}<h2 style="font-size:1.36rem;font-weight:800;margin-bottom:0.2rem">${ME.name}</h2><p style="color:rgba(148,175,218,0.8);margin-bottom:1.48rem;font-size:0.875rem">${ME.email}</p><div class="sg"><div class="sc" style="--cc:rgba(68,128,242,0.22)"><div class="sl">Role</div><div style="font-size:0.9rem;font-weight:700;color:#5599ef">👤 Attendee</div></div><div class="sc" style="--cc:rgba(0,229,179,0.22)"><div class="sl">Att. Rate</div><div class="sv" style="color:#00e5b3;font-size:1.6rem">${rate}%</div></div><div class="sc" style="--cc:rgba(118,78,232,0.22)"><div class="sl">Present</div><div class="sv" style="color:#a880f5;font-size:1.6rem">${pres}</div></div><div class="sc" style="--cc:rgba(255,198,0,0.22)"><div class="sl">Summaries</div><div class="sv" style="color:#f0c040;font-size:1.6rem">${sums}</div></div></div>`;
 }
 
 /* ══ MODALS / TOAST / UTILS ══ */
@@ -1082,16 +1228,29 @@ window.addEventListener('DOMContentLoaded',async()=>{
 <script>
 (function(){
   var cur=document.getElementById('mc-cursor');
-  function getEmoji(){
-    if(!window.ME)return'⛏️';
-    return window.ME.role==='volunteer'?'🗡️':'⛏️';
+  var pick=document.getElementById('cursor-pick');
+  var sword=document.getElementById('cursor-sword');
+  var mx=0,my=0,cx=-999,cy=-999;
+  var raf;
+  function getRole(){return window.ME&&window.ME.role==='volunteer'?'volunteer':'attendee';}
+  function update(){
+    if(!window.ME){pick.style.display='';sword.style.display='none';}
+    else if(getRole()==='volunteer'){pick.style.display='none';sword.style.display='';}
+    else{pick.style.display='';sword.style.display='none';}
   }
-  function update(){cur.textContent=getEmoji();}
   window._cursorUpdate=update;
-  document.addEventListener('mousemove',function(e){
-    cur.style.transform='translate('+e.clientX+'px,'+e.clientY+'px)';
-    update();
-  });
+  // smooth lerp
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function loop(){
+    cx=lerp(cx,mx,0.18);
+    cy=lerp(cy,my,0.18);
+    cur.style.transform='translate('+~~cx+'px,'+~~cy+'px)';
+    raf=requestAnimationFrame(loop);
+  }
+  document.addEventListener('mousemove',function(e){mx=e.clientX-4;my=e.clientY-4;});
+  document.addEventListener('mousedown',function(){cur.classList.add('clicking');});
+  document.addEventListener('mouseup',function(){cur.classList.remove('clicking');});
+  loop();
   update();
 })();
 </script>
