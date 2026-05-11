@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>BEC Craft Coders ⛏️</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -13,8 +13,181 @@ body{font-family:'Inter',sans-serif;color:#fff;overflow-x:hidden;background:#060
 ::-webkit-scrollbar-track{background:#060a14}
 ::-webkit-scrollbar-thumb{background:#00e5b3;border-radius:3px}
 
-/* ═══════════ CURSOR (normal) ═══════════ */
-#mc-cursor{display:none}
+/* ═══ PRESS START 2P — ALL HEADINGS ═══ */
+h1,h2,h3,h4,.hero-title,.sec-t,.dh h1,.dh h2,.card-title,.loader-txt,.hero-sub-title{font-family:'Press Start 2P',monospace!important}
+h1{font-size:clamp(1rem,3vw,1.6rem)!important;line-height:1.7!important}
+h2{font-size:clamp(0.75rem,2vw,1.1rem)!important;line-height:1.7!important}
+h3{font-size:clamp(0.6rem,1.5vw,0.85rem)!important;line-height:1.7!important}
+.hero-title{font-size:clamp(1.1rem,4vw,2rem)!important;line-height:1.8!important}
+.sec-t{font-size:clamp(0.9rem,2.5vw,1.4rem)!important;line-height:1.8!important}
+.dh h1{font-size:clamp(0.7rem,2vw,1rem)!important;line-height:1.8!important}
+
+/* ═══ MINECRAFT PIXEL BUTTON HOVER ═══ */
+.btn,.nb,.btn-sm,button.tg,button.sbi,.cta-btn{
+  position:relative;overflow:hidden;
+  image-rendering:pixelated;
+  transition:all 0.1s steps(2,end)!important;
+}
+.btn::before,.cta-btn::before,.nb::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,0.04) 0px,rgba(255,255,255,0.04) 2px,transparent 2px,transparent 4px);
+  opacity:0;transition:opacity 0.1s;pointer-events:none;
+}
+.btn:hover::before,.cta-btn:hover::before,.nb:hover::before{opacity:1}
+.btn:hover,.cta-btn:hover{
+  transform:translateY(-3px)!important;
+  box-shadow:0 0 0 2px #00e5b3,4px 4px 0 #007a5e,0 0 18px rgba(0,229,179,0.4)!important;
+}
+.btn:active,.cta-btn:active{
+  transform:translateY(2px)!important;
+  box-shadow:0 0 0 2px #00e5b3,1px 1px 0 #007a5e!important;
+}
+.nb:hover{
+  transform:translateY(-2px)!important;
+  box-shadow:2px 2px 0 rgba(0,229,179,0.5)!important;
+}
+/* Pixel click ripple on buttons */
+@keyframes pixelPop{
+  0%{transform:scale(1);opacity:1}
+  50%{transform:scale(1.08);opacity:0.7}
+  100%{transform:scale(1);opacity:1}
+}
+.btn:active,.cta-btn:active{animation:pixelPop 0.12s steps(3,end);}
+
+/* ═══ XP LEVEL SYSTEM ═══ */
+.xp-card{background:linear-gradient(135deg,rgba(8,14,32,0.97),rgba(18,28,60,0.97));border:2px solid rgba(0,229,179,0.3);border-radius:14px;padding:1.2rem 1.4rem;box-shadow:4px 4px 0 rgba(0,0,0,0.6),0 0 20px rgba(0,229,179,0.08);position:relative;overflow:hidden}
+.xp-card::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 12px,rgba(0,229,179,0.015) 12px,rgba(0,229,179,0.015) 14px);pointer-events:none}
+.xp-level-badge{display:inline-flex;align-items:center;gap:0.5rem;background:linear-gradient(135deg,#7c4dff,#3a82f0);border:2px solid rgba(124,77,255,0.6);border-radius:8px;padding:0.3rem 0.7rem;font-family:'Press Start 2P',monospace;font-size:0.55rem;color:#fff;box-shadow:2px 2px 0 rgba(0,0,0,0.5),0 0 12px rgba(124,77,255,0.4);margin-bottom:0.6rem}
+.xp-level-num{font-size:1.3rem;font-weight:800;color:#00e5b3;font-family:'Press Start 2P',monospace;text-shadow:0 0 10px rgba(0,229,179,0.6)}
+.xp-title{font-family:'Press Start 2P',monospace;font-size:0.65rem;color:#fff;margin:0.2rem 0 0.5rem;text-shadow:1px 1px 0 rgba(0,0,0,0.8)}
+.xp-bar-wrap{background:rgba(0,0,0,0.5);border:2px solid rgba(0,229,179,0.25);border-radius:0;height:18px;overflow:hidden;position:relative;box-shadow:inset 2px 2px 0 rgba(0,0,0,0.4)}
+.xp-bar-fill{height:100%;background:repeating-linear-gradient(90deg,#00e5b3 0,#00e5b3 8px,#00b38a 8px,#00b38a 16px);transition:width 1.2s cubic-bezier(0.4,0,0.2,1);box-shadow:0 0 8px rgba(0,229,179,0.5);position:relative}
+.xp-bar-fill::after{content:'';position:absolute;top:0;left:0;right:0;height:40%;background:rgba(255,255,255,0.15)}
+.xp-bar-label{font-size:0.68rem;color:rgba(148,175,218,0.9);margin-top:0.35rem;font-weight:600}
+.xp-gains{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.7rem}
+.xp-gain-chip{background:rgba(0,229,179,0.1);border:1px solid rgba(0,229,179,0.25);border-radius:6px;padding:0.22rem 0.55rem;font-size:0.7rem;color:#00e5b3;font-weight:600;box-shadow:1px 1px 0 rgba(0,0,0,0.3)}
+.xp-gain-chip span{color:rgba(148,175,218,0.7);font-weight:400}
+
+@keyframes livePulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,229,179,0.4)}50%{opacity:0.75;box-shadow:0 0 0 6px rgba(0,229,179,0)}}
+
+/* ═══ RATING STARS ═══ */
+.star-row{display:flex;gap:0.3rem;align-items:center}
+.star{font-size:1.3rem;cursor:pointer;transition:transform 0.1s steps(2,end);color:rgba(148,175,218,0.25);filter:grayscale(1)}
+.star.on,.star:hover{color:#ffd700;filter:none;transform:scale(1.2)}
+.star:hover~.star{color:rgba(148,175,218,0.25);filter:grayscale(1);transform:none}
+.rating-card{background:rgba(8,14,32,0.95);border:2px solid rgba(0,229,179,0.2);border-radius:12px;padding:1rem 1.2rem;margin-bottom:0.7rem;box-shadow:3px 3px 0 rgba(0,0,0,0.5)}
+.rating-avg{font-family:'Press Start 2P',monospace;font-size:0.6rem;color:#ffd700;margin-left:0.5rem}
+
+.lb-row{display:flex;align-items:center;gap:0.9rem;padding:0.75rem 1rem;border-radius:10px;border:1.5px solid rgba(38,58,98,0.5);background:rgba(8,14,32,0.85);margin-bottom:0.5rem;transition:all 0.18s;box-shadow:2px 2px 0 rgba(0,0,0,0.4)}
+.lb-row:hover{border-color:rgba(0,229,179,0.3);box-shadow:2px 2px 0 rgba(0,229,179,0.2)}
+.lb-row.lb-me{border-color:rgba(0,229,179,0.5);background:rgba(0,229,179,0.06);box-shadow:3px 3px 0 rgba(0,229,179,0.25)}
+.lb-rank{font-family:'Press Start 2P',monospace;font-size:0.7rem;width:2rem;text-align:center;flex-shrink:0}
+.lb-av{width:36px;height:36px;border-radius:6px;background:linear-gradient(135deg,#7c4dff,#00e5b3);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0;border:2px solid rgba(255,255,255,0.1);box-shadow:2px 2px 0 rgba(0,0,0,0.4)}
+.lb-info{flex:1;min-width:0}
+.lb-name{font-weight:700;font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-lvl{font-size:0.68rem;color:rgba(148,175,218,0.7);margin-top:0.1rem;font-family:'Press Start 2P',monospace}
+.lb-xp{font-family:'Press Start 2P',monospace;font-size:0.62rem;color:#00e5b3;text-align:right;white-space:nowrap;text-shadow:0 0 8px rgba(0,229,179,0.4)}
+.lb-medal{font-size:1.3rem}
+
+.pixel-border,.sc,.fi,.dh,.auth-card,.dash-section,.sc2,.sum-box,.info-mc{
+  border-image:none!important;
+  outline:none;
+}
+/* Block-style box shadow borders on cards/panels */
+.sc{
+  box-shadow:inset 0 0 0 2px rgba(0,229,179,0.18),
+             3px 3px 0 rgba(0,0,0,0.5)!important;
+}
+.sc:hover{
+  box-shadow:inset 0 0 0 2px rgba(0,229,179,0.5),
+             3px 3px 0 rgba(0,229,179,0.3),
+             0 0 12px rgba(0,229,179,0.15)!important;
+}
+.fi{
+  box-shadow:inset 2px 2px 0 rgba(0,0,0,0.4),
+             inset -1px -1px 0 rgba(255,255,255,0.06)!important;
+  border:1.5px solid rgba(0,229,179,0.25)!important;
+}
+.fi:focus{
+  border-color:#00e5b3!important;
+  box-shadow:inset 2px 2px 0 rgba(0,0,0,0.4),
+             0 0 0 2px rgba(0,229,179,0.3),
+             3px 3px 0 rgba(0,0,0,0.5)!important;
+}
+.auth-card{
+  box-shadow:inset 0 0 0 2px rgba(0,229,179,0.12),
+             4px 4px 0 rgba(0,0,0,0.6),
+             0 0 40px rgba(0,229,179,0.06)!important;
+}
+.sc2{
+  box-shadow:inset 0 0 0 2px rgba(0,229,179,0.12),
+             3px 3px 0 rgba(0,0,0,0.45)!important;
+}
+
+/* ═══ MINECRAFT LOADING SCREEN ═══ */
+#loader{
+  background:#060a14;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(0,229,179,0.015) 0px,rgba(0,229,179,0.015) 1px,transparent 1px,transparent 32px),
+    repeating-linear-gradient(90deg,rgba(0,229,179,0.015) 0px,rgba(0,229,179,0.015) 1px,transparent 1px,transparent 32px);
+}
+.loader-logo{animation:logoPulse 0.6s steps(2,end) infinite!important}
+.loader-txt{
+  font-family:'Press Start 2P',monospace!important;
+  font-size:0.7rem!important;
+  letter-spacing:0.12em!important;
+  color:#00e5b3!important;
+  text-shadow:0 0 10px rgba(0,229,179,0.6),0 0 20px rgba(0,229,179,0.3)!important;
+  animation:textBlink 1s steps(1,end) infinite;
+}
+@keyframes textBlink{0%,100%{opacity:1}50%{opacity:0.6}}
+.loader-bar{
+  border:2px solid rgba(0,229,179,0.4)!important;
+  border-radius:0!important;
+  background:rgba(0,0,0,0.6)!important;
+  box-shadow:2px 2px 0 rgba(0,0,0,0.8),inset 1px 1px 0 rgba(0,0,0,0.4)!important;
+  image-rendering:pixelated;
+}
+.loader-fill{
+  border-radius:0!important;
+  background:repeating-linear-gradient(90deg,#00e5b3 0,#00e5b3 8px,#00b38a 8px,#00b38a 16px)!important;
+  animation:loadFill 1.6s steps(20,end) forwards!important;
+  box-shadow:0 0 8px rgba(0,229,179,0.6)!important;
+}
+#loader-subtitle{
+  font-family:'Press Start 2P',monospace;
+  font-size:0.5rem;
+  color:rgba(0,229,179,0.5);
+  margin-top:0.6rem;
+  letter-spacing:0.08em;
+}
+
+/* ═══ FLOATING PIXEL PARTICLES ═══ */
+#pixel-particles{position:fixed;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+.px-particle{position:absolute;pointer-events:none;animation:floatUp linear infinite;image-rendering:pixelated}
+.px-star{width:3px;height:3px;background:#00e5b3;box-shadow:0 0 4px #00e5b3,0 0 8px rgba(0,229,179,0.5);animation:starTwinkle ease-in-out infinite,floatUp linear infinite}
+.px-sq{width:6px;height:6px;animation:floatUp linear infinite,sqSpin linear infinite}
+.px-firefly{width:3px;height:3px;border-radius:50%;animation:fireflyFloat ease-in-out infinite}
+@keyframes floatUp{
+  0%{transform:translateY(100vh) translateX(0);opacity:0}
+  10%{opacity:1}
+  90%{opacity:0.7}
+  100%{transform:translateY(-80px) translateX(var(--drift,0px));opacity:0}
+}
+@keyframes starTwinkle{
+  0%,100%{box-shadow:0 0 4px #00e5b3,0 0 8px rgba(0,229,179,0.5);opacity:1}
+  50%{box-shadow:0 0 10px #fff,0 0 20px #00e5b3,0 0 30px rgba(0,229,179,0.6);opacity:0.6}
+}
+@keyframes sqSpin{
+  0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}
+}
+@keyframes fireflyFloat{
+  0%,100%{opacity:0.2;transform:translate(0,0)}
+  25%{opacity:1;transform:translate(8px,-12px)}
+  50%{opacity:0.3;transform:translate(-6px,8px)}
+  75%{opacity:0.9;transform:translate(10px,4px)}
+}
+
 
 /* ═══════════ PAGE SYSTEM ═══════════ */
 #app{position:relative;min-height:100vh}
@@ -159,9 +332,10 @@ textarea.fi{resize:vertical;min-height:108px}
 .dh{margin-bottom:1.45rem}
 .dh h1{font-size:1.48rem;font-weight:800}
 .dh p{color:rgba(148,175,218,0.8);font-size:0.86rem;margin-top:0.26rem}
-.dsec{display:none;opacity:0;transform:translateX(10px)}
-.dsec.on{display:block;animation:secIn 0.3s cubic-bezier(0.4,0,0.2,1) forwards}
-@keyframes secIn{to{opacity:1;transform:translateX(0)}}
+.dsec{display:none}
+.dsec.on{display:block}
+
+
 .sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(162px,1fr));gap:0.95rem;margin-bottom:1.4rem}
 .sc{background:rgba(8,14,32,0.92);border:1px solid rgba(38,58,98,0.72);border-radius:11px;padding:1.08rem;position:relative;overflow:hidden;backdrop-filter:blur(6px);transition:transform 0.2s,border-color 0.2s;cursor:default}
 .sc:hover{transform:translateY(-2px);border-color:rgba(0,229,179,0.3)}
@@ -308,14 +482,33 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
   </svg>
 </div>
 
-<!-- LOADER -->
+<!-- MINECRAFT LOADER -->
 <div id="loader">
-  <div class="loader-logo" id="loader-logo"></div>
-  <div class="loader-txt">Loading BEC Craft Coders...</div>
-  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:0;position:relative">
+    <!-- Pixel grid decoration top -->
+    <div style="display:grid;grid-template-columns:repeat(8,10px);gap:2px;margin-bottom:1.4rem;opacity:0.35">
+      <div style="height:10px;background:#2d6a2d"></div><div style="height:10px;background:#3a8a3a"></div><div style="height:10px;background:#4a3a1a"></div><div style="height:10px;background:#2d6a2d"></div>
+      <div style="height:10px;background:#3a8a3a"></div><div style="height:10px;background:#2d6a2d"></div><div style="height:10px;background:#4a3a1a"></div><div style="height:10px;background:#3a8a3a"></div>
+    </div>
+    <!-- Logo -->
+    <div class="loader-logo" id="loader-logo" style="width:72px;height:72px;border:3px solid rgba(0,229,179,0.5);box-shadow:0 0 0 3px rgba(0,0,0,0.8),4px 4px 0 rgba(0,0,0,0.6),0 0 20px rgba(0,229,179,0.3)"></div>
+    <!-- Title -->
+    <div style="margin:1.2rem 0 0.4rem;font-family:'Press Start 2P',monospace;font-size:0.85rem;color:#00e5b3;text-shadow:0 0 12px rgba(0,229,179,0.7),3px 3px 0 rgba(0,0,0,0.8);letter-spacing:0.05em">BEC CRAFT CODERS</div>
+    <div class="loader-txt" style="margin-bottom:1.2rem">Loading World...</div>
+    <!-- Progress bar -->
+    <div class="loader-bar" style="width:240px"><div class="loader-fill"></div></div>
+    <!-- Subtitle -->
+    <div id="loader-subtitle">Mine ideas, Build projects</div>
+    <!-- Pixel grid decoration bottom -->
+    <div style="display:grid;grid-template-columns:repeat(8,10px);gap:2px;margin-top:1.4rem;opacity:0.35">
+      <div style="height:10px;background:#4a3a1a"></div><div style="height:10px;background:#2d6a2d"></div><div style="height:10px;background:#3a8a3a"></div><div style="height:10px;background:#4a3a1a"></div>
+      <div style="height:10px;background:#2d6a2d"></div><div style="height:10px;background:#4a3a1a"></div><div style="height:10px;background:#3a8a3a"></div><div style="height:10px;background:#2d6a2d"></div>
+    </div>
+  </div>
 </div>
 
 <canvas id="bg-canvas"></canvas>
+
 
 <nav id="navbar" style="display:none">
   <div style="display:flex;align-items:center">
@@ -345,7 +538,7 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
     </div>
     <h1 class="hero-title">Build Your Club.<br>Track Every Session <span class="serif tl">Like a Legend.</span></h1>
     <p class="hero-sub">BEC Craft Coders is your club's command center — log sessions, track who showed up, assign summaries, and keep your dev community running like a well-oiled machine.</p>
-    <button class="btn-cta" onmousemove="ctaGlow(event,this)" onclick="goNav('signin')">⛏️ Start Tracking Attendance →</button>
+    <button class="btn-cta" onmousemove="ctaGlow(event,this)" onclick="goNav('signin')">🏕️ ENTER THE WORLD</button>
 
     <!-- Stats ribbon: 5 boxes -->
     <div class="stats-ribbon">
@@ -418,9 +611,11 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
           <div class="mc-logo" id="logo-ft" style="width:20px;height:20px;border-radius:2px"></div>
           <span style="line-height:1.1">BEC Craft Coders<br><span style="font-size:0.58rem;font-weight:400;color:rgba(0,229,179,0.7)">Mine ideas, Build projects</span></span>
         </span>
-      <span>© 2026 BEC Craft Coders. Mine ideas, Build projects.</span>
+      <span style="text-align:center;line-height:1.8">
+        <span style="display:block">Crafted with ❤️ by BEC Craft Coders</span>
+        <span style="display:block;color:rgba(0,229,179,0.7)">⛏️ Built Block by Block by BEC Craft Coders</span>
+      </span>
       <div class="ft-lnk">
-        <span>Privacy</span><span>Terms</span>
         <span onclick="goNav('signin')">Sign In</span>
       </div>
     </div>
@@ -443,7 +638,7 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
         <button class="rt on" id="si-ta" onclick="siRole('attendee')">👤 Attendee</button>
         <button class="rt" id="si-tv" onclick="siRole('volunteer')">🤝 Volunteer</button>
       </div>
-      <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="si-em" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doSI()"/></div>
+      <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="si-em" placeholder="you@yourlastname.com" onkeydown="if(event.key==='Enter')doSI()"/></div>
       <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="si-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doSI()"/></div>
       <div class="err-box" id="si-err"></div>
       <button class="btn-main" onclick="doSI()">⛏️ Sign In</button>
@@ -469,7 +664,7 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
         <button class="rt" id="su-tv" onclick="suRole('volunteer')">🤝 Volunteer</button>
       </div>
       <div class="fg"><label class="fl">Full Name</label><input class="fi" type="text" id="su-nm" placeholder="Your full name"/></div>
-      <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="su-em" placeholder="you@example.com"/></div>
+      <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="su-em" placeholder="you@yourlastname.com"/></div>
       <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="su-pw" placeholder="Minimum 6 characters"/></div>
       <div class="err-box" id="su-err"></div>
       <button class="btn-main" onclick="doSU()">🚀 Create Account</button>
@@ -489,6 +684,8 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
       <button class="sbi"    id="vb-create"     onclick="vSec('create')">➕ Create Session</button>
       <button class="sbi"    id="vb-attendance" onclick="vSec('attendance')">✅ Mark Attendance</button>
       <div class="sb-lbl">Manage</div>
+      <button class="sbi"    id="vb-leaderboard" onclick="vSec('leaderboard')">🏆 Top XP Earners</button>
+      <button class="sbi"    id="vb-ratesummary" onclick="vSec('ratesummary')">⭐ Rate Summaries</button>
       <button class="sbi"    id="vb-members"    onclick="vSec('members')">👥 Members</button>
       <button class="sbi"    id="vb-summaries"  onclick="vSec('summaries')">📝 Summaries</button>
       <div class="sb-bot">
@@ -516,8 +713,13 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
         <div class="fc">
           <div class="fg2">
             <div class="fg"><label class="fl">Session Title *</label><input class="fi" id="cs-ttl" placeholder="e.g. Web Dev Workshop #5"/></div>
-            <div class="fg"><label class="fl">Date *</label><input class="fi" type="date" id="cs-dt"/></div>
+            <div class="fg"><label class="fl">📅 Date *</label><input class="fi" type="date" id="cs-dt"/></div>
           </div>
+          <div class="fg2">
+            <div class="fg"><label class="fl">⏰ Start Time *</label><input class="fi" type="time" id="cs-time-start" placeholder="e.g. 10:00"/></div>
+            <div class="fg"><label class="fl">⏰ End Time *</label><input class="fi" type="time" id="cs-time-end" placeholder="e.g. 12:00"/></div>
+          </div>
+          <div class="fg"><label class="fl">📍 Venue *</label><input class="fi" id="cs-venue" placeholder="e.g. Lab 3, Block B, CSE Department"/></div>
           <div class="fg"><label class="fl">📚 Resource Persons *</label><input class="fi" id="cs-res" placeholder="e.g. Prof. Sharma, Guest Speaker"/></div>
           <div class="fg2">
             <div class="fg"><label class="fl">🎙️ Session Host *</label><input class="fi" id="cs-host" placeholder="e.g. Session Host Name"/></div>
@@ -532,6 +734,14 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
         <div class="dh"><h1>✅ Mark Attendance</h1><p>Select a session then toggle each member's presence</p></div>
         <div id="att-pick-wrap" style="margin-bottom:1.4rem"></div>
         <div id="att-body"></div>
+      </div>
+      <div id="vs-ratesummary" class="dsec">
+        <div class="dh"><h1>⭐ Rate Summaries</h1><p>Rate the quality of session summaries written by members</p></div>
+        <div id="vol-rate-summary-list"></div>
+      </div>
+      <div id="vs-leaderboard" class="dsec">
+        <div class="dh"><h1>🏆 Top XP Earners</h1><p>Member XP leaderboard — viewable by everyone</p></div>
+        <div id="vol-leaderboard"></div>
       </div>
       <div id="vs-members" class="dsec">
         <div class="dh"><h1>👥 Members</h1><p>All registered attendees in the system</p></div>
@@ -559,10 +769,13 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
     <aside class="sidebar">
       <div class="sb-logo"><div class="mc-logo" id="logo-att" style="width:25px;height:25px;border-radius:2px"></div><span style="line-height:1.15">BEC Craft Coders<br><span style="font-size:0.6rem;font-weight:400;color:rgba(0,229,179,0.65)">Mine ideas, Build projects</span></span></div>
       <div class="sb-lbl">Main</div>
-      <button class="sbi on" id="ab-overview"  onclick="aSec('overview')">🏠 Overview</button>
+      <button class="sbi on" id="ab-overview"  onclick="aSec('overview')">⚔️ Player Dashboard</button>
       <button class="sbi"    id="ab-sessions"  onclick="aSec('sessions')">📋 Sessions</button>
       <button class="sbi"    id="ab-mysummary" onclick="aSec('mysummary')">📝 All Summaries</button>
-      <button class="sbi"    id="ab-profile"   onclick="aSec('profile')">👤 Profile</button>
+      <button class="sbi"    id="ab-ratesummary" onclick="aSec('ratesummary')">⭐ Rate Summaries</button>
+      <button class="sbi"    id="ab-ratesession" onclick="aSec('ratesession')">🎯 Rate Sessions</button>
+      <button class="sbi"    id="ab-leaderboard" onclick="aSec('leaderboard')">🏆 Top XP Earners</button>
+      <button class="sbi"    id="ab-profile"   onclick="aSec('profile')">🧙 Player Profile</button>
       <div class="sb-bot">
         <div class="sb-user">
           <div class="sb-av" id="att-av" style="background:linear-gradient(135deg,#3a82f0,#7c4dff)">A</div>
@@ -573,7 +786,8 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
     </aside>
     <main class="dm">
       <div id="as-overview" class="dsec on">
-        <div class="dh"><h1>🏠 Overview</h1><p id="att-welcome">Welcome back!</p></div>
+        <div class="dh"><h1>⚔️ Player Dashboard</h1><p id="att-welcome">Welcome back!</p></div>
+        <div id="att-xp-bar" style="margin-bottom:1.2rem"></div>
         <div class="sg" id="att-sg"></div>
         <div class="tw" style="margin-top:1.38rem"><div class="th"><h3>Recent Sessions</h3><button class="bo" onclick="aSec('sessions')">View All →</button></div><div id="att-recent"></div></div>
       </div>
@@ -585,8 +799,20 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
         <div class="dh"><h1>📝 All Summaries</h1><p>All session summaries — your assigned ones and all published summaries</p></div>
         <div id="my-sum-list"></div>
       </div>
+      <div id="as-ratesummary" class="dsec">
+        <div class="dh"><h1>⭐ Rate Summaries</h1><p>Rate the quality of session summaries written by members</p></div>
+        <div id="att-rate-summary-list"></div>
+      </div>
+      <div id="as-ratesession" class="dsec">
+        <div class="dh"><h1>🎯 Rate Sessions</h1><p>Share how the session went — your feedback helps improve future sessions</p></div>
+        <div id="att-rate-session-list"></div>
+      </div>
+      <div id="as-leaderboard" class="dsec">
+        <div class="dh"><h1>🏆 Top XP Earners</h1><p>Leaderboard — who's grinding the hardest?</p></div>
+        <div id="att-leaderboard"></div>
+      </div>
       <div id="as-profile" class="dsec">
-        <div class="dh"><h1>👤 Profile</h1></div>
+        <div class="dh"><h1>🧙 Player Profile</h1></div>
         <div class="pcard" id="att-prof"></div>
       </div>
     </main>
@@ -654,15 +880,29 @@ function applyAttendance(sessions,attRows){
 
 async function safeQuery(table,query){
   try{
-    const r=await query;
-    if(r.error&&r.error.name==='DataCloneError')return{data:[],error:null};
-    return r;
+    let r;
+    try{r=await query;}catch(e){
+      if(e&&(e.name==='DataCloneError'||String(e).includes('DataClone')||String(e).includes('postMessage')))return{data:[],error:null};
+      throw e;
+    }
+    if(r&&r.error){
+      const msg=String(r.error.message||r.error||'');
+      if(msg.includes('DataClone')||msg.includes('postMessage'))return{data:[],error:null};
+    }
+    return r||{data:[],error:null};
   }catch(e){
-    if(e&&e.name==='DataCloneError')return{data:[],error:null};
+    if(e&&(e.name==='DataCloneError'||String(e).includes('DataClone')||String(e).includes('postMessage')))return{data:[],error:null};
     console.error(table,'exception:',e);
     return{data:[],error:e};
   }
 }
+
+// Suppress DataCloneError globally — it's a browser artifact, not a real DB failure
+window.addEventListener('unhandledrejection',function(e){
+  if(e&&e.reason&&(e.reason.name==='DataCloneError'||String(e.reason).includes('DataClone')||String(e.reason).includes('postMessage'))){
+    e.preventDefault();e.stopPropagation();
+  }
+});
 
 async function loadAll(){
   const uRes=await safeQuery('users',    sb.from('users').select('*'));
@@ -671,11 +911,8 @@ async function loadAll(){
 
   USERS=uRes.data||[];
   SESSIONS=sRes.data||[];
-  SESSIONS.forEach(s=>{s.res=s.res||'';s.vols=s.vols||'';s.topic=s.topic||'';s.by=s.by_user;s.sumBy=s.sum_by;});
-
-  USERS.forEach(u=>{
-  });
-
+  SESSIONS.forEach(s=>{s.res=s.res||'';s.vols=s.vols||'';s.topic=s.topic||'';s.by=s.by_user;s.sumBy=s.sum_by;s.timeStart=s.time_start||'';s.timeEnd=s.time_end||'';s.venue=s.venue||'';});
+  USERS.forEach(u=>{if(u.avatar==null)u.avatar=null;});
   applyAttendance(SESSIONS,aRes.data||[]);
 }
 
@@ -683,25 +920,34 @@ async function initApp(){
   // kept for reference — actual boot is in DOMContentLoaded below
 }
 
-async function safeWrite(label,promise){
+async function safeWrite(label,queryFn){
   try{
-    const r=await promise;
-    if(r.error&&r.error.name!=='DataCloneError')console.error(label,':',r.error.message);
+    const p=typeof queryFn==='function'?queryFn():queryFn;
+    let r;
+    try{r=await p;}catch(e){
+      if(e&&(e.name==='DataCloneError'||String(e).includes('DataClone')||String(e).includes('postMessage')))return;
+      console.error(label,'await error:',e);return;
+    }
+    if(r&&r.error){
+      const msg=String(r.error.message||r.error||'');
+      if(!msg.includes('DataClone')&&!msg.includes('postMessage'))console.error(label,':',r.error.message);
+    }
   }catch(e){
-    if(!e||e.name!=='DataCloneError')console.error(label,'exception:',e);
+    if(e&&(e.name==='DataCloneError'||String(e).includes('DataClone')||String(e).includes('postMessage')))return;
+    console.error(label,'exception:',e);
   }
 }
 
 async function dbUpsertUser(u){
-  await safeWrite('dbUpsertUser',sb.from('users').upsert({id:u.id,name:u.name,email:u.email,pass:u.pass,role:u.role}));
+  await safeWrite('dbUpsertUser',()=>sb.from('users').upsert({id:u.id,name:u.name,email:u.email,pass:u.pass,role:u.role}));
 }
 async function dbEnsureAvatarColumn(){}
-async function dbDeleteUser(id){await safeWrite('dbDeleteUser',sb.from('users').delete().eq('id',id));}
-async function dbUpsertSession(s){await safeWrite('dbUpsertSession',sb.from('sessions').upsert({id:s.id,title:s.title,date:s.date,res:s.res,host:s.host,vols:s.vols||'',topic:s.topic||'',by_user:s.by||null,summary:s.summary||null,sum_by:s.sumBy||null}));}
-async function dbDeleteSession(id){await safeWrite('dbDeleteSession',sb.from('sessions').delete().eq('id',id));}
-async function dbSetAttendance(sid,uid,present){await safeWrite('dbSetAttendance',sb.from('attendance').upsert({session_id:sid,user_id:uid,present}));}
-async function dbUpdateSummary(sid,summary){await safeWrite('dbUpdateSummary',sb.from('sessions').update({summary}).eq('id',sid));}
-async function dbAssignSumBy(sid,uid){await safeWrite('dbAssignSumBy',sb.from('sessions').update({sum_by:uid}).eq('id',sid));}
+async function dbDeleteUser(id){await safeWrite('dbDeleteUser',()=>sb.from('users').delete().eq('id',id));}
+async function dbUpsertSession(s){await safeWrite('dbUpsertSession',()=>sb.from('sessions').upsert({id:s.id,title:s.title,date:s.date,time_start:s.timeStart||null,time_end:s.timeEnd||null,venue:s.venue||null,res:s.res,host:s.host,vols:s.vols||'',topic:s.topic||'',by_user:s.by||null,summary:s.summary||null,sum_by:s.sumBy||null}));}
+async function dbDeleteSession(id){await safeWrite('dbDeleteSession',()=>sb.from('sessions').delete().eq('id',id));}
+async function dbSetAttendance(sid,uid,present){await safeWrite('dbSetAttendance',()=>sb.from('attendance').upsert({session_id:sid,user_id:uid,present}));}
+async function dbUpdateSummary(sid,summary){await safeWrite('dbUpdateSummary',()=>sb.from('sessions').update({summary}).eq('id',sid));}
+async function dbAssignSumBy(sid,uid){await safeWrite('dbAssignSumBy',()=>sb.from('sessions').update({sum_by:uid}).eq('id',sid));}
 function saveAll(){}
 
 /* ══ ROLE STATE ══ */
@@ -810,7 +1056,7 @@ window.addEventListener('scroll',()=>{const nb=document.getElementById('navbar')
 
 /* ══ MISSION TEXT REVEAL ══ */
 (function(){
-  const txt="We believe every session matters. DEV CLUB TRACK was built so no contribution goes unnoticed — every host, every volunteer, every attendee is part of the record. Because great communities are built one session at a time.";
+  const txt="We believe every session matters. BEC Craft Coders was built so no contribution goes unnoticed — every host, every volunteer, every attendee is part of the record. Because great communities are built one session at a time.";
   const el=document.getElementById('mission-txt');if(!el)return;
   el.innerHTML=txt.split(' ').map(w=>`<span class="ws">${w}</span>`).join(' ');
   const spans=el.querySelectorAll('.ws');
@@ -837,7 +1083,11 @@ function animNum(id,target){const el=document.getElementById(id);if(!el)return;l
 
 function siRole(r){siRoleV=r;document.getElementById('si-ta').classList.toggle('on',r==='attendee');document.getElementById('si-tv').classList.toggle('on',r==='volunteer');}
 function suRole(r){suRoleV=r;document.getElementById('su-ta').classList.toggle('on',r==='attendee');document.getElementById('su-tv').classList.toggle('on',r==='volunteer');}
-function isValidEmail(e){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+function isValidEmail(e){
+  // Must match pattern: something@something.something (basic)
+  // AND must follow you@lastname.com style — no numbers-only local parts
+  return/^[a-zA-Z][a-zA-Z0-9._]*@[a-zA-Z][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}$/.test(e);
+}
 
 async function doSI(){
   const em=document.getElementById('si-em').value.trim();
@@ -845,7 +1095,7 @@ async function doSI(){
   const err=document.getElementById('si-err');
   err.style.display='none';
   if(!em){err.textContent='❌ Please enter your email address.';err.style.display='block';return;}
-  if(!isValidEmail(em)){err.textContent='❌ Please enter a valid email (e.g. you@example.com).';err.style.display='block';return;}
+  if(!isValidEmail(em)){err.textContent='❌ Enter a valid email like you@yourlastname.com';err.style.display='block';return;}
   if(!pw){err.textContent='❌ Please enter your password.';err.style.display='block';return;}
   const u=USERS.find(x=>x.email===em&&x.pass===pw);
   if(!u){err.textContent='❌ Invalid email or password.';err.style.display='block';return;}
@@ -862,7 +1112,7 @@ async function doSU(){
   const err=document.getElementById('su-err');
   err.style.display='none';
   if(!nm||!em||pw.length<6){err.textContent='❌ Fill all fields (password ≥ 6 chars).';err.style.display='block';return;}
-  if(!isValidEmail(em)){err.textContent='❌ Please enter a valid email (e.g. you@example.com).';err.style.display='block';return;}
+  if(!isValidEmail(em)){err.textContent='❌ Enter a valid email like you@yourlastname.com';err.style.display='block';return;}
   if(USERS.find(u=>u.email===em)){err.textContent='❌ Email already exists. Sign in instead.';err.style.display='block';return;}
   const u={id:'u'+Date.now(),name:nm,email:em,pass:pw,role:suRoleV};
   await dbUpsertUser(u);USERS.push(u);
@@ -874,7 +1124,7 @@ async function doSU(){
 function doSO(){clearMe();if(window._cursorUpdate)window._cursorUpdate();goNav('home',{force:true});toast('Signed out. See you next session! 👋');}
 
 /* ══ VOLUNTEER DASHBOARD ══ */
-const VSECS=['sessions','create','attendance','members','summaries'];
+const VSECS=['sessions','create','attendance','leaderboard','ratesummary','members','summaries'];
 let deleteMode=false,selectedForDelete=new Set();
 
 function toggleDeleteMode(){
@@ -916,13 +1166,43 @@ async function initVol(){
   buildAllLogos();vSec('sessions');
 }
 
-function vSec(id){
-  if(id!=='sessions'&&deleteMode){deleteMode=false;selectedForDelete.clear();const ban=document.getElementById('del-mode-banner'),btn=document.getElementById('btn-del-toggle');if(ban)ban.classList.remove('active');if(btn){btn.classList.remove('active-del');btn.textContent='🗑️ Delete';}}
-  if(id!=='members'&&memberDeleteMode){memberDeleteMode=false;selectedMembersForDelete.clear();const ban=document.getElementById('mem-del-banner'),btn=document.getElementById('btn-mem-del-toggle');if(ban)ban.classList.remove('active');if(btn){btn.classList.remove('active-del');btn.textContent='🗑️ Remove Members';}}
-  VSECS.forEach(s=>{document.getElementById('vs-'+s).classList.toggle('on',s===id);document.getElementById('vb-'+s).classList.toggle('on',s===id);});
-  ({sessions:renderVolSessions,create:initCreate,attendance:renderAttPicker,members:renderMembers,summaries:renderSummaries})[id]?.();
-}
 function initCreate(){const d=document.getElementById('cs-dt');if(d&&!d.value)d.value=new Date().toISOString().split('T')[0];}
+
+function formatTime(t){if(!t)return'';const[h,m]=t.split(':');const hr=parseInt(h);const ampm=hr>=12?'PM':'AM';return`${hr%12||12}:${m} ${ampm}`;}
+
+function getSessionStatus(s){
+  const now=new Date();
+  const today=now.toISOString().split('T')[0];
+  if(s.date!==today){
+    return s.date<today
+      ?{label:'Ended',color:'#e06060',bg:'rgba(220,65,65,0.15)',border:'rgba(220,65,65,0.4)',dot:'#e06060',icon:'🔴'}
+      :{label:'Upcoming',color:'rgba(148,175,218,0.7)',bg:'rgba(38,58,98,0.2)',border:'rgba(38,58,98,0.4)',dot:'#5a7ab0',icon:'📅'};
+  }
+  // Today — check time
+  if(!s.timeStart||!s.timeEnd){
+    return{label:'Today',color:'#ffd700',bg:'rgba(255,215,0,0.12)',border:'rgba(255,215,0,0.4)',dot:'#ffd700',icon:'🟡'};
+  }
+  const [sh,sm]=s.timeStart.split(':').map(Number);
+  const [eh,em]=s.timeEnd.split(':').map(Number);
+  const startMin=sh*60+sm;
+  const endMin=eh*60+em;
+  const nowMin=now.getHours()*60+now.getMinutes();
+  if(nowMin>=startMin&&nowMin<=endMin){
+    return{label:'🔴 LIVE',color:'#00e5b3',bg:'rgba(0,229,179,0.13)',border:'rgba(0,229,179,0.5)',dot:'#00e5b3',icon:'🟢',live:true};
+  }
+  if(nowMin<startMin&&startMin-nowMin<=60){
+    return{label:'Starting Soon',color:'#ffd700',bg:'rgba(255,215,0,0.12)',border:'rgba(255,215,0,0.4)',dot:'#ffd700',icon:'🟡'};
+  }
+  if(nowMin>endMin){
+    return{label:'Ended Today',color:'#e06060',bg:'rgba(220,65,65,0.15)',border:'rgba(220,65,65,0.4)',dot:'#e06060',icon:'🔴'};
+  }
+  return{label:'Today',color:'#ffd700',bg:'rgba(255,215,0,0.12)',border:'rgba(255,215,0,0.4)',dot:'#ffd700',icon:'🟡'};
+}
+
+function statusBadge(s){
+  const st=getSessionStatus(s);
+  return`<span style="display:inline-flex;align-items:center;gap:0.3rem;padding:0.18rem 0.55rem;border-radius:4px;font-size:0.68rem;font-weight:700;color:${st.color};background:${st.bg};border:1px solid ${st.border};${st.live?'animation:livePulse 1.2s ease-in-out infinite;':''}">${st.live?`<span style="width:6px;height:6px;border-radius:50%;background:#00e5b3;display:inline-block;animation:livePulse 0.8s ease-in-out infinite"></span>`:''}${st.label}</span>`;
+}
 
 function renderVolSessions(){
   const members=USERS.filter(u=>u.role==='attendee');
@@ -934,34 +1214,46 @@ function renderVolSessions(){
     <div class="sc" style="--cc:rgba(68,128,242,0.22)"><div class="sl">Attendances</div><div class="sv" style="color:#5599ef">${totalPres}</div><div class="ss">Present records</div></div>
     <div class="sc" style="--cc:rgba(255,198,0,0.22)"><div class="sl">Summaries</div><div class="sv" style="color:#f0c040">${sumDone}/${SESSIONS.length}</div><div class="ss">Written</div></div>`;
   if(!SESSIONS.length){document.getElementById('vol-tbl').innerHTML='<div class="empty"><span class="ei">📋</span><p>No sessions yet. Create your first one!</p></div>';return;}
-  document.getElementById('vol-tbl').innerHTML=`<table class="dt"><thead><tr>${deleteMode?'<th style="width:38px"></th>':''}<th>Title</th><th>Date</th><th>Host</th><th>Attendance</th><th>Summary</th><th>Actions</th></tr></thead><tbody>${SESSIONS.map(s=>{
+  document.getElementById('vol-tbl').innerHTML=`<table class="dt"><thead><tr>${deleteMode?'<th style="width:38px"></th>':''}<th>Title</th><th>Date & Time</th><th>Venue</th><th>Status</th><th>Attendance</th><th>Summary</th><th>Actions</th></tr></thead><tbody>${SESSIONS.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).map(s=>{
     const tot=Object.keys(s.att||{}).length,pres=Object.values(s.att||{}).filter(Boolean).length;
-    const sb=s.summary?'<span class="bdg bt">✓ Written</span>':s.sumBy?'<span class="bdg bb">Assigned</span>':'<span class="bdg bm">Pending</span>';
+    const sbadge=s.summary?'<span class="bdg bt">✓ Written</span>':s.sumBy?'<span class="bdg bb">Assigned</span>':'<span class="bdg bm">Pending</span>';
     const isSel=selectedForDelete.has(s.id);
-    return`<tr id="row-${s.id}" class="${isSel?'del-row-sel':''}" ${deleteMode?`onclick="toggleRowSelect('${s.id}')" style="cursor:pointer"`:''}>${deleteMode?`<td style="text-align:center"><input type="checkbox" class="del-chk" id="chk-${s.id}" ${isSel?'checked':''} onclick="event.stopPropagation();toggleRowSelect('${s.id}')"/></td>`:''}<td style="font-weight:700">${s.title}</td><td style="color:rgba(148,175,218,0.8)">${fd(s.date)}</td><td>${s.host}</td><td><span class="bdg bt">${pres}/${tot} Present</span></td><td>${sb}</td><td><div style="display:flex;gap:0.36rem;flex-wrap:wrap"><button class="btn bg2" onclick="event.stopPropagation();viewSess('${s.id}')">👁 View</button><button class="btn bp2" onclick="event.stopPropagation();openAssign('${s.id}')">📝 Assign</button></div></td></tr>`;
+    const timeStr=s.timeStart?`<div style="font-size:0.7rem;color:rgba(148,175,218,0.6);margin-top:0.15rem">${formatTime(s.timeStart)}${s.timeEnd?' – '+formatTime(s.timeEnd):''}</div>`:'';
+    return`<tr id="row-${s.id}" class="${isSel?'del-row-sel':''}" ${deleteMode?`onclick="toggleRowSelect('${s.id}')" style="cursor:pointer"`:''}>${deleteMode?`<td style="text-align:center"><input type="checkbox" class="del-chk" id="chk-${s.id}" ${isSel?'checked':''} onclick="event.stopPropagation();toggleRowSelect('${s.id}')"/></td>`:''}<td style="font-weight:700">${s.title}</td><td><div>${fd(s.date)}</div>${timeStr}</td><td style="font-size:0.8rem;color:rgba(148,175,218,0.8)">${s.venue||'—'}</td><td>${statusBadge(s)}</td><td><span class="bdg bt">${pres}/${tot} Present</span></td><td>${sbadge}</td><td><div style="display:flex;gap:0.36rem;flex-wrap:wrap"><button class="btn bg2" onclick="event.stopPropagation();viewSess('${s.id}')">👁 View</button><button class="btn bp2" onclick="event.stopPropagation();openAssign('${s.id}')">📝 Assign</button></div></td></tr>`;
   }).join('')}</tbody></table>`;
 }
 
 async function createSession(){
   const title=document.getElementById('cs-ttl').value.trim();
   const date=document.getElementById('cs-dt').value;
+  const timeStart=document.getElementById('cs-time-start').value;
+  const timeEnd=document.getElementById('cs-time-end').value;
+  const venue=document.getElementById('cs-venue').value.trim();
   const res=document.getElementById('cs-res').value.trim();
   const host=document.getElementById('cs-host').value.trim();
   const vols=document.getElementById('cs-vols').value.trim();
   const topic=document.getElementById('cs-topic').value.trim();
-  if(!title||!date||!res||!host){toast('⚠️ Fill all required (*) fields','err');return;}
-  const newSess={id:'s'+Date.now(),title,date,res,host,vols,topic,by:ME?.id,summary:null,sumBy:null,att:{}};
+  if(!title||!date||!timeStart||!timeEnd||!venue||!res||!host){toast('⚠️ Fill all required (*) fields','err');return;}
+  const newSess={id:'s'+Date.now(),title,date,timeStart,timeEnd,venue,res,host,vols,topic,by:ME?.id,summary:null,sumBy:null,att:{}};
   USERS.filter(u=>u.role==='attendee').forEach(u=>{newSess.att[u.id]=null;});
   await dbUpsertSession(newSess);SESSIONS.push(newSess);
   toast(`Session "${title}" created! 🚀`);
-  ['cs-ttl','cs-res','cs-host','cs-vols','cs-topic'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['cs-ttl','cs-res','cs-host','cs-vols','cs-topic','cs-venue'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('cs-time-start').value='';
+  document.getElementById('cs-time-end').value='';
   vSec('sessions');
 }
 
 function renderAttPicker(){
-  const today=new Date().toISOString().split('T')[0];
-  const opts=SESSIONS.map(s=>'<option value="'+s.id+'" '+(s.date!==today?'style="color:rgba(148,175,218,0.45)"':'')+'>'+( s.date===today?'⚡ ':'')+s.title+' — '+fd(s.date)+'</option>').join('');
-  document.getElementById('att-pick-wrap').innerHTML='<div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap"><label class="fl" style="margin:0;white-space:nowrap">Select Session:</label><select class="fi" id="att-pick" style="max-width:308px" onchange="renderAttForm()"><option value="">-- Choose a session --</option>'+opts+'</select></div><div class="info-mc it" style="margin-top:0.82rem;max-width:536px">⚡ Attendance can only be marked on the session\'s scheduled date. Sessions not scheduled for today will be view-only.</div>';
+  const opts=SESSIONS.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).map(s=>{
+    const st=getSessionStatus(s);
+    return`<option value="${s.id}">${st.icon} ${s.title} — ${fd(s.date)} [${st.label}]</option>`;
+  }).join('');
+  document.getElementById('att-pick-wrap').innerHTML=
+    '<div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">'+
+    '<label class="fl" style="margin:0;white-space:nowrap">Select Session:</label>'+
+    '<select class="fi" id="att-pick" style="max-width:360px" onchange="renderAttForm()">'+
+    '<option value="">-- Choose a session --</option>'+opts+'</select></div>';
   document.getElementById('att-body').innerHTML='<div class="empty"><span class="ei">📋</span><p>Select a session above to mark attendance</p></div>';
 }
 
@@ -970,10 +1262,15 @@ function renderAttForm(){
   if(!sid){document.getElementById('att-body').innerHTML='<div class="empty"><span class="ei">📋</span><p>Select a session above</p></div>';return;}
   const sess=SESSIONS.find(s=>s.id===sid);
   const members=USERS.filter(u=>u.role==='attendee');
-  const today=new Date().toISOString().split('T')[0];
-  const isToday=sess.date===today;
-  const dateLabel=isToday?'<span class="bdg bt">⚡ Today\'s Session</span>':'<span class="bdg br">📅 Not scheduled for today — view only</span>';
-  document.getElementById('att-body').innerHTML=`<div style="background:rgba(8,14,32,0.94);border:1px solid rgba(38,58,98,0.72);border-radius:12px;overflow:hidden;max-width:536px;backdrop-filter:blur(6px)"><div style="padding:0.82rem 1.18rem;border-bottom:1px solid rgba(38,58,98,0.5);background:linear-gradient(90deg,rgba(98,58,200,0.3),rgba(0,148,108,0.18))"><h3 style="font-size:0.94rem;font-weight:700">✅ ${sess.title}</h3><p style="font-size:0.76rem;color:rgba(148,175,218,0.8);margin-top:0.17rem">${fd(sess.date)} &nbsp;•&nbsp; ${sess.host} &nbsp;•&nbsp; ${dateLabel}</p></div><div style="padding:0.72rem 1.12rem">${members.map(m=>{const st=sess.att[m.id];return`<div class="ar"><div class="an"><div class="mini-av" style="background:linear-gradient(135deg,#7c4dff,#00e5b3)">${m.name[0]}</div>${m.name}</div><div class="atb">${isToday?`<button class="tg tgp ${st===true?'on':''}" id="tp-${sid}-${m.id}" onclick="setAttLocal('${sid}','${m.id}',true)">✅ Present</button><button class="tg tga ${st===false?'on':''}" id="ta-${sid}-${m.id}" onclick="setAttLocal('${sid}','${m.id}',false)">❌ Absent</button>`:`<span class="bdg ${st===true?'bt':st===false?'br':'bm'}">${st===true?'✅ Present':st===false?'❌ Absent':'Not marked'}</span>`}</div></div>`;}).join('')}</div>${isToday?`<div style="padding:0.72rem 1.12rem;border-top:1px solid rgba(38,58,98,0.5);display:flex;gap:0.7rem;flex-wrap:wrap"><button class="btn bt2" onclick="saveAttNow('${sid}')">💾 Save Attendance</button><button class="btn bp2" onclick="openAssign('${sid}')">📝 Assign Summary Writer</button></div>`:''}</div>`;
+  const status=getSessionStatus(sess);
+  const isLive=status.live||false;
+  const isToday=new Date().toISOString().split('T')[0]===sess.date;
+  // Allow marking attendance on live sessions OR today's sessions; all others are view-only
+  const canMark=isToday;
+  const statusHtml=statusBadge(sess);
+  const timeInfo=sess.timeStart?`<span style="font-size:0.72rem;color:rgba(148,175,218,0.7)">${formatTime(sess.timeStart)}${sess.timeEnd?' – '+formatTime(sess.timeEnd):''}</span>`:'';
+  const venueInfo=sess.venue?`<span style="font-size:0.72rem;color:rgba(148,175,218,0.6)">📍 ${sess.venue}</span>`:'';
+  document.getElementById('att-body').innerHTML=`<div style="background:rgba(8,14,32,0.94);border:1.5px solid ${isLive?'rgba(0,229,179,0.4)':'rgba(38,58,98,0.72)'};border-radius:12px;overflow:hidden;max-width:560px;backdrop-filter:blur(6px);box-shadow:${isLive?'0 0 18px rgba(0,229,179,0.12)':'none'}"><div style="padding:0.82rem 1.18rem;border-bottom:1px solid rgba(38,58,98,0.5);background:linear-gradient(90deg,rgba(98,58,200,0.3),rgba(0,148,108,0.18))"><h3 style="font-size:0.94rem;font-weight:700;margin-bottom:0.35rem">${sess.title}</h3><div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">${statusHtml}${timeInfo}${venueInfo}</div><div style="font-size:0.72rem;color:rgba(148,175,218,0.65);margin-top:0.25rem">🎙️ ${sess.host} &nbsp;•&nbsp; ${fd(sess.date)}</div></div><div style="padding:0.72rem 1.12rem">${members.length?members.map(m=>{const st=sess.att?.[m.id];return`<div class="ar"><div class="an"><div class="mini-av" style="background:linear-gradient(135deg,#7c4dff,#00e5b3)">${m.name[0]}</div>${m.name}</div><div class="atb">${canMark?`<button class="tg tgp ${st===true?'on':''}" id="tp-${sid}-${m.id}" onclick="setAttLocal('${sid}','${m.id}',true)">✅ Present</button><button class="tg tga ${st===false?'on':''}" id="ta-${sid}-${m.id}" onclick="setAttLocal('${sid}','${m.id}',false)">❌ Absent</button>`:`<span class="bdg ${st===true?'bt':st===false?'br':'bm'}">${st===true?'✅ Present':st===false?'❌ Absent':'—'}</span>`}</div></div>`;}).join(''):'<div class="empty" style="padding:0.5rem"><p>No members registered yet.</p></div>'}</div>${canMark?`<div style="padding:0.72rem 1.12rem;border-top:1px solid rgba(38,58,98,0.5);display:flex;gap:0.7rem;flex-wrap:wrap"><button class="btn bt2" onclick="saveAttNow('${sid}')">💾 Save Attendance</button><button class="btn bp2" onclick="openAssign('${sid}')">📝 Assign Summary Writer</button></div>`:`<div style="padding:0.6rem 1.12rem;border-top:1px solid rgba(38,58,98,0.4);background:rgba(0,0,0,0.2)"><span style="font-size:0.72rem;color:rgba(148,175,218,0.5)">👁 View only — attendance can only be marked on the session date</span></div>`}</div>`;
 }
 
 // pending attendance changes (not yet saved)
@@ -1065,7 +1362,8 @@ async function addMember(){
 function renderSummaries(){
   document.getElementById('vol-sum-list').innerHTML=SESSIONS.map(s=>{
     const an=s.sumBy?USERS.find(u=>u.id===s.sumBy)?.name:'Not assigned';
-    return`<div class="sc2"><div class="sc2-h"><h2>${s.title}</h2><div style="display:flex;gap:0.43rem;align-items:center"><span class="bdg bm">${fd(s.date)}</span>${s.summary?'<span class="bdg bt">✓ Written</span>':s.sumBy?'<span class="bdg bb">Assigned</span>':'<span class="bdg bg">Pending</span>'}</div></div><div style="padding:1rem 1.22rem"><div class="info-mc ip" style="margin-bottom:0.68rem">📝 Summary Writer: <strong>${an}</strong></div>${s.summary?`<div class="sum-box">${s.summary}</div>`:`<div style="display:flex;gap:0.7rem;align-items:flex-start"><div class="sum-box sum-empty" style="flex:1">No summary submitted yet.</div><button class="btn bp2" onclick="openAssign('${s.id}')">📝 Re-assign</button></div>`}</div></div>`;
+    const writerAbsent=s.sumBy&&s.att?.[s.sumBy]===false;
+    return`<div class="sc2"><div class="sc2-h"><h2>${s.title}</h2><div style="display:flex;gap:0.43rem;align-items:center"><span class="bdg bm">${fd(s.date)}</span>${s.summary?'<span class="bdg bt">✓ Written</span>':s.sumBy?'<span class="bdg bb">Assigned</span>':'<span class="bdg bg">Pending</span>'}</div></div><div style="padding:1rem 1.22rem"><div class="info-mc ip" style="margin-bottom:0.68rem">📝 Summary Writer: <strong>${an}</strong>${writerAbsent&&!s.summary?` <span style="color:#e06060;font-size:0.72rem">(❌ was absent — please reassign)</span>`:''}</div>${writerAbsent&&!s.summary?`<div class="info-mc" style="background:rgba(220,65,65,0.09);border-left:3px solid #e06060;border-color:#e06060;color:rgba(224,96,96,0.9);margin-bottom:0.7rem">The assigned writer <strong>${an}</strong> was absent on this session day and cannot write the summary.</div>`:''} ${s.summary?`<div class="sum-box">${s.summary}</div>`:`<div style="display:flex;gap:0.7rem;align-items:flex-start"><div class="sum-box sum-empty" style="flex:1">No summary submitted yet.</div><button class="btn bp2" onclick="openAssign('${s.id}')">📝 ${writerAbsent?'Re-assign':'Assign'}</button></div>`}</div></div>`;
   }).join('');
 }
 
@@ -1094,7 +1392,7 @@ async function doAssign(){
 }
 
 /* ══ ATTENDEE DASHBOARD ══ */
-const ASECS=['overview','sessions','mysummary','profile'];
+const ASECS=['overview','sessions','mysummary','ratesummary','ratesession','leaderboard','profile'];
 async function initAtt(){
   if(!ME)return;await loadAll();
   document.getElementById('att-nm').textContent=ME.name;
@@ -1102,10 +1400,97 @@ async function initAtt(){
   document.getElementById('att-welcome').textContent=`Welcome back, ${ME.name}! ⛏️`;
   buildAllLogos();aSec('overview');
 }
+
+/* ══ SECTION SWITCHERS — instant, no delay ══ */
 function aSec(id){
-  ASECS.forEach(s=>{document.getElementById('as-'+s).classList.toggle('on',s===id);document.getElementById('ab-'+s).classList.toggle('on',s===id);});
-  ({overview:renderAttOverview,sessions:renderAttSessions,mysummary:renderMySummary,profile:renderAttProfile})[id]?.();
+  ASECS.forEach(s=>{
+    const sec=document.getElementById('as-'+s);
+    const btn=document.getElementById('ab-'+s);
+    if(sec){sec.style.display=s===id?'block':'none';sec.classList.toggle('on',s===id);}
+    if(btn)btn.classList.toggle('on',s===id);
+  });
+  ({overview:renderAttOverview,sessions:renderAttSessions,mysummary:renderMySummary,ratesummary:()=>renderRateSummaries('att'),ratesession:renderRateSessions,leaderboard:renderLeaderboard,profile:renderAttProfile})[id]?.();
 }
+
+function vSec(id){
+  if(id!=='sessions'&&deleteMode){deleteMode=false;selectedForDelete.clear();const ban=document.getElementById('del-mode-banner'),btn=document.getElementById('btn-del-toggle');if(ban)ban.classList.remove('active');if(btn){btn.classList.remove('active-del');btn.textContent='🗑️ Delete';}}
+  if(id!=='members'&&memberDeleteMode){memberDeleteMode=false;selectedMembersForDelete.clear();const ban=document.getElementById('mem-del-banner'),btn=document.getElementById('btn-mem-del-toggle');if(ban)ban.classList.remove('active');if(btn){btn.classList.remove('active-del');btn.textContent='🗑️ Remove Members';}}
+  VSECS.forEach(s=>{
+    const sec=document.getElementById('vs-'+s);
+    const btn=document.getElementById('vb-'+s);
+    if(sec){sec.style.display=s===id?'block':'none';sec.classList.toggle('on',s===id);}
+    if(btn)btn.classList.toggle('on',s===id);
+  });
+  ({sessions:renderVolSessions,create:initCreate,attendance:renderAttPicker,leaderboard:renderVolLeaderboard,ratesummary:()=>renderRateSummaries('vol'),members:renderMembers,summaries:renderSummaries})[id]?.();
+}
+const XP_ATTEND=200;   // per session attended
+const XP_SUMMARY=250;  // per summary submitted
+const XP_STREAK=300;   // bonus per 3-session streak
+
+const LEVEL_TITLES=[
+  'Rookie Miner','Stone Cutter','Iron Forger','Gold Smith','Diamond Digger',
+  'Redstone Hacker','Obsidian Builder','Nether Explorer','End Seeker',
+  'Dragon Slayer','Legendary Dev'
+];
+
+function calcXP(uid){
+  const sessions=SESSIONS.filter(s=>uid in (s.att||{}));
+  const attended=sessions.filter(s=>s.att[uid]===true);
+  const summaries=SESSIONS.filter(s=>s.sumBy===uid&&s.summary);
+  // Streak bonus: every 3 consecutive attended sessions
+  let streak=0,maxStreak=0,cur=0;
+  sessions.sort((a,b)=>new Date(a.date)-new Date(b.date)).forEach(s=>{
+    if(s.att[uid]===true){cur++;maxStreak=Math.max(maxStreak,cur);}
+    else cur=0;
+  });
+  const streakBonus=Math.floor(maxStreak/3)*XP_STREAK;
+  return attended.length*XP_ATTEND + summaries.length*XP_SUMMARY + streakBonus;
+}
+
+function xpToLevel(xp){
+  // 500 XP for L1, grows by 500 each level (500,1000,1500...)
+  let level=1,needed=500;
+  while(xp>=needed&&level<10){xp-=needed;level++;needed+=500;}
+  const nextXP=needed;
+  return{level,xpInLevel:xp,nextXP,title:LEVEL_TITLES[Math.min(level-1,LEVEL_TITLES.length-1)]};
+}
+
+function renderXPBar(uid,containerId){
+  const xp=calcXP(uid);
+  const{level,xpInLevel,nextXP,title}=xpToLevel(xp);
+  const pct=Math.min(100,Math.round(xpInLevel/nextXP*100));
+  const totalXP=calcXP(uid);
+  const sessions=SESSIONS.filter(s=>uid in (s.att||{}));
+  const attended=sessions.filter(s=>s.att[uid]===true).length;
+  const summaries=SESSIONS.filter(s=>s.sumBy===uid&&s.summary).length;
+  const el=document.getElementById(containerId);if(!el)return;
+  el.innerHTML=`
+  <div class="xp-card">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:0.8rem">
+      <div>
+        <div class="xp-level-badge">⚔️ LEVEL <span class="xp-level-num" style="font-size:1rem;margin-left:0.3rem">${level}</span></div>
+        <div class="xp-title">${title}</div>
+        <div style="font-size:0.72rem;color:rgba(148,175,218,0.7);margin-bottom:0.7rem">Total XP earned: <strong style="color:#00e5b3">${totalXP.toLocaleString()} XP</strong></div>
+        <div class="xp-bar-wrap" style="width:min(320px,70vw)">
+          <div class="xp-bar-fill" id="xpfill-${containerId}" style="width:0%"></div>
+        </div>
+        <div class="xp-bar-label">${xpInLevel.toLocaleString()} / ${nextXP.toLocaleString()} XP to Level ${level+1}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'Press Start 2P',monospace;font-size:0.5rem;color:rgba(148,175,218,0.6);margin-bottom:0.4rem">XP BREAKDOWN</div>
+        <div class="xp-gains">
+          <div class="xp-gain-chip">✅ Sessions <span>×${attended}</span> = <strong>+${(attended*XP_ATTEND).toLocaleString()}</strong></div>
+          <div class="xp-gain-chip">📝 Summaries <span>×${summaries}</span> = <strong>+${(summaries*XP_SUMMARY).toLocaleString()}</strong></div>
+          <div class="xp-gain-chip">🔥 Streak Bonus = <strong>+${Math.floor(Math.max(0,...SESSIONS.filter(s=>uid in(s.att||{})&&s.att[uid]===true).length?[attended]:[])/3)*XP_STREAK}</strong></div>
+        </div>
+        <div style="font-size:0.62rem;color:rgba(148,175,218,0.5);margin-top:0.5rem;font-family:'Press Start 2P',monospace">+${XP_ATTEND} XP per session • +${XP_SUMMARY} XP per summary</div>
+      </div>
+    </div>
+  </div>`;
+  // Animate bar after render
+  setTimeout(()=>{const f=document.getElementById('xpfill-'+containerId);if(f)f.style.width=pct+'%';},80);
+}
+
 function renderAttOverview(){
   if(!ME)return;const uid=ME.id;
   const myS=SESSIONS.filter(s=>uid in (s.att||{}));
@@ -1113,15 +1498,177 @@ function renderAttOverview(){
   const abs=myS.filter(s=>s.att[uid]===false).length;
   const rate=myS.length?Math.round(pres/myS.length*100):0;
   const pendSum=SESSIONS.filter(s=>s.sumBy===uid&&!s.summary).length;
-  document.getElementById('att-sg').innerHTML=`<div class="sc" style="--cc:rgba(0,229,179,0.22)"><div class="sl">Sessions Present</div><div class="sv" style="color:#00e5b3">${pres}</div><div class="ss">✅ Attended</div></div><div class="sc" style="--cc:rgba(220,65,65,0.22)"><div class="sl">Sessions Absent</div><div class="sv" style="color:#e06060">${abs}</div><div class="ss">❌ Missed</div></div><div class="sc" style="--cc:rgba(118,78,232,0.22)"><div class="sl">Attendance Rate</div><div class="sv" style="color:#a880f5">${rate}%</div><div class="ss">Overall</div></div>${pendSum?`<div class="sc" style="--cc:rgba(255,198,0,0.22);border-color:rgba(255,198,0,0.4)"><div class="sl">📝 Summary Pending</div><div class="sv" style="color:#f0c040;cursor:pointer" onclick="aSec('mysummary')">${pendSum}</div><div class="ss" style="color:#f0c040;cursor:pointer" onclick="aSec('mysummary')">Write now →</div></div>`:''}`;
+  // XP bar
+  renderXPBar(uid,'att-xp-bar');
+  document.getElementById('att-sg').innerHTML=`
+    <div class="sc" style="--cc:rgba(0,229,179,0.22)"><div class="sl">Sessions Present</div><div class="sv" style="color:#00e5b3">${pres}</div><div class="ss">✅ Attended</div></div>
+    <div class="sc" style="--cc:rgba(220,65,65,0.22)"><div class="sl">Sessions Absent</div><div class="sv" style="color:#e06060">${abs}</div><div class="ss">❌ Missed</div></div>
+    <div class="sc" style="--cc:rgba(118,78,232,0.22)"><div class="sl">Attendance Rate</div><div class="sv" style="color:#a880f5">${rate}%</div><div class="ss">Overall</div></div>
+    ${pendSum?`<div class="sc" style="--cc:rgba(255,198,0,0.22);border-color:rgba(255,198,0,0.4)"><div class="sl">📝 Summary Pending</div><div class="sv" style="color:#f0c040;cursor:pointer" onclick="aSec('mysummary')">${pendSum}</div><div class="ss" style="color:#f0c040;cursor:pointer" onclick="aSec('mysummary')">Write now →</div></div>`:''}`;
   const recent=SESSIONS.slice(-4).reverse();
   document.getElementById('att-recent').innerHTML=recent.length?`<table class="dt"><thead><tr><th>Session</th><th>Date</th><th>Your Status</th><th>Summary</th></tr></thead><tbody>${recent.map(s=>{const st=s.att?.[uid];const isMine=s.sumBy===uid;return`<tr><td style="font-weight:700">${s.title}</td><td style="color:rgba(148,175,218,0.8)">${fd(s.date)}</td><td>${st===true?'<span class="bdg bt">✅ Present</span>':st===false?'<span class="bdg br">❌ Absent</span>':'<span class="bdg bm">Not marked</span>'}</td><td>${s.summary?'<span class="bdg bt">✓ Done</span>':isMine?`<span class="bdg bg" style="cursor:pointer" onclick="openWriteSum('${s.id}')">✍️ Write</span>`:'<span class="bdg bm">Pending</span>'}</td></tr>`;}).join('')}</tbody></table>`:'<div class="empty"><span class="ei">📋</span><p>No sessions yet.</p></div>';
 }
+
+function renderLeaderboard(){
+  const area=document.getElementById('att-leaderboard');if(!area)return;
+  const members=USERS.filter(u=>u.role==='attendee');
+  if(!members.length){area.innerHTML='<div class="empty"><span class="ei">🏆</span><p>No members yet.</p></div>';return;}
+  const ranked=members.map(u=>({u,xp:calcXP(u.id),lv:xpToLevel(calcXP(u.id))}))
+    .sort((a,b)=>b.xp-a.xp);
+  const medals=['🥇','🥈','🥉'];
+  const myId=ME?.id;
+  area.innerHTML=`
+    <div style="background:linear-gradient(90deg,rgba(124,77,255,0.12),rgba(0,229,179,0.08));border:2px solid rgba(124,77,255,0.3);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;box-shadow:3px 3px 0 rgba(0,0,0,0.5)">
+      <div style="font-family:'Press Start 2P',monospace;font-size:0.6rem;color:rgba(148,175,218,0.7);margin-bottom:0.4rem">HOW TO EARN XP</div>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem">
+        <span class="xp-gain-chip">✅ Attend Session = <strong>+${XP_ATTEND} XP</strong></span>
+        <span class="xp-gain-chip">📝 Submit Summary = <strong>+${XP_SUMMARY} XP</strong></span>
+        <span class="xp-gain-chip">🔥 3-Session Streak = <strong>+${XP_STREAK} XP bonus</strong></span>
+      </div>
+    </div>
+    ${ranked.map((r,i)=>{
+      const isMe=r.u.id===myId;
+      const{level,xpInLevel,nextXP,title}=r.lv;
+      const pct=Math.min(100,Math.round(xpInLevel/nextXP*100));
+      return`<div class="lb-row ${isMe?'lb-me':''}">
+        <div class="lb-rank" style="color:${i===0?'#ffd700':i===1?'#c0c0c0':i===2?'#cd7f32':'rgba(148,175,218,0.5)'}">
+          ${i<3?medals[i]:'#'+(i+1)}
+        </div>
+        <div class="lb-av">${r.u.name[0].toUpperCase()}</div>
+        <div class="lb-info">
+          <div class="lb-name">${r.u.name}${isMe?' <span style="color:#00e5b3;font-size:0.7rem">(You)</span>':''}</div>
+          <div class="lb-lvl">Lv.${level} — ${title}</div>
+          <div style="margin-top:0.35rem;background:rgba(0,0,0,0.4);border:1px solid rgba(0,229,179,0.15);height:6px;width:120px;position:relative;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:repeating-linear-gradient(90deg,#00e5b3 0,#00e5b3 4px,#00b38a 4px,#00b38a 8px);box-shadow:0 0 4px rgba(0,229,179,0.5)"></div>
+          </div>
+        </div>
+        <div class="lb-xp">${r.xp.toLocaleString()}<br><span style="font-size:0.45rem;color:rgba(148,175,218,0.5)">TOTAL XP</span></div>
+      </div>`;
+    }).join('')}`;
+}
+
+function renderAttProfile(){
+  if(!ME)return;const uid=ME.id;
+  const myS=SESSIONS.filter(s=>uid in (s.att||{}));
+  const pres=myS.filter(s=>s.att[uid]===true).length;
+  const rate=myS.length?Math.round(pres/myS.length*100):0;
+  const sums=SESSIONS.filter(s=>s.sumBy===uid&&s.summary).length;
+  const xp=calcXP(uid);
+  const{level,title}=xpToLevel(xp);
+  const avDisplay=`<div class="pav" style="background:linear-gradient(135deg,#3a82f0,#7c4dff)">${ME.name[0].toUpperCase()}</div>`;
+  document.getElementById('att-prof').innerHTML=`${avDisplay}
+    <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:0.2rem">${ME.name}</h2>
+    <div style="display:inline-flex;align-items:center;gap:0.4rem;background:linear-gradient(135deg,#7c4dff,#3a82f0);border-radius:6px;padding:0.2rem 0.6rem;font-family:'Press Start 2P',monospace;font-size:0.5rem;margin-bottom:0.3rem;box-shadow:2px 2px 0 rgba(0,0,0,0.5)">⚔️ Level ${level} — ${title}</div>
+    <p style="color:rgba(148,175,218,0.8);margin-bottom:0.5rem;font-size:0.875rem">${ME.email}</p>
+    <div style="margin-bottom:1.2rem" id="prof-xp-bar"></div>
+    <div class="sg">
+      <div class="sc" style="--cc:rgba(0,229,179,0.22)"><div class="sl">Total XP</div><div class="sv" style="color:#00e5b3">${xp.toLocaleString()}</div></div>
+      <div class="sc" style="--cc:rgba(118,78,232,0.22)"><div class="sl">Level</div><div class="sv" style="color:#a880f5">${level}</div></div>
+      <div class="sc" style="--cc:rgba(68,128,242,0.22)"><div class="sl">Att. Rate</div><div class="sv" style="color:#5599ef">${rate}%</div></div>
+      <div class="sc" style="--cc:rgba(255,198,0,0.22)"><div class="sl">Summaries</div><div class="sv" style="color:#f0c040">${sums}</div></div>
+    </div>`;
+  renderXPBar(uid,'prof-xp-bar');
+}
+
+function renderVolLeaderboard(){
+  const members=USERS.filter(u=>u.role==='attendee');
+  const area=document.getElementById('vol-leaderboard');if(!area)return;
+  if(!members.length){area.innerHTML='<div class="empty"><span class="ei">🏆</span><p>No members yet.</p></div>';return;}
+  const ranked=members.map(u=>({u,xp:calcXP(u.id),lv:xpToLevel(calcXP(u.id))})).sort((a,b)=>b.xp-a.xp);
+  const medals=['🥇','🥈','🥉'];
+  area.innerHTML=`<div style="background:linear-gradient(90deg,rgba(124,77,255,0.12),rgba(0,229,179,0.08));border:2px solid rgba(124,77,255,0.3);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;box-shadow:3px 3px 0 rgba(0,0,0,0.5)"><div style="font-family:'Press Start 2P',monospace;font-size:0.6rem;color:rgba(148,175,218,0.7);margin-bottom:0.4rem">XP EARNED BY MEMBERS</div><div style="display:flex;flex-wrap:wrap;gap:0.5rem"><span class="xp-gain-chip">✅ Attend = <strong>+${XP_ATTEND} XP</strong></span><span class="xp-gain-chip">📝 Summary = <strong>+${XP_SUMMARY} XP</strong></span><span class="xp-gain-chip">🔥 3-Streak = <strong>+${XP_STREAK} XP</strong></span></div></div>`+ranked.map((r,i)=>{const{level,xpInLevel,nextXP,title}=r.lv;const pct=Math.min(100,Math.round(xpInLevel/nextXP*100));return`<div class="lb-row"><div class="lb-rank" style="color:${i===0?'#ffd700':i===1?'#c0c0c0':i===2?'#cd7f32':'rgba(148,175,218,0.5)'}">${i<3?medals[i]:'#'+(i+1)}</div><div class="lb-av">${r.u.name[0].toUpperCase()}</div><div class="lb-info"><div class="lb-name">${r.u.name}</div><div class="lb-lvl">Lv.${level} — ${title}</div><div style="margin-top:0.35rem;background:rgba(0,0,0,0.4);border:1px solid rgba(0,229,179,0.15);height:6px;width:120px;overflow:hidden"><div style="height:100%;width:${pct}%;background:repeating-linear-gradient(90deg,#00e5b3 0,#00e5b3 4px,#00b38a 4px,#00b38a 8px)"></div></div></div><div class="lb-xp">${r.xp.toLocaleString()}<br><span style="font-size:0.45rem;color:rgba(148,175,218,0.5)">TOTAL XP</span></div></div>`;}).join('');
+}
+
 function renderAttSessions(){
   if(!ME)return;const uid=ME.id;const area=document.getElementById('att-all');
   if(!SESSIONS.length){area.innerHTML='<div class="empty"><span class="ei">📋</span><p>No sessions yet.</p></div>';return;}
-  area.innerHTML=SESSIONS.map(s=>{const st=s.att?.[uid];const isMine=s.sumBy===uid;return`<div class="sc2"><div class="sc2-h"><h2>${s.title}</h2><div style="display:flex;gap:0.43rem;align-items:center"><span class="bdg bm">${fd(s.date)}</span>${st===true?'<span class="bdg bt">✅ Present</span>':st===false?'<span class="bdg br">❌ Absent</span>':''}</div></div><div class="sc2-b"><div class="di"><label>📚 Resource Persons</label><p>${s.res}</p></div><div class="di"><label>🎙️ Host</label><p>${s.host}</p></div><div class="di"><label>🤝 Volunteers</label><p>${s.vols||'—'}</p></div><div class="di"><label>📌 Topic</label><p>${s.topic||'—'}</p></div></div><div class="sum-area"><span class="sum-lbl">📝 Session Summary</span>${s.summary?`<div class="sum-box">${s.summary}</div>`:isMine?`<div style="display:flex;align-items:center;gap:0.7rem"><div class="sum-box sum-empty" style="flex:1">You've been assigned to write this summary.</div><button class="btn bp2" onclick="openWriteSum('${s.id}')">✍️ Write</button></div>`:`<div class="sum-box sum-empty">No summary submitted yet.</div>`}</div></div>`;}).join('');
+  area.innerHTML=SESSIONS.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).map(s=>{
+    const st=s.att?.[uid];const isMine=s.sumBy===uid;
+    return`<div class="sc2"><div class="sc2-h"><h2>${s.title}</h2><div style="display:flex;gap:0.43rem;align-items:center;flex-wrap:wrap"><span class="bdg bm">${fd(s.date)}</span>${statusBadge(s)}${st===true?'<span class="bdg bt">✅ Present</span>':st===false?'<span class="bdg br">❌ Absent</span>':''}</div></div><div class="sc2-b"><div class="di"><label>📅 Date & Time</label><p>${fd(s.date)}${s.timeStart?' • '+formatTime(s.timeStart)+(s.timeEnd?' – '+formatTime(s.timeEnd):''):''}</p></div>${s.venue?`<div class="di"><label>📍 Venue</label><p>${s.venue}</p></div>`:''}<div class="di"><label>📚 Resource Persons</label><p>${s.res}</p></div><div class="di"><label>🎙️ Host</label><p>${s.host}</p></div><div class="di"><label>🤝 Volunteers</label><p>${s.vols||'—'}</p></div><div class="di"><label>📌 Topic</label><p>${s.topic||'—'}</p></div></div><div class="sum-area"><span class="sum-lbl">📝 Session Summary</span>${s.summary?`<div class="sum-box">${s.summary}</div>`:isMine?`<div style="display:flex;align-items:center;gap:0.7rem"><div class="sum-box sum-empty" style="flex:1">You've been assigned to write this summary.</div><button class="btn bp2" onclick="openWriteSum('${s.id}')">✍️ Write</button></div>`:`<div class="sum-box sum-empty">No summary submitted yet.</div>`}</div></div>`;
+  }).join('');
 }
+/* ══ RATING SYSTEM ══ */
+function getRatings(type,sid){return lsGet('ratings_'+type+'_'+sid)||{};}
+function setRating(type,sid,uid,val){const r=getRatings(type,sid);r[uid]=val;lsSet('ratings_'+type+'_'+sid,r);}
+function avgRating(type,sid){const r=getRatings(type,sid);const vals=Object.values(r).filter(v=>v>0);return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;}
+function starHTML(type,sid,uid,current){
+  return[1,2,3,4,5].map(n=>`<span class="star${current>=n?' on':''}" onclick="doRate('${type}','${sid}','${uid}',${n})" onmouseover="hoverStars(this,${n})" onmouseout="resetStars(this)">★</span>`).join('');
+}
+function hoverStars(el,n){const row=el.closest('.star-row');if(!row)return;row.querySelectorAll('.star').forEach((s,i)=>{s.classList.toggle('on',i<n);});}
+function resetStars(el){const row=el.closest('.star-row');if(!row)return;const sid=row.dataset.sid,type=row.dataset.type,uid=row.dataset.uid;const cur=getRatings(type,sid)[uid]||0;row.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('on',i<cur));}
+function doRate(type,sid,uid,val){
+  setRating(type,sid,uid,val);
+  // Re-render stars in place
+  const row=document.querySelector(`.star-row[data-sid="${sid}"][data-type="${type}"]`);
+  if(row){row.innerHTML=starHTML(type,sid,uid,val);row.dataset.uid=uid;}
+  // Update avg display
+  const avgEl=document.getElementById('avg-'+type+'-'+sid);
+  if(avgEl){const a=avgRating(type,sid);avgEl.textContent=a>0?'⭐ '+a.toFixed(1)+'/5.0':'';}
+  toast('Rating saved! ⭐');
+}
+
+function renderRateSummaries(role){
+  const containerId=role==='vol'?'vol-rate-summary-list':'att-rate-summary-list';
+  const area=document.getElementById(containerId);if(!area)return;
+  const withSummary=SESSIONS.filter(s=>s.summary);
+  if(!withSummary.length){area.innerHTML='<div class="empty"><span class="ei">📝</span><p>No summaries written yet.</p></div>';return;}
+  const uid=ME?.id||'';
+  area.innerHTML=withSummary.map(s=>{
+    const writer=USERS.find(u=>u.id===s.sumBy);
+    const cur=getRatings('sum',s.id)[uid]||0;
+    const avg=avgRating('sum',s.id);
+    const totalVotes=Object.values(getRatings('sum',s.id)).filter(v=>v>0).length;
+    return`<div class="rating-card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:0.6rem;margin-bottom:0.7rem">
+        <div>
+          <div style="font-weight:700;font-size:0.95rem">${s.title}</div>
+          <div style="font-size:0.72rem;color:rgba(148,175,218,0.65);margin-top:0.15rem">${fd(s.date)} • Written by <strong style="color:#00e5b3">${writer?writer.name:'Unknown'}</strong></div>
+        </div>
+        <div style="text-align:right">
+          <div id="avg-sum-${s.id}" class="rating-avg">${avg>0?'⭐ '+avg.toFixed(1)+'/5.0':''}</div>
+          <div style="font-size:0.62rem;color:rgba(148,175,218,0.45)">${totalVotes} vote${totalVotes!==1?'s':''}</div>
+        </div>
+      </div>
+      <div class="sum-box" style="margin-bottom:0.8rem;font-size:0.82rem;max-height:90px;overflow:hidden;position:relative">${s.summary}<div style="position:absolute;bottom:0;left:0;right:0;height:30px;background:linear-gradient(transparent,rgba(8,14,32,0.95))"></div></div>
+      <div style="font-size:0.75rem;color:rgba(148,175,218,0.7);margin-bottom:0.3rem">Your rating:</div>
+      <div class="star-row" data-sid="${s.id}" data-type="sum" data-uid="${uid}">${starHTML('sum',s.id,uid,cur)}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderRateSessions(){
+  const area=document.getElementById('att-rate-session-list');if(!area)return;
+  if(!SESSIONS.length){area.innerHTML='<div class="empty"><span class="ei">🎯</span><p>No sessions yet.</p></div>';return;}
+  const uid=ME?.id||'';
+  area.innerHTML=SESSIONS.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).map(s=>{
+    const st=getSessionStatus(s);
+    const myAtt=s.att?.[uid];
+    const cur=getRatings('sess',s.id)[uid]||0;
+    const avg=avgRating('sess',s.id);
+    const totalVotes=Object.values(getRatings('sess',s.id)).filter(v=>v>0).length;
+    return`<div class="rating-card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:0.6rem;margin-bottom:0.6rem">
+        <div>
+          <div style="font-weight:700;font-size:0.95rem">${s.title}</div>
+          <div style="font-size:0.72rem;color:rgba(148,175,218,0.65);margin-top:0.15rem">${fd(s.date)}${s.timeStart?' • '+formatTime(s.timeStart)+(s.timeEnd?' – '+formatTime(s.timeEnd):''):''}</div>
+          ${s.venue?`<div style="font-size:0.7rem;color:rgba(148,175,218,0.5);margin-top:0.1rem">📍 ${s.venue}</div>`:''}
+          <div style="margin-top:0.3rem">${statusBadge(s)}</div>
+        </div>
+        <div style="text-align:right">
+          <div id="avg-sess-${s.id}" class="rating-avg">${avg>0?'⭐ '+avg.toFixed(1)+'/5.0':''}</div>
+          <div style="font-size:0.62rem;color:rgba(148,175,218,0.45)">${totalVotes} vote${totalVotes!==1?'s':''}</div>
+        </div>
+      </div>
+      ${myAtt===false?'<div class="info-mc" style="border-color:#e06060;color:rgba(224,96,96,0.85);margin-bottom:0.6rem;font-size:0.75rem">❌ You were absent — rating disabled</div>':''}
+      <div style="font-size:0.75rem;color:rgba(148,175,218,0.7);margin-bottom:0.3rem">How was this session?</div>
+      <div class="star-row${myAtt===false?' disabled':''}" data-sid="${s.id}" data-type="sess" data-uid="${uid}" style="${myAtt===false?'pointer-events:none;opacity:0.4':''}">${starHTML('sess',s.id,uid,cur)}</div>
+      <div style="display:flex;gap:0.4rem;margin-top:0.5rem;flex-wrap:wrap">
+        ${['🔥 Amazing','👍 Good','😐 Okay','👎 Poor'].map((label,i)=>`<span onclick="${myAtt!==false?`doRate('sess','${s.id}','${uid}',${4-i})`:''}\" style="font-size:0.7rem;padding:0.2rem 0.5rem;border-radius:4px;background:rgba(38,58,98,0.4);border:1px solid rgba(38,58,98,0.6);cursor:${myAtt===false?'not-allowed':'pointer'};opacity:${myAtt===false?0.4:1}">${label}</span>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
 function renderMySummary(){
   if(!ME)return;const uid=ME.id;
   const area=document.getElementById('my-sum-list');
@@ -1133,7 +1680,20 @@ function renderMySummary(){
   let html='';
   if(assignedToMe.length){
     html+=`<div class="sum-lbl" style="font-size:0.78rem;margin-bottom:0.6rem;display:block">✍️ ASSIGNED TO YOU</div>`;
-    html+=assignedToMe.map(s=>`<div class="sc2"><div class="sc2-h"><h2>${s.title} <span style="font-size:0.76rem;font-weight:400;color:rgba(148,175,218,0.75)">${fd(s.date)}</span></h2>${s.summary?'<span class="bdg bt">✓ Submitted</span>':'<span class="bdg bg">Pending</span>'}</div><div style="padding:1.12rem 1.22rem"><div class="info-mc it" style="margin-bottom:0.82rem">🎙️ Host: ${s.host} &nbsp;|&nbsp; 📌 Topic: ${s.topic||'—'}</div>${s.summary?`<div class="sum-box">${s.summary}</div><div style="margin-top:0.7rem"><button class="btn bg2" onclick="openWriteSum('${s.id}')">✏️ Edit Summary</button></div>`:`<p style="color:rgba(148,175,218,0.78);font-size:0.875rem;margin-bottom:0.82rem">You've been chosen to write the summary for this session.</p><button class="btn bp2" onclick="openWriteSum('${s.id}')">✍️ Write Summary Now</button>`}</div></div>`).join('');
+    html+=assignedToMe.map(s=>{
+      const wasAbsent=s.att?.[uid]===false;
+      const header=`<div class="sc2-h"><h2>${s.title} <span style="font-size:0.76rem;font-weight:400;color:rgba(148,175,218,0.75)">${fd(s.date)}</span></h2>${s.summary?'<span class="bdg bt">✓ Submitted</span>':wasAbsent?'<span class="bdg br">❌ Absent</span>':'<span class="bdg bg">Pending</span>'}</div>`;
+      const info=`<div class="info-mc it" style="margin-bottom:0.82rem">🎙️ Host: ${s.host} &nbsp;|&nbsp; 📌 Topic: ${s.topic||'—'}</div>`;
+      let body='';
+      if(s.summary){
+        body=`${info}<div class="sum-box">${s.summary}</div><div style="margin-top:0.7rem"><button class="btn bg2" onclick="openWriteSum('${s.id}')">✏️ Edit Summary</button></div>`;
+      } else if(wasAbsent){
+        body=`${info}<div class="info-mc" style="background:rgba(220,65,65,0.09);border-left:3px solid #e06060;border-color:#e06060;color:rgba(224,96,96,0.95);margin-bottom:0.7rem">❌ You were marked <strong>absent</strong> on this session day — you cannot write the summary. Please ask a volunteer to reassign it to someone who attended.</div>`;
+      } else {
+        body=`${info}<p style="color:rgba(148,175,218,0.78);font-size:0.875rem;margin-bottom:0.82rem">You've been chosen to write the summary for this session.</p><button class="btn bp2" onclick="openWriteSum('${s.id}')">✍️ Write Summary Now</button>`;
+      }
+      return`<div class="sc2" style="${wasAbsent&&!s.summary?'border-color:rgba(220,65,65,0.3)':''}"><div style="${wasAbsent&&!s.summary?'background:linear-gradient(90deg,rgba(180,40,40,0.18),rgba(20,8,8,0.12))':''}">${header}</div><div style="padding:1.12rem 1.22rem">${body}</div></div>`;
+    }).join('');
   }
   if(otherWithSummary.length){
     html+=`<div class="sum-lbl" style="font-size:0.78rem;margin:1.2rem 0 0.6rem;display:block">📚 ALL SESSION SUMMARIES</div>`;
@@ -1149,23 +1709,23 @@ function renderMySummary(){
   if(!html)html='<div class="empty"><span class="ei">📝</span><p>No summaries or attendance records yet.</p></div>';
   area.innerHTML=html;
 }
-function openWriteSum(sid){const sess=SESSIONS.find(s=>s.id===sid);if(!sess)return;assignTgt=sid;document.getElementById('ws-ttl').textContent=sess.title;document.getElementById('ws-txt').value=sess.summary||'';openM('m-writesum');}
+function openWriteSum(sid){
+  const sess=SESSIONS.find(s=>s.id===sid);if(!sess)return;
+  // Block if absent and no summary yet
+  if(ME&&sess.att?.[ME.id]===false&&!sess.summary){
+    toast('❌ You were absent on this day — cannot write the summary.','err');return;
+  }
+  assignTgt=sid;
+  document.getElementById('ws-ttl').textContent=sess.title;
+  document.getElementById('ws-txt').value=sess.summary||'';
+  openM('m-writesum');
+}
 async function submitSum(){
   const text=document.getElementById('ws-txt').value.trim();if(!text){toast('⚠️ Please write a summary first.','err');return;}
   const sess=SESSIONS.find(s=>s.id===assignTgt);
   if(sess){sess.summary=text;await dbUpdateSummary(sess.id,text);}
   toast('Summary submitted! ✅');closeM('m-writesum');renderMySummary();renderAttOverview();
 }
-function renderAttProfile(){
-  if(!ME)return;const uid=ME.id;
-  const myS=SESSIONS.filter(s=>uid in (s.att||{}));
-  const pres=myS.filter(s=>s.att[uid]===true).length;
-  const rate=myS.length?Math.round(pres/myS.length*100):0;
-  const sums=SESSIONS.filter(s=>s.sumBy===uid&&s.summary).length;
-  const avDisplay=`<div class="pav" style="background:linear-gradient(135deg,#3a82f0,#7c4dff)">${ME.name[0].toUpperCase()}</div>`;
-  document.getElementById('att-prof').innerHTML=`${avDisplay}<h2 style="font-size:1.36rem;font-weight:800;margin-bottom:0.2rem">${ME.name}</h2><p style="color:rgba(148,175,218,0.8);margin-bottom:1.48rem;font-size:0.875rem">${ME.email}</p><div class="sg"><div class="sc" style="--cc:rgba(68,128,242,0.22)"><div class="sl">Role</div><div style="font-size:0.9rem;font-weight:700;color:#5599ef">👤 Attendee</div></div><div class="sc" style="--cc:rgba(0,229,179,0.22)"><div class="sl">Att. Rate</div><div class="sv" style="color:#00e5b3;font-size:1.6rem">${rate}%</div></div><div class="sc" style="--cc:rgba(118,78,232,0.22)"><div class="sl">Present</div><div class="sv" style="color:#a880f5;font-size:1.6rem">${pres}</div></div><div class="sc" style="--cc:rgba(255,198,0,0.22)"><div class="sl">Summaries</div><div class="sv" style="color:#f0c040;font-size:1.6rem">${sums}</div></div></div>`;
-}
-
 /* ══ MODALS / TOAST / UTILS ══ */
 function openM(id){document.getElementById(id).classList.add('open');}
 function closeM(id){document.getElementById(id).classList.remove('open');}
@@ -1237,6 +1797,73 @@ window.addEventListener('DOMContentLoaded',async()=>{
   document.addEventListener('mouseup',function(){cur.classList.remove('clicking');});
   loop();
   update();
+})();
+</script>
+<!-- ══ FLOATING PIXEL PARTICLES ══ -->
+<div id="pixel-particles"></div>
+<script>
+(function(){
+  const container=document.getElementById('pixel-particles');
+  const COLORS=['#00e5b3','#7c4dff','#ff6b35','#ffd700','#00bfff','#ff4da6','#adff2f'];
+  const TYPES=['star','sq','firefly','glow'];
+  let particles=[];
+
+  function rand(a,b){return Math.random()*(b-a)+a;}
+  function randColor(){return COLORS[Math.floor(Math.random()*COLORS.length)];}
+
+  function createParticle(){
+    const type=TYPES[Math.floor(Math.random()*TYPES.length)];
+    const el=document.createElement('div');
+    const color=randColor();
+    const size=type==='sq'?Math.floor(rand(4,10)):type==='glow'?Math.floor(rand(3,7)):3;
+    const left=rand(0,100);
+    const duration=rand(8,22);
+    const delay=rand(0,12);
+    const drift=rand(-60,60);
+
+    el.style.cssText=`left:${left}%;bottom:-20px;animation-duration:${duration}s;animation-delay:${delay}s;--drift:${drift}px`;
+
+    if(type==='star'){
+      el.className='px-particle px-star';
+      el.style.animationDuration=`${rand(6,16)}s,${rand(1.5,3.5)}s`;
+      el.style.animationDelay=`${delay}s,${rand(0,3)}s`;
+    } else if(type==='sq'){
+      el.className='px-particle px-sq';
+      el.style.width=size+'px';el.style.height=size+'px';
+      el.style.background=color;
+      el.style.boxShadow=`0 0 6px ${color}`;
+      el.style.animationDuration=`${duration}s,${rand(3,8)}s`;
+      el.style.animationDelay=`${delay}s,0s`;
+      el.style.opacity=rand(0.4,0.9);
+    } else if(type==='firefly'){
+      el.className='px-particle px-firefly';
+      el.style.width=size+'px';el.style.height=size+'px';
+      el.style.background=color;
+      el.style.boxShadow=`0 0 8px ${color},0 0 16px ${color}80`;
+      el.style.animationDuration=`${rand(5,15)}s,${rand(2,5)}s`;
+      el.style.animationDelay=`${delay}s,${rand(0,4)}s`;
+      el.style.animation=`fireflyFloat ${rand(3,7)}s ease-in-out ${delay}s infinite`;
+      el.style.left=rand(0,100)+'%';
+      el.style.top=rand(10,85)+'%';
+      el.style.bottom='auto';
+    } else { // glow
+      el.className='px-particle px-star';
+      el.style.width=size+'px';el.style.height=size+'px';
+      el.style.background='#fff';
+      el.style.boxShadow=`0 0 ${size*2}px ${color},0 0 ${size*4}px ${color}80`;
+      el.style.animationDuration=`${duration}s,${rand(0.8,2)}s`;
+      el.style.animationDelay=`${delay}s,${rand(0,2)}s`;
+    }
+    container.appendChild(el);
+    particles.push(el);
+    // remove after longest possible animation
+    setTimeout(()=>{el.remove();particles=particles.filter(p=>p!==el);},( duration+delay+1)*1000);
+  }
+
+  // Spawn initial batch
+  for(let i=0;i<55;i++)createParticle();
+  // Keep replenishing
+  setInterval(()=>{if(particles.length<55)createParticle();},800);
 })();
 </script>
 </body>
