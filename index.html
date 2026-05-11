@@ -716,8 +716,40 @@ table.dt tbody tr:hover td{background:rgba(28,44,82,0.38)}
             <div class="fg"><label class="fl">📅 Date *</label><input class="fi" type="date" id="cs-dt"/></div>
           </div>
           <div class="fg2">
-            <div class="fg"><label class="fl">⏰ Start Time *</label><input class="fi" type="time" id="cs-time-start" placeholder="e.g. 10:00"/></div>
-            <div class="fg"><label class="fl">⏰ End Time *</label><input class="fi" type="time" id="cs-time-end" placeholder="e.g. 12:00"/></div>
+            <div class="fg">
+              <label class="fl">⏰ Start Time *</label>
+              <div style="display:flex;gap:0.4rem;align-items:center">
+                <select class="fi" id="cs-time-start-h" style="flex:1">
+                  <option value="">Hr</option>
+                  <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option>
+                </select>
+                <span style="color:rgba(148,175,218,0.6);font-weight:700">:</span>
+                <select class="fi" id="cs-time-start-m" style="flex:1">
+                  <option value="">Min</option>
+                  <option>00</option><option>15</option><option>30</option><option>45</option>
+                </select>
+                <select class="fi" id="cs-time-start-ampm" style="flex:1">
+                  <option>AM</option><option>PM</option>
+                </select>
+              </div>
+            </div>
+            <div class="fg">
+              <label class="fl">⏰ End Time *</label>
+              <div style="display:flex;gap:0.4rem;align-items:center">
+                <select class="fi" id="cs-time-end-h" style="flex:1">
+                  <option value="">Hr</option>
+                  <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option>
+                </select>
+                <span style="color:rgba(148,175,218,0.6);font-weight:700">:</span>
+                <select class="fi" id="cs-time-end-m" style="flex:1">
+                  <option value="">Min</option>
+                  <option>00</option><option>15</option><option>30</option><option>45</option>
+                </select>
+                <select class="fi" id="cs-time-end-ampm" style="flex:1">
+                  <option>AM</option><option>PM</option>
+                </select>
+              </div>
+            </div>
           </div>
           <div class="fg"><label class="fl">📍 Venue *</label><input class="fi" id="cs-venue" placeholder="e.g. Lab 3, Block B, CSE Department"/></div>
           <div class="fg"><label class="fl">📚 Resource Persons *</label><input class="fi" id="cs-res" placeholder="e.g. Prof. Sharma, Guest Speaker"/></div>
@@ -930,7 +962,8 @@ async function safeWrite(label,queryFn){
     }
     if(r&&r.error){
       const msg=String(r.error.message||r.error||'');
-      if(!msg.includes('DataClone')&&!msg.includes('postMessage'))console.error(label,':',r.error.message);
+      if(msg.includes('DataClone')||msg.includes('postMessage'))return;
+      console.error(label,'DB error:',r.error.message||r.error);
     }
   }catch(e){
     if(e&&(e.name==='DataCloneError'||String(e).includes('DataClone')||String(e).includes('postMessage')))return;
@@ -1168,7 +1201,17 @@ async function initVol(){
 
 function initCreate(){const d=document.getElementById('cs-dt');if(d&&!d.value)d.value=new Date().toISOString().split('T')[0];}
 
-function formatTime(t){if(!t)return'';const[h,m]=t.split(':');const hr=parseInt(h);const ampm=hr>=12?'PM':'AM';return`${hr%12||12}:${m} ${ampm}`;}
+function formatTime(t){
+  if(!t)return'';
+  // If already has AM/PM just return it
+  if(t.includes('AM')||t.includes('PM'))return t;
+  // Convert 24hr HH:MM to 12hr with AM/PM
+  const[h,m]=t.split(':');
+  const hr=parseInt(h);
+  const ampm=hr>=12?'PM':'AM';
+  const hr12=hr%12||12;
+  return`${hr12}:${m} ${ampm}`;
+}
 
 function getSessionStatus(s){
   const now=new Date();
@@ -1226,21 +1269,36 @@ function renderVolSessions(){
 async function createSession(){
   const title=document.getElementById('cs-ttl').value.trim();
   const date=document.getElementById('cs-dt').value;
-  const timeStart=document.getElementById('cs-time-start').value;
-  const timeEnd=document.getElementById('cs-time-end').value;
+  const sh=document.getElementById('cs-time-start-h').value;
+  const sm=document.getElementById('cs-time-start-m').value;
+  const sampm=document.getElementById('cs-time-start-ampm').value;
+  const eh=document.getElementById('cs-time-end-h').value;
+  const em=document.getElementById('cs-time-end-m').value;
+  const eampm=document.getElementById('cs-time-end-ampm').value;
+  if(!sh||!sm){toast('⚠️ Please select a start time','err');return;}
+  if(!eh||!em){toast('⚠️ Please select an end time','err');return;}
+  // Store as "10:30 AM" format for display, convert to 24hr for status logic
+  const timeStart=`${sh}:${sm} ${sampm}`;
+  const timeEnd=`${eh}:${em} ${eampm}`;
+  // Convert to 24hr for getSessionStatus comparisons
+  function to24(h,m,ampm){let hr=parseInt(h);if(ampm==='PM'&&hr!==12)hr+=12;if(ampm==='AM'&&hr===12)hr=0;return`${String(hr).padStart(2,'0')}:${m}`;}
+  const timeStart24=to24(sh,sm,sampm);
+  const timeEnd24=to24(eh,em,eampm);
   const venue=document.getElementById('cs-venue').value.trim();
   const res=document.getElementById('cs-res').value.trim();
   const host=document.getElementById('cs-host').value.trim();
   const vols=document.getElementById('cs-vols').value.trim();
   const topic=document.getElementById('cs-topic').value.trim();
-  if(!title||!date||!timeStart||!timeEnd||!venue||!res||!host){toast('⚠️ Fill all required (*) fields','err');return;}
-  const newSess={id:'s'+Date.now(),title,date,timeStart,timeEnd,venue,res,host,vols,topic,by:ME?.id,summary:null,sumBy:null,att:{}};
+  if(!title||!date||!venue||!res||!host){toast('⚠️ Fill all required (*) fields','err');return;}
+  const newSess={id:'s'+Date.now(),title,date,timeStart:timeStart24,timeEnd:timeEnd24,timeDisplay:timeStart+' – '+timeEnd,venue,res,host,vols,topic,by:ME?.id,summary:null,sumBy:null,att:{}};
   USERS.filter(u=>u.role==='attendee').forEach(u=>{newSess.att[u.id]=null;});
-  await dbUpsertSession(newSess);SESSIONS.push(newSess);
-  toast(`Session "${title}" created! 🚀`);
+  await dbUpsertSession(newSess);
+  SESSIONS.push(newSess);
+  toast(`Session "${title}" created! ⛏️`);
   ['cs-ttl','cs-res','cs-host','cs-vols','cs-topic','cs-venue'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('cs-time-start').value='';
-  document.getElementById('cs-time-end').value='';
+  ['cs-time-start-h','cs-time-start-m','cs-time-end-h','cs-time-end-m'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('cs-time-start-ampm').value='AM';
+  document.getElementById('cs-time-end-ampm').value='AM';
   vSec('sessions');
 }
 
